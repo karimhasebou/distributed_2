@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "cstdlib": "cpp",
+        "vector": "cpp",
+        "cstdio": "cpp",
+        "queue": "cpp",
+        "string_view": "cpp",
+        "*.tcc": "cpp",
+        "condition_variable": "cpp",
+        "chrono": "cpp"
+    }
+}
