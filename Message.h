@@ -10,6 +10,7 @@
 #define Message_hpp
 
 enum MessageType {
+    Acknowledgement,
     Request,
     Reply
 };
