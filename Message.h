@@ -1,31 +1,34 @@
+//
+//  Message.h
+//  distributed_hw2
+//
+//  Created by Farida Eid on 11/17/17.
+//  Copyright © 2017 Farida Eid. All rights reserved.
+//
+
 #ifndef Message_hpp
 #define Message_hpp
-
-#include <iostream>
 
 enum MessageType {
     Request,
     Reply
 };
 
-class Message {
+#include "MarshalledMessage.h"
+#include <iostream>
+
+class Message : public MarshalledMessage {
     
 private:
     MessageType type;
     int operation;
-    void * buffer;
-    size_t messageSize;
     
 public:
-    Message();
+    Message(){};
     
     MessageType getMessageType();
-    void * getMessage();
-    size_t getMessageSize();
-    
-    void setMessageType(const MessageType& type);
+    void setMessageType(const MessageType&);
     void setOperationId(int oper);
-    void fillMessageBuffer(void * content, size_t size);
 };
 
 #endif /* Message_hpp */
