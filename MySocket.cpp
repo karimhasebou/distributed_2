@@ -20,7 +20,7 @@ int MySocket::send(Message msg)
 	std::vector<Message> msg_part = msg.divide(CHUNK_SIZE); // definition
 	Message msg_void;
 	socket.setTimeout(TIMEOUT);                             // definition
-    int status = SUCESS;
+    int status = SUCCESS;
 	for (int i = 0; i < msg_part.size(); ++i) {
 		while (status != SUCESS && count_send--) {
 			socket.send(msg_part[i]);
@@ -74,7 +74,12 @@ int MySocket::receive(Message& msg)
         }
 
         Message assembled_message(msg_parts);
-        return assembled_message;
+	msg = assembled_message;
+        return SUCCESS;
+	}
+	else {
+		msg = msg_tmp;
+		return SUCCESS;
 	}
 }
 
