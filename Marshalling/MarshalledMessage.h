@@ -13,13 +13,14 @@
 
 class MarshalledMessage {
     
-private:
+protected:
     char * message;
     size_t messageSize;
     int startPosition;
     
 public:
     MarshalledMessage();
+    MarshalledMessage(const MarshalledMessage&);
     ~MarshalledMessage();
     
     char * getMessage();
@@ -27,7 +28,6 @@ public:
     
     void createMessage(size_t);
     char& operator[](int);
-    void updateStartPosition(int);
 };
 
 #endif /* Message_hpp */

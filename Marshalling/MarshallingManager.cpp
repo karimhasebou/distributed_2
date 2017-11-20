@@ -9,7 +9,8 @@
 #include "MarshallingManager.h"
 #include <iostream>
 
-MarshalledMessage marshal(std::vector<CustomObject*>& parameters) {
+void marshal(MarshalledMessage & message,
+             std::vector<CustomObject*>& parameters) {
     
     std::string bufferString = "";
     
@@ -18,23 +19,19 @@ MarshalledMessage marshal(std::vector<CustomObject*>& parameters) {
         bufferString += parameters[i]->marshal();
     }
     
-    MarshalledMessage message;
     message.createMessage(size_t(bufferString.length()));
     
     for (int i = 0; i < bufferString.length(); i++) {
         message[i] = bufferString[i];
     }
     
-    return message;
-    
 }
 
 
-int unmarshal(MarshalledMessage& message,
-              const int& startPointer,
+void unmarshal(MarshalledMessage& message,
               std::vector<CustomObject*>& parameters) {
     
-    int bufferPointer = startPointer;
+    int bufferPointer = 0;
     
     char * buffer = message.getMessage();
     
@@ -42,6 +39,4 @@ int unmarshal(MarshalledMessage& message,
         
         bufferPointer = parameters[i]->unmarshal(buffer, bufferPointer);
     }
-    
-    return bufferPointer;
 }

@@ -5,43 +5,28 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <iostream>
-
-using namespace std;
+#include "Message.h"
 
 class Datagram {
     
+private:
+    
+    Message message;
+    struct sockaddr_in sAddress;
+    
 public:
     
-    string message;
-    size_t length;
+    Datagram(){}
     
-    // Message -> get message returns char * s 
-    struct sockaddr_in sAddress;
-    string ipAddress;
-    int status;
+    Datagram(std::string ipAddress,
+             unsigned short portNumber);
     
-    Datagram(const string& mess,
-             const size_t& len,
-             string ipAddress,
-             unsigned short portNumber)
-    :message(mess) , length(len) {
-        
-        sAddress.sin_family = AF_INET;
-        sAddress.sin_addr.s_addr = inet_addr(ipAddress.c_str());
-        sAddress.sin_port = htons(portNumber);
-        this->ipAddress = ipAddress;
-        status = 0;
-    }
+    void setMessage(Message&);
+    void setDestIPAddress(const std::string);
+    void setDestPortNumber(const unsigned short& portNumber);
     
-    Datagram(const string& mess,
-             const size_t& len,
-             struct sockaddr_in addr)
-    :message(mess), length(len), sAddress(addr) {}
-    
-    void updateMessage(const string& newMessage) {
-        message = newMessage;
-        length = (size_t)newMessage.length() + 1;
-    }       
+    Message getMessage();
+    sockaddr_in& getDestSocketAddress();
 };
 
 #endif

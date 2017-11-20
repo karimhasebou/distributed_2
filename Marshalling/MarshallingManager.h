@@ -15,11 +15,11 @@
 #include <string>
 #include <cstring>
 
-MarshalledMessage marshal(std::vector<CustomObject*>& parameters);
+void marshal(MarshalledMessage &,
+             std::vector<CustomObject*>& parameters);
 
 
-int unmarshal(MarshalledMessage&,
-              const int& startPointer,
+void unmarshal(MarshalledMessage&,
               std::vector<CustomObject*>& parameters);
 
 

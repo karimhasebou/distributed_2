@@ -9,6 +9,18 @@
 #include "MarshalledMessage.h"
 #include <exception>
 
+MarshalledMessage::MarshalledMessage(const MarshalledMessage& other) {
+    
+    this->messageSize = other.messageSize;
+    this->message = new char[messageSize];
+    this->startPosition = 0;
+    
+    for (int i = 0; i < messageSize; i++) {
+        this->message[i] = other.message[i];
+    }
+}
+
+
 MarshalledMessage::MarshalledMessage() {
     this->message = NULL;
     this->startPosition = 0;
@@ -40,12 +52,4 @@ char& MarshalledMessage::operator[](int index) {
     }
     
     return this->message[index + startPosition];
-}
-
-void MarshalledMessage::updateStartPosition(int index) {
-    if (index >= messageSize) {
-        throw("Wrong update value");
-    }
-    
-    startPosition = index;
 }
