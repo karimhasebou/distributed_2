@@ -20,7 +20,7 @@ int MySocket::send(Message msg)
 	std::vector<Message> msg_part = msg.divide(CHUNK_SIZE); // definition
 	Message msg_void;
 	socket.setTimeout(TIMEOUT);                             // definition
-    int status = SUCCESS;
+    	int status = SUCCESS;
 	for (int i = 0; i < msg_part.size(); ++i) {
 		while (status != SUCESS && count_send--) {
 			socket.send(msg_part[i]);
@@ -35,9 +35,9 @@ int MySocket::send(Message msg)
 
 int MySocket::receive(Message& msg)
 {
-    int status = SUCESS;
+    	int status = SUCESS;
 	Message msg_tmp;
-    socket.setTimeout(TIMEOUT); // definition
+	socket.setTimeout(TIMEOUT); // definition
 	status = socket.receive(msg_tmp);
 
 	if (status == FAIL)
@@ -48,26 +48,25 @@ int MySocket::receive(Message& msg)
 		// ip = socket.getIP();                             // definition
 		
         UDPSocket new_socket;	
-		new_socket.setPort(port);                           // definition
-		new_socket.setIP(ip);                               // definition 
-		
-		int status_per_part = SUCCESS;
+	new_socket.setPort(port);                           // definition
+	new_socket.setIP(ip);                               // definition 
+	
+	int status_per_part = SUCCESS;
 
-		set<int> received_ids;
+	set<int> received_ids;
         vector<Message> msg_parts;
         do {
-			status_per_part = new_socket.receive(msg_part);
-        
-			if(status_per_part == SUCCESS)
-			{
-                int id = msg_part.getPacketId();            // definition
-                bool found = received_ids.find(id) != received_ids.end();
-                if (!found)
-                    msg_parts.push_back(msg_part);
-                resetVCount();
-                sendAck(new_socket);
-            }
-		} while (msg_tmp.getMessageType() != LAST && count_receive--);
+		status_per_part = new_socket.receive(msg_part);
+
+		if(status_per_part == SUCCESS) {
+			int id = msg_part.getPacketId();            // definition
+			bool found = received_ids.find(id) != received_ids.end();
+			if (!found)
+			    msg_parts.push_back(msg_part);
+			resetVCount();
+			sendAck(new_socket);
+            	}
+	} while (msg_tmp.getMessageType() != LAST && count_receive--);
         if (count_receive == 0) {
             resetVCount();
             return FAIL;
