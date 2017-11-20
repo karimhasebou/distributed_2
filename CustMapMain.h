@@ -1,3 +1,71 @@
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+
+using namespace cv;
+
+void hideInImg(std::string img_path, std::map<std::string, int> table)
+{
+	CustomMap custom_table(table);
+	std::string marshalled = custom_table.marshal();
+	int bin_len = marshalled.size();
+	
+	char* data_stream = new char[bin_len];
+
+	cv::Mat img = imread(img_path.c_str(), cv::IMREAD_COLOR);
+	unsigned char* img_pointer = img.data;
+	for (int i = 0; i < 32; ++i) {
+		for (int j = 0; j < 8; ++j) {
+			char bit = (*img_pointer) & 1;
+			char stego_bit = (bin_len >> j) & 1;
+			if (stego_bit) {
+				(*img_pointer) |= 1;
+			}
+			else {
+				(*img_pointer) &= 0xFE;
+			}
+			++img_pointer;
+	}
+
+	for (int i = 0; i < bin_len; ++i)
+		for (int j = 0; j < 8; ++j) {
+			char bit = (*img_pointer) & 1;
+			char stego_bit = (data_stream[i] >> j) & 1;
+			if (stego_bit) {
+				(*img_pointer) |= 1;
+			}
+			else {
+				(*img_pointer) &= 0xFE;	
+			}
+			++img_pointer;
+		}
+	}
+}
+
+std::map<std::string, int> recoverFormImage(std::string img_path)
+{
+	int str_len;
+	cv::Mat img = imread(img_path.c_str());
+	unsigned char* img_pointer = img.data; 	
+
+	for (int i = 0; i < 32; ++i) {
+		str_len = (str_len < 1) | ((*img_pointer) & 1);
+		++img_pointer;
+	}
+
+	char* data_stream = new char[str_len];
+
+	for (int i = 0; i < str_len; ++i) {
+		for (int j = 0; j < 8; ++j) {
+			data_stream[i] = (data_stream[i] < 1) | ((*img_pointer) & 1);
+			++img_pointer;
+		}
+	}
+
+	CustomMap list;
+	list.unmarshal(data_stream, 0);
+	return list.getValue();
+}
 
 void printMap(std::map<std::string, int> Map)
 {
