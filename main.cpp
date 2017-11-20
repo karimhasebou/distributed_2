@@ -13,18 +13,28 @@
 #include "Marshalling/MarshalledMessage.h"
 #include "CustomObjects/CustomVector.h"
 #include "CustomObjects/CustomBool.h"
+#include "CustomObjects/CustomMap.h"
 #include "Message.h"
-#include "UDPSocket.h"
-#include "Datagram.h"
+#include "UDPSocket.h" #include "Datagram.h"
 #include <iostream>
-
+// #include "CustMapMain.h"
+/*
 int main() {
     
-    CustomString * customString = new CustomString("w");
+    CustomString * customString = new CustomString("rida is happy");
+    CustomInt * customInt = new CustomInt(14);
+    CustomVector * customVector = new CustomVector();
+    CustomBool * customBool = new CustomBool(false);
+    customVector->push_back("lol\nkkk");
+    customVector->push_back("144");
+
     
     CustomObject * bigboss = customString;
-    
-    std::vector<CustomObject *> parameters = {bigboss};
+    CustomObject * miniBoss = customInt;
+    CustomObject * microBoss = customVector;
+    CustomObject * nanoBoss = customBool;
+   
+    std::vector<CustomObject *> parameters = {bigboss, miniBoss, microBoss, nanoBoss};
     
     MarshalledMessage marshalledMessage;
     
@@ -39,7 +49,7 @@ int main() {
     UDPSocket socket;
     socket.bind(64000);
     
-    Datagram datagram("localhost", 64000);
+    Datagram datagram("10.40.32.184", 64000);
     datagram.setMessage(sentMessage);
     
     socket.sendDatagram(datagram);
@@ -47,3 +57,4 @@ int main() {
     std::cout<<"Sent Packet"<<std::endl;
     
 }
+*/
