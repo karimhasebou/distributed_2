@@ -28,7 +28,7 @@ std::string CustomInt::marshal() {
     std::string bytes = "";
     
     for (int i = 0; i < 4; i++) {
-        bytes+= char((0xFF000000 >> i*8) & value);
+       bytes += char((value >> i*8) & 0xFF);
     }
     
     return bytes;
@@ -37,9 +37,12 @@ std::string CustomInt::marshal() {
 int CustomInt::unmarshal(char * buffer, const int& bufferIndex) {
     
     value = 0;
-    
+    int temp;
+
     for (int i = 0; i < 4; i++) {
-        value = (value << 8) | int(buffer[bufferIndex + i]);
+        temp = buffer[bufferIndex + i];
+        temp &= 0xff;
+        value = value | (temp<<i*8);
     }
     
     
