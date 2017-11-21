@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include<home_window.h>
+#include <fstream>
+#include<vector>
+
 namespace Ui {
 class MainWindow;
 }
@@ -24,6 +27,10 @@ private slots:
 private:
     Ui::MainWindow *ui;
     home_window* home;
+    void readDatabase();
+    std::map<std::string, std::pair<std::string, bool>> db;
+    std::ifstream database_file;
+    std::vector<std::string> connected_peers;
 };
 
 #endif // MAINWINDOW_H

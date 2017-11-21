@@ -3,7 +3,7 @@
 
 int views = 5;
 
-home_window::home_window(QWidget *parent) :
+home_window::home_window(QWidget *parent, const std::vector<std::string>& ips) :
     QDialog(parent),
     ui(new Ui::home_window)
 {
@@ -16,6 +16,8 @@ home_window::home_window(QWidget *parent) :
     ui->image_holder->setPixmap(img_default);
     ui->image_holder->setScaledContents(true);
 
+    ip_addresses = ips;
+
 
 }
 
@@ -26,6 +28,56 @@ home_window::~home_window()
 
 void home_window::on_getImages_clicked()
 {
+
+    /*
+
+    std::vector<std::string> get_connected_peers()
+    {
+
+        //Messagetype = request
+        //id = 1
+
+        //msg = marshall(Messagetype, id)
+
+        //sendto msg server
+
+        //rcvfrom server the vector of connected peers
+
+        //unmarshal recieved msg
+
+        return vector
+    }
+
+    vector<pair<int, std::string>> getImagesList()
+    {
+        for(int i = 0; i < ip_addresses.size(); i++)
+        {
+            //MessageType = request
+
+            //id = 2
+
+            //msg = marshall(Messagetype, id)
+
+            //sendto msg to ipaddresses[i]
+
+            //recvfrom server msg
+
+            //vector = unmarshall(msg)
+
+
+            //Loop over vector
+            //makepair<i, vector[iter]>
+
+
+        }
+
+    }
+
+
+
+
+
+    */
 
     model = new QStringListModel(this);
 
@@ -49,7 +101,12 @@ void home_window::on_request_image_clicked()
 
     QString image_selected = model->stringList().at(index);
 
+    //
+
     //request image from peer
+
+
+    //
 
     //download image locally
 
