@@ -23,36 +23,37 @@ void UDPSocket::bind(unsigned short portNumber){
 }
 
 
-int UDPSocket::sendDatagram(Datagram& datagram){
+int UDPSocket::sendPacket(const Packet& Packet){
+    
+    sockaddr_in destAddress = Packet.getDestSocketAddress();
     
     int status = (int)sendto(socketDesc,
-                             datagram.getMessage().getMessage(),
-                             datagram.getMessage().getMessageSize(), 0,
-                             (sockaddr *) & datagram.getDestSocketAddress(),
-                             sizeof(datagram.getDestSocketAddress()));
-    
+                             Packet.getMessage().getMessage(),
+                             Packet.getMessage().getMessageSize(), 0,
+                             (sockaddr *) & destAddress,
+                             sizeof(Packet.getDestSocketAddress()));
+        
     return status;
 }
 
 
-int UDPSocket::recieveDatagram(Message & message)
+int UDPSocket::recievePacket(Packet & packet)
 {
     sockaddr_in socketAddress;
     socklen_t clientLen = sizeof(socketAddress);
     
     size_t maxLength = 4096;
-    message.createMessage(maxLength);
+    packet.getMessage().createMessage(maxLength);
 
  
     int status = (int)recvfrom(this->socketDesc,
-                               message.getMessage(), maxLength,
+                               packet.getMessage().getMessage(), maxLength,
                                MSG_WAITALL,
                                (sockaddr *) &socketAddress, &clientLen);
-  
-//    if (status == -1)
-//        strcpy(buff, "Timeout...");
     
-    message.extractHeaders();
+    packet.setDestSocketAddress(socketAddress);
+    
+    packet.getMessage().extractHeaders();
             
     return status;
     

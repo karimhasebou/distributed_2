@@ -15,16 +15,25 @@
 #include "CustomObjects/CustomBool.h"
 #include "Message.h"
 #include "UDPSocket.h"
-#include "Datagram.h"
+#include "Packet.h"
+#include "MySocket.h"
 #include <iostream>
 
 int main() {
     
-    CustomString * customString = new CustomString("w");
+    CustomString * customString = new CustomString("rida is happy");
+    CustomInt * customInt = new CustomInt(14);
+    CustomVector * customVector = new CustomVector();
+    CustomBool * customBool = new CustomBool(false);
+    customVector->push_back("lol\nkkk");
+    customVector->push_back("144");
     
     CustomObject * bigboss = customString;
+    CustomObject * miniBoss = customInt;
+    CustomObject * microBoss = customVector;
+    CustomObject * nanoBoss = customBool;
     
-    std::vector<CustomObject *> parameters = {bigboss};
+    std::vector<CustomObject *> parameters = {bigboss, miniBoss, microBoss, nanoBoss};
     
     MarshalledMessage marshalledMessage;
     
@@ -36,13 +45,13 @@ int main() {
     sentMessage.setRpcOperation(1);
     sentMessage.setRpcOperation(2);
     
-    UDPSocket socket;
+    MySocket socket;
     socket.bind(64000);
     
-    Datagram datagram("localhost", 64000);
-    datagram.setMessage(sentMessage);
+    Packet packet("10.40.32.184", 64000);
+    packet.setMessage(sentMessage);
     
-    socket.sendDatagram(datagram);
+    socket.callRPC(packet);
     
     std::cout<<"Sent Packet"<<std::endl;
     

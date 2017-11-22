@@ -1,5 +1,5 @@
-#ifndef DATAGRAM_H
-#define DATAGRAM_H
+#ifndef Packet_H
+#define Packet_H
 
 #include <string>
 #include <netinet/in.h>
@@ -7,7 +7,7 @@
 #include <iostream>
 #include "Message.h"
 
-class Datagram {
+class Packet {
     
 private:
     
@@ -16,17 +16,18 @@ private:
     
 public:
     
-    Datagram(){}
+    Packet(){}
     
-    Datagram(std::string ipAddress,
+    Packet(std::string ipAddress,
              unsigned short portNumber);
     
     void setMessage(Message&);
     void setDestIPAddress(const std::string);
+    void setDestSocketAddress(const sockaddr_in &);
     void setDestPortNumber(const unsigned short& portNumber);
     
-    Message getMessage();
-    sockaddr_in& getDestSocketAddress();
+    Message getMessage() const;
+    sockaddr_in getDestSocketAddress() const;
 };
 
 #endif

@@ -17,6 +17,7 @@ protected:
     char * message;
     size_t messageSize;
     int startPosition;
+    void copyMessageArray(char *, size_t);
     
 public:
     MarshalledMessage();
@@ -27,6 +28,7 @@ public:
     size_t getMessageSize();
     
     void createMessage(size_t);
+    void fillMessage(char *);
     char& operator[](int);
 };
 

@@ -15,19 +15,24 @@
 #include "CustomObjects/CustomBool.h"
 #include "Message.h"
 #include "UDPSocket.h"
-#include "Datagram.h"
+#include "Packet.h"
+#include "MySocket.h"
 #include <iostream>
 
 int main() {
     
-    UDPSocket socket;
+    MySocket socket;
     socket.bind(64000);
     
     Message recievedMessage;
     
-    int status = socket.recieveDatagram(recievedMessage);
+    Packet recievedPacket;
     
-    MarshalledMessage marshalledMessage = recievedMessage;
+    recievedPacket.setMessage(recievedMessage);
+    
+    socket.recvFrom(recievedPacket);
+    
+    MarshalledMessage marshalledMessage = recievedPacket.getMessage();
     
     std::vector<CustomObject* > returnValues = {new CustomString(), new CustomInt(), new CustomVector(), new CustomBool()};
     
