@@ -28,13 +28,13 @@ MarshalledMessage::~MarshalledMessage() {
     }
 }
 
-char * MarshalledMessage::getMessage() {
+char * MarshalledMessage::getMessage() const {
     
     return message;
     
 }
 
-size_t MarshalledMessage::getMessageSize() {
+size_t MarshalledMessage::getMessageSize() const{
     
     return messageSize;
     

@@ -24,8 +24,8 @@ public:
     MarshalledMessage(const MarshalledMessage&);
     ~MarshalledMessage();
     
-    char * getMessage();
-    size_t getMessageSize();
+    char * getMessage() const;
+    size_t getMessageSize() const;
     
     void createMessage(size_t);
     void fillMessage(char *);

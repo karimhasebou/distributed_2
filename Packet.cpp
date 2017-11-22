@@ -36,8 +36,11 @@ void Packet::setDestPortNumber(const unsigned short &portNumber) {
     sAddress.sin_port = htons(portNumber);
 }
 
-Message Packet::getMessage() const{
-    
+Message& Packet::getMessage() {
+    return message;
+}
+
+const Message& Packet::getMessage() const {
     return message;
 }
 

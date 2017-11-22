@@ -23,15 +23,15 @@ void UDPSocket::bind(unsigned short portNumber){
 }
 
 
-int UDPSocket::sendPacket(const Packet& Packet){
+int UDPSocket::sendPacket(const Packet& packet){
     
-    sockaddr_in destAddress = Packet.getDestSocketAddress();
+    sockaddr_in destAddress = packet.getDestSocketAddress();
     
     int status = (int)sendto(socketDesc,
-                             Packet.getMessage().getMessage(),
-                             Packet.getMessage().getMessageSize(), 0,
+                             packet.getMessage().getMessage(),
+                             packet.getMessage().getMessageSize(), 0,
                              (sockaddr *) & destAddress,
-                             sizeof(Packet.getDestSocketAddress()));
+                             sizeof(packet.getDestSocketAddress()));
         
     return status;
 }

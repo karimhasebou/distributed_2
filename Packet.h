@@ -26,7 +26,8 @@ public:
     void setDestSocketAddress(const sockaddr_in &);
     void setDestPortNumber(const unsigned short& portNumber);
     
-    Message getMessage() const;
+    Message& getMessage();
+    const Message& getMessage() const;
     sockaddr_in getDestSocketAddress() const;
 };
 
