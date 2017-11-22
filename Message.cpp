@@ -7,6 +7,7 @@
 //
 
 #include "Message.h"
+#include <stdio.h>
 #include <math.h>
 #include "CustomObjects/CustomInt.h"
 
@@ -43,6 +44,11 @@ void Message::setRpcOperation(int operation) {
 void Message::setRpcRequestID(int rpcid) {
     this->rpcRequestID = rpcid;
 }
+
+void Message::setPacketID(int packetid) {
+    this->packetID = packetid;
+}
+
 
 void Message::extractHeaders() {
     
