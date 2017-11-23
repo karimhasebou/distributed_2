@@ -28,26 +28,22 @@ void UDPSocket::bind(unsigned short portNumber){
         
         int randomSocketDesr = socket(AF_INET, SOCK_DGRAM, 0);
         
-        int st1 = ::bind(randomSocketDesr, (struct sockaddr*)&address, sizeof address);
+        ::bind(randomSocketDesr, (struct sockaddr*)&address, sizeof address);
         
         socklen_t addressLength = sizeof address;
         
         getsockname(randomSocketDesr, (struct sockaddr *)&address, &addressLength);
         
         int randomPort = ntohs(address.sin_port);
-        
-        printf("Here is the random port: %d\n", ntohs(address.sin_port));
-        
+                
         close(randomSocketDesr);
         
         sockaddr_in nawawy;
         
         fillAddress(nawawy, randomPort);
         
-        int st = ::bind(socketDesc, (struct sockaddr*)&address, sizeof nawawy);
+        ::bind(socketDesc, (struct sockaddr*)&address, sizeof nawawy);
         
-        printf("Bind Status = %d, %d\n", st, st1);
-
     } else {
         
         ::bind(socketDesc, (struct sockaddr*)&address, sizeof address);
@@ -63,9 +59,6 @@ int UDPSocket::sendPacket(const Packet& packet){
     
     sockaddr_in destAddress = packet.getSocketAddress();
     
-   
-    printf("Sending Packet. Adding Header\n");
-    
     size_t messageWithHeaderLen = packet.getPacketMessage().getHeaderSize()
                 + packet.getPacketMessage().getMessageSize();
     
@@ -78,7 +71,16 @@ int UDPSocket::sendPacket(const Packet& packet){
                              messageWithHeaderLen, 0,
                              (sockaddr *) & destAddress,
                              sizeof(destAddress));
-        
+    
+    sockaddr_in address;
+
+    socklen_t addressLength = sizeof address;
+    
+    getsockname(this->socketDesc, (struct sockaddr *)&address, &addressLength);
+    
+    printf("Sending from port:  %d to port %d\n", ntohs(address.sin_port), ntohs(destAddress.sin_port));
+
+    
     return status;
 }
 

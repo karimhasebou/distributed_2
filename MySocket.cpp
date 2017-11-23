@@ -18,14 +18,6 @@ Message MySocket::callRPC(const Packet & sentPacket) {
 
     UDPSocket rpcSocket;
     rpcSocket.bind(0);
-    
-    sockaddr_in address = rpcSocket.getSocketAddress();
-    int sockDesc = rpcSocket.getSockDesc();
-    socklen_t address_length = sizeof address;
-    
-    getsockname(sockDesc,(sockaddr *)&address, &address_length);
-    
-    rpcSocket.bind((int)ntohs(address.sin_port));
 
     int requestsCount = 0;
     Status receiveStatus = Pending;
@@ -69,9 +61,9 @@ int MySocket::reply(const Packet& sentPacket) {
         
         partitionPacket.setPacketMessage(dividedMessage[part]);
         
-        int status = 0;
+        int status = -1;
         
-        while(status != -1 && sentPacketCount++ < MAX_RESEND_PACK) {
+        while(status == -1 && sentPacketCount++ < MAX_RESEND_PACK) {
             
             replySocket.sendPacket(partitionPacket);
             
@@ -115,6 +107,7 @@ Status MySocket::receive(UDPSocket & socket, Packet & packet) {
     
     Packet ackPacket;
     ackPacket.setPacketMessage(ackMessage);
+    ackPacket.setSocketAddress(receivedPacket.getSocketAddress());
     
     do {
         
