@@ -52,7 +52,7 @@ int main() {
     
     Message replyMessage(marshalled);
     
-    recievedPacket.setMessage(replyMessage);
+    recievedPacket.setPacketMessage (replyMessage);
     
     std::cout<<"Sending reply message"<<std::endl;
 
