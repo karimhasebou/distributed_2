@@ -1,4 +1,4 @@
-#include "RPCManager.h"
+#include "RPC.h"
 
 
 Image getImage(string imgName)
@@ -14,6 +14,8 @@ Image getImage(string imgName)
         img.content = new char[img.length];
         file.read(img.content, img.length);
 
+#include "CustomObjects/CustomVector.h"
+#include "CustomObjects/CustomBool.h"
         file.close();
     }else{
         img.content = NULL;
@@ -79,15 +81,15 @@ set<string> getAuthorizedUsers(string filePath)
     return usersList;
 }
 
-set<string> getAccessibleImages(string username)
+vector<string> getAccessibleImages(string username)
 {
-    set<string> imageList;
+    vector<string> imageList;
 
     for(string& image : listImages()){
         set<string> imageUsers = getAuthorizedUsers(username);
         
         if(imageUsers.count(username)){
-            imageList.insert(image);
+            imageList.push_back(image);
         }
     }
 

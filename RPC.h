@@ -1,5 +1,5 @@
-#ifndef __RPCManager
-#define __RPCManager
+#ifndef __RPC
+#define __RPC
 
 #define IMG_DIR ""
 #define IMG_LIST_FILE ""
@@ -36,7 +36,7 @@ string getPath(string imgName);
 
 //supported rpc
 Image getImage(string imgName);
-set<string> getAccessibleImages(string username);
+vector<string> getAccessibleImages(string username);
 bool canUpdateCount(string imgName, string username);
 bool updateCount(string imgName, string username, int count);
 
