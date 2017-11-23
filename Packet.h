@@ -21,14 +21,14 @@ public:
     Packet(std::string ipAddress,
              unsigned short portNumber);
     
-    void setMessage(Message&);
+    void setPacketMessage(Message&);
     void setDestIPAddress(const std::string);
-    void setDestSocketAddress(const sockaddr_in &);
     void setDestPortNumber(const unsigned short& portNumber);
+    void setSocketAddress(const sockaddr_in &);
     
-    Message& getMessage();
-    const Message& getMessage() const;
-    sockaddr_in getDestSocketAddress() const;
+    Message& getPacketMessage();
+    const Message& getPacketMessage() const;
+    sockaddr_in getSocketAddress() const;
 };
 
 #endif

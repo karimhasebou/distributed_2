@@ -28,7 +28,7 @@ int main() {
     
     socket.recvFrom(recievedPacket);
     
-    MarshalledMessage marshalledMessage = recievedPacket.getMessage();
+    MarshalledMessage marshalledMessage = recievedPacket.getPacketMessage();
     
     std::vector<CustomObject* > receivedValues = {new CustomString()};
     

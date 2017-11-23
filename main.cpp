@@ -42,6 +42,8 @@ int main() {
     
     Message sentMessage(marshalledMessage);
     
+    sentMessage.fillHeaders();
+    
 //    sentMessage.setMessageType(Acknowledgement);
 //    sentMessage.setRpcOperation(1);
 //    sentMessage.setRpcOperation(2);
@@ -51,10 +53,12 @@ int main() {
     MySocket socket;
     socket.bind(64000);
     
-    Packet packet("10.40.32.184", 64000);
-    packet.setMessage(sentMessage);
+    Packet packet("10.40.48.60", 64000);
+    packet.setPacketMessage(sentMessage);
     
     Message returnValue = socket.callRPC(packet);
+    
+    returnValue.extractHeaders();
     
     std::vector<CustomObject* > returnValues = {new CustomString()};
     

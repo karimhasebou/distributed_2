@@ -65,6 +65,36 @@ void Message::extractHeaders() {
     
 }
 
+void Message::fillHeaders() {
+    
+    const int headersCnt = 4;
+    
+    CustomInt headers[headersCnt];
+    headers[0].setValue((int)type);
+    headers[1].setValue(rpcOperation);
+    headers[2].setValue(rpcRequestID);
+    headers[3].setValue(packetID);
+    
+    char * messageContent = this->message;
+    
+    message = new char[messageSize + headersCnt*4];
+    
+    int bufferIndex = 0;
+    
+    for (int i = 0; i < headersCnt; i++) {
+        
+        bufferIndex = headers[i].unmarshal(message, bufferIndex);
+        
+    }
+    
+    memcpy(message + bufferIndex, messageContent, messageSize);
+    
+    delete messageContent;
+    
+    messageSize += headersCnt*4;
+    
+}
+
 std::vector<Message> Message::divide(const size_t & chunkSize) const {
     
     int packetsNumber = ceil(float(messageSize)/ chunkSize);

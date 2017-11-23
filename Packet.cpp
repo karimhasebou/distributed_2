@@ -16,7 +16,7 @@ Packet::Packet(std::string ipAddress,
     sAddress.sin_port = htons(portNumber);
 }
 
-void Packet::setMessage(Message & message) {
+void Packet::setPacketMessage(Message & message) {
     
     this->message = message;
 }
@@ -26,7 +26,7 @@ void Packet::setDestIPAddress(const std::string ipAddress) {
     sAddress.sin_addr.s_addr = inet_addr(ipAddress.c_str());
 }
 
-void Packet::setDestSocketAddress(const sockaddr_in & sockAddress) {
+void Packet::setSocketAddress(const sockaddr_in & sockAddress) {
     
     sAddress = sockAddress;
 }
@@ -36,15 +36,15 @@ void Packet::setDestPortNumber(const unsigned short &portNumber) {
     sAddress.sin_port = htons(portNumber);
 }
 
-Message& Packet::getMessage() {
+Message& Packet::getPacketMessage() {
     return message;
 }
 
-const Message& Packet::getMessage() const {
+const Message& Packet::getPacketMessage() const {
     return message;
 }
 
-sockaddr_in Packet::getDestSocketAddress() const {
+sockaddr_in Packet::getSocketAddress() const {
     
     return sAddress;
 }

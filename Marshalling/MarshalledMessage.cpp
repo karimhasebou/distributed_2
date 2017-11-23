@@ -28,7 +28,7 @@ MarshalledMessage::~MarshalledMessage() {
     }
 }
 
-char * MarshalledMessage::getMessage() const {
+char * MarshalledMessage::getMessageContent() const {
     
     return message;
     
@@ -46,12 +46,12 @@ void MarshalledMessage::createMessage(size_t messageSize) {
     this->messageSize = messageSize;
     
 }
-
-void MarshalledMessage::fillMessage(char * message) {
-    
-    strncpy(this->message, message, this->messageSize);
-
-}
+//
+//void MarshalledMessage::fillMessage(char * message) {
+//    
+//    strncpy(this->message, message, this->messageSize);
+//
+//}
 
 char& MarshalledMessage::operator[](int index) {
     

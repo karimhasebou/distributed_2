@@ -24,11 +24,11 @@ public:
     MarshalledMessage(const MarshalledMessage&);
     ~MarshalledMessage();
     
-    char * getMessage() const;
+    char * getMessageBuffer() const;
     size_t getMessageSize() const;
     
     void createMessage(size_t);
-    void fillMessage(char *);
+//    void fillMessage(char *);
     char& operator[](int);
 };
 

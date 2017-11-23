@@ -42,6 +42,7 @@ public:
     void setPacketID(int);
     
     void extractHeaders();
+    void fillHeaders();
     
     std::vector<Message> divide(const size_t&) const;
     void combine(std::vector<Message>);

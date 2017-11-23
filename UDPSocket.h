@@ -24,6 +24,8 @@ public:
     
     void shutdown();
     void setTimeOut(int);
+    
+    sockaddr_in getSocketAddress();
 
 };
 

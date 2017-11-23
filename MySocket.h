@@ -23,7 +23,7 @@ class MySocket{
     
 private:
     UDPSocket mainSocket;
-    Status receive(UDPSocket&, const Packet&);
+    Status receive(UDPSocket&, Packet&);
     Status send(UDPSocket&, const Packet&);
 
     
