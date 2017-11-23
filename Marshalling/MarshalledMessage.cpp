@@ -28,7 +28,7 @@ MarshalledMessage::~MarshalledMessage() {
     }
 }
 
-char * MarshalledMessage::getMessageContent() const {
+char * MarshalledMessage::getMessageBuffer() const {
     
     return message;
     

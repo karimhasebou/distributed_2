@@ -42,6 +42,9 @@ int main() {
     
     Message sentMessage(marshalledMessage);
     
+    sentMessage.setMessageType(Request);
+    sentMessage.setRpcOperation(2);
+    sentMessage.setRpcRequestID(1);
     sentMessage.fillHeaders();
     
 //    sentMessage.setMessageType(Acknowledgement);

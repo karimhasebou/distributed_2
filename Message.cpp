@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "CustomObjects/CustomInt.h"
+#include <cstring>
 
 Message::Message(const Message& other) {
     
@@ -31,6 +32,23 @@ Message& Message::operator=(const Message& other) {
 
 MessageType Message::getMessageType() const {
     return this->type;
+}
+
+int Message::getRpcOperation() const {
+    
+    return rpcOperation;
+    
+}
+
+int Message::getRpcRequestId() const {
+    
+    return rpcRequestID;
+}
+
+int Message::getPacketID() const {
+    
+    return packetID;
+    
 }
 
 void Message::setMessageType(const MessageType &type) {

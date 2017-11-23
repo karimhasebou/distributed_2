@@ -33,7 +33,7 @@ void unmarshal(MarshalledMessage& message,
     
     int bufferPointer = 0;
     
-    char * buffer = message.getMessage();
+    char * buffer = message.getMessageBuffer();
     
     for (int i = 0; i < parameters.size(); i++) {
         

@@ -35,6 +35,9 @@ public:
     Message& operator=(const Message&);
     
     MessageType getMessageType() const;
+    int getRpcOperation() const;
+    int getRpcRequestId() const;
+    int getPacketID() const;
     
     void setMessageType(const MessageType&);
     void setRpcOperation(int);
