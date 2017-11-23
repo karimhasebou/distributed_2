@@ -22,7 +22,7 @@
 int main() {
     
     MySocket socket;
-    socket.bind(64000);
+    socket.bind(63000);
     
     Packet recievedPacket;
     

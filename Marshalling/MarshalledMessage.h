@@ -23,6 +23,7 @@ public:
     MarshalledMessage();
     MarshalledMessage(const MarshalledMessage&);
     ~MarshalledMessage();
+    MarshalledMessage& operator=(const MarshalledMessage&);
     
     char * getMessageBuffer() const;
     size_t getMessageSize() const;

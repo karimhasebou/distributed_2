@@ -57,13 +57,11 @@ int main() {
     MySocket socket;
     socket.bind(64000);
     
-    Packet packet("127.0.0.1", 64000);
+    Packet packet("127.0.0.1", 63000);
     packet.setPacketMessage(sentMessage);
     
     Message returnValue = socket.callRPC(packet);
-    
-    returnValue.extractHeaders();
-    
+        
     std::vector<CustomObject* > returnValues = {new CustomString()};
     
     unmarshal(returnValue, returnValues);

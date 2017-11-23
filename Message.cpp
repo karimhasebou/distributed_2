@@ -12,9 +12,10 @@
 #include "CustomObjects/CustomInt.h"
 #include <cstring>
 
-Message::Message(const Message& other) {
+Message::Message(const Message& other)
+    : MarshalledMessage((MarshalledMessage)other){
     
-    copyMessageArray(other.message, other.messageSize);
+    this->type = other.type;
     this->rpcRequestID = other.rpcRequestID;
     this->rpcOperation = other.rpcOperation;
     this->packetID = other.packetID;
@@ -26,8 +27,11 @@ Message::Message(const MarshalledMessage& other)
 
 Message& Message::operator=(const Message& other) {
     
-    copyMessageArray(other.message, other.messageSize);
-    
+    MarshalledMessage::operator=((MarshalledMessage)other);
+    this->type = other.type;
+    this->rpcRequestID = other.rpcRequestID;
+    this->rpcOperation = other.rpcOperation;
+    this->packetID = other.packetID;
     return *this;
 }
 
@@ -90,6 +94,8 @@ void Message::extractHeaders() {
     }
     
     startPosition = headerCnt*4;
+    
+    char shit2 = message[startPosition+4];
     
     type = (MessageType)headers[0].getValue();
     rpcOperation = headers[1].getValue();
@@ -165,19 +171,24 @@ std::vector<Message> Message::divide(const size_t & chunkSize) const {
 
 void Message::combine(std::vector<Message> messages)
 {
-    size_t packets_size = 0;
+    size_t packetsSize = 0;
     
     for(int i = 0; i < messages.size(); ++i) {
         
-        packets_size += messages[i].messageSize;
+        packetsSize += messages[i].messageSize;
     }
     
+    message = new char[packetsSize];
+    messageSize = packetsSize;
     
-    message = new char[packets_size];
     int offset = 0;
     for (int i = 0; i < messages.size(); ++i)
     {
-        memcpy(message + offset, messages[i].message + startPosition, messages[i].messageSize);
+        memcpy(message + offset, messages[i].message + messages[i].startPosition, messages[i].messageSize);
         offset += messages[i].messageSize;
     }
+    
+    this->setRpcOperation(messages[0].rpcOperation);
+    this->setRpcRequestID(messages[0].rpcRequestID);
+    this->setMessageType(Reply);
 }

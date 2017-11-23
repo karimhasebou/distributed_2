@@ -29,6 +29,13 @@ MarshalledMessage::~MarshalledMessage() {
     }
 }
 
+MarshalledMessage& MarshalledMessage::operator=(const MarshalledMessage & other) {
+    
+    copyMessageArray(other.message, other.messageSize);
+    startPosition = other.startPosition;
+    return *this;
+}
+
 char * MarshalledMessage::getMessageBuffer() const {
     
     return message;
