@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include "Datagram.h"
+#include "Packet.h"
 
 class UDPSocket {
     
@@ -19,11 +19,13 @@ public:
     
     void bind(unsigned short);
 
-    int sendDatagram(Datagram&);
-    int recieveDatagram(Message &);
+    int sendPacket(const Packet&);
+    int recievePacket(Packet &);
     
     void shutdown();
     void setTimeOut(int);
+    
+    sockaddr_in getSocketAddress();
 
 };
 

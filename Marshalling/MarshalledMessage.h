@@ -17,16 +17,19 @@ protected:
     char * message;
     size_t messageSize;
     int startPosition;
+    void copyMessageArray(char *, size_t);
     
 public:
     MarshalledMessage();
     MarshalledMessage(const MarshalledMessage&);
     ~MarshalledMessage();
+    MarshalledMessage& operator=(const MarshalledMessage&);
     
-    char * getMessage();
-    size_t getMessageSize();
+    char * getMessageBuffer() const;
+    size_t getMessageSize() const;
     
     void createMessage(size_t);
+    void fillMessage(char *);
     char& operator[](int);
 };
 

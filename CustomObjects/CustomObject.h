@@ -10,13 +10,14 @@
 #define CustomObject_h
 
 #include <string>
+#include "MarshalledMessage.h"
 
 class CustomObject {
     
 public:
     
     virtual std::string marshal() = 0;
-    virtual int unmarshal(char *, const int&) = 0;
+    virtual int unmarshal(MarshalledMessage&, const int&) = 0;
     
 };
 

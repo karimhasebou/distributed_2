@@ -35,7 +35,7 @@ std::string CustomString::marshal() {
     return marshalledString;
 }
 
-int CustomString::unmarshal(char * buffer, const int& bufferIndex) {
+int CustomString::unmarshal(MarshalledMessage & buffer, const int& bufferIndex) {
     
     CustomInt stringLength;
     

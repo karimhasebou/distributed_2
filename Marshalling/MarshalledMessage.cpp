@@ -11,17 +11,13 @@
 
 MarshalledMessage::MarshalledMessage(const MarshalledMessage& other) {
     
-    this->messageSize = other.messageSize;
-    this->message = new char[messageSize];
-    this->startPosition = 0;
+    copyMessageArray(other.message, other.messageSize);
+    startPosition = other.startPosition;
     
-    for (int i = 0; i < messageSize; i++) {
-        this->message[i] = other.message[i];
-    }
 }
 
-
 MarshalledMessage::MarshalledMessage() {
+    
     this->message = NULL;
     this->startPosition = 0;
 }
@@ -33,23 +29,54 @@ MarshalledMessage::~MarshalledMessage() {
     }
 }
 
-char * MarshalledMessage::getMessage() {
-    return message;
+MarshalledMessage& MarshalledMessage::operator=(const MarshalledMessage & other) {
+    
+    copyMessageArray(other.message, other.messageSize);
+    startPosition = other.startPosition;
+    return *this;
 }
 
-size_t MarshalledMessage::getMessageSize() {
+char * MarshalledMessage::getMessageBuffer() const {
+    
+    return message;
+    
+}
+
+size_t MarshalledMessage::getMessageSize() const{
+    
     return messageSize;
+    
 }
 
 void MarshalledMessage::createMessage(size_t messageSize) {
+    
     this->message = new char[messageSize];
     this->messageSize = messageSize;
+    
+}
+
+void MarshalledMessage::fillMessage(char * message) {
+    
+    memcpy(this->message, message, this->messageSize);
+
 }
 
 char& MarshalledMessage::operator[](int index) {
+    
     if (index + startPosition >= messageSize) {
         throw("Bad aceess");
     }
     
     return this->message[index + startPosition];
+}
+
+void MarshalledMessage::copyMessageArray(char * message, size_t messageSize) {
+    
+    this->messageSize = messageSize;
+    this->message = new char[messageSize];
+    this->startPosition = 0;
+    
+    for (int i = 0; i < messageSize; i++) {
+        this->message[i] = message[i];
+    }
 }

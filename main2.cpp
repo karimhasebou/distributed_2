@@ -15,48 +15,54 @@
 #include "CustomObjects/CustomBool.h"
 #include "Message.h"
 #include "UDPSocket.h"
-#include "Datagram.h"
+#include "Packet.h"
+#include "MySocket.h"
 #include <iostream>
 
 int main() {
     
-    UDPSocket socket;
-    socket.bind(64000);
+    MySocket socket;
+    socket.bind(63000);
     
-    Message recievedMessage;
+    Packet recievedPacket;
     
-    int status = socket.recieveDatagram(recievedMessage);
+    socket.recvFrom(recievedPacket);
     
-    MarshalledMessage marshalledMessage = recievedMessage;
+    recievedPacket.getPacketMessage().extractHeaders();
     
-    std::vector<CustomObject* > returnValues = {new CustomString(), new CustomInt(), new CustomVector(), new CustomBool()};
+    MarshalledMessage marshalledMessage = (MarshalledMessage)recievedPacket.getPacketMessage();
     
-    unmarshal(marshalledMessage, returnValues);
+    std::vector<CustomObject* > receivedValues = {new CustomString()};
     
-    CustomString * returnValueString = dynamic_cast<CustomString *>(returnValues[0]);
+    unmarshal(marshalledMessage, receivedValues);
     
-    CustomInt * returnValueInt = dynamic_cast<CustomInt *>(returnValues[1]);
+    CustomString * returnValueString = dynamic_cast<CustomString *>(receivedValues[0]);
     
-    CustomVector * returnValueVector = dynamic_cast<CustomVector *>(returnValues[2]);
+    std::cout<<"Received Argument"<<std::endl;
     
-    CustomBool * returnValueBool = dynamic_cast<CustomBool *>(returnValues[3]);
-
     std::cout<<returnValueString->getValue()<<std::endl;
     
-    std::cout<<returnValueInt->getValue()<<std::endl;
+    CustomString * replyString = new CustomString("Reply Message: Kareem");
     
-    for(int i = 0; i < returnValueVector->getValue().size(); i++) {
-        
-        std::cout<<returnValueVector->getValue()[i]<<std::endl;
-        
-    }
+    CustomObject * bigBoss = replyString;
     
-    if (returnValueBool->getValue()) {
-        std::cout<<"Value is true"<<std::endl;
-    } else {
-        std::cout<<"Value is false"<<std::endl;
-    }
+    std::vector<CustomObject*> paramteres = {bigBoss};
     
+    MarshalledMessage marshalled;
     
+    marshal(marshalled, paramteres);
+    
+    Message replyMessage(marshalled);
+    
+    replyMessage.setMessageType(Last);
+    replyMessage.setRpcRequestID(3);
+    replyMessage.setRpcOperation(4);
+    replyMessage.setPacketID(8);
+    
+    recievedPacket.setPacketMessage (replyMessage);
+    
+    std::cout<<"Sending reply message"<<std::endl;
+
+    socket.reply(recievedPacket);
     
 }

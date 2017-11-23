@@ -34,11 +34,11 @@ std::string CustomInt::marshal() {
     return bytes;
 }
 
-int CustomInt::unmarshal(char * buffer, const int& bufferIndex) {
+int CustomInt::unmarshal(MarshalledMessage & buffer, const int& bufferIndex) {
     
     value = 0;
     int temp;
-
+    
     for (int i = 0; i < 4; i++) {
         temp = buffer[bufferIndex + i];
         temp &= 0xff;

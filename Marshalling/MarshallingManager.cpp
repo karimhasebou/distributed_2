@@ -32,11 +32,9 @@ void unmarshal(MarshalledMessage& message,
               std::vector<CustomObject*>& parameters) {
     
     int bufferPointer = 0;
-    
-    char * buffer = message.getMessage();
-    
+        
     for (int i = 0; i < parameters.size(); i++) {
         
-        bufferPointer = parameters[i]->unmarshal(buffer, bufferPointer);
+        bufferPointer = parameters[i]->unmarshal(message, bufferPointer);
     }
 }
