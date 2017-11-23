@@ -32,7 +32,7 @@ void handleRequests()
     while(!shouldShutdown){
         Message msg;
         if(requestSocket.recvFrom(msg) == Success){
-            msg.extractHeaders();
+            //msg.extractHeaders();  done in socket class
             pushToQueue(msg);
         }
     }

@@ -20,8 +20,33 @@ void getImage(Message image)
 	// lots of shit here
 }
 
-void getAccessibleImages(Message packet)
+void getAccessibleImages(Message msg)
 {
+	vector<CustomObject*> unmarshalledValues;
+	unmarshalledValues.push_back(new CustomString());
+
+	unmarshal(msg, unmarshalledValues);
+
+	string username = ((CustomString*) 
+		unmarshalledValues[0])->getValue();
+	
+	CustomVector *result = new CustomVector();
+
+	for(auto& item : getAccessibleImages(username)){
+		result->push_back(item);
+	}
+	
+	unmarshalledValues.clear();
+	unmarshalledValues.push_back(result);
+
+	MarshalledMessage marshalledMsg;
+	marshal(marshalledMsg, unmarshalledValues);
+	
+	Message replyMessage(marshalledMsg);
+    replyMessage.setSocketAddress(marshalledMsg.getSocketAddress());
+    replyMessage.setMessageType(Reply);
+    replyMessage.setRpcRequestID(1);
+    replyMessage.setRpcOperation(1);
 	// string username;
 	// CustomString* mName;
 	// MarshalledMessage mmsg;
