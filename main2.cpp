@@ -55,9 +55,9 @@ int main() {
     Message replyMessage(marshalled);
     
     replyMessage.setMessageType(Last);
-    replyMessage.setRpcRequestID(7);
-    
-    replyMessage.fillHeaders();
+    replyMessage.setRpcRequestID(3);
+    replyMessage.setRpcOperation(4);
+    replyMessage.setPacketID(8);
     
     recievedPacket.setPacketMessage (replyMessage);
     

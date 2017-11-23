@@ -15,7 +15,9 @@
 Message::Message(const Message& other) {
     
     copyMessageArray(other.message, other.messageSize);
-    
+    this->rpcRequestID = other.rpcRequestID;
+    this->rpcOperation = other.rpcOperation;
+    this->packetID = other.packetID;
 }
 
 Message::Message(const MarshalledMessage& other) 
@@ -70,20 +72,31 @@ void Message::setPacketID(int packetid) {
 
 void Message::extractHeaders() {
     
-    CustomInt headers[4];
+    const int headerCnt = 4;
+    
+    CustomInt headers[headerCnt];
     
     int bufferPosition = 0;
     
-    for (int i = 0; i < 4; i++) {
+    std::string shittydebug = "";
+    
+    for(int i=0; i < messageSize; i++) {
+        shittydebug += message[i];
+    }
+    
+    
+    for (int i = 0; i < headerCnt; i++) {
         bufferPosition = headers[i].unmarshal(*this, bufferPosition);
     }
     
-    startPosition = 16;
+    startPosition = headerCnt*4;
     
     type = (MessageType)headers[0].getValue();
     rpcOperation = headers[1].getValue();
     rpcRequestID = headers[2].getValue();
     packetID = headers[3].getValue();
+    
+    messageSize -= headerCnt * 4;
     
 }
 
@@ -114,7 +127,7 @@ void Message::fillHeaders() {
     
     memcpy(message + headersCnt*4, messageContent, messageSize);
     
-    delete messageContent;
+    delete [] messageContent;
     
     messageSize += headersCnt*4;
     
@@ -162,9 +175,9 @@ void Message::combine(std::vector<Message> messages)
     
     message = new char[packets_size];
     int offset = 0;
-    for (int i = 0; messages.size(); ++i)
+    for (int i = 0; i < messages.size(); ++i)
     {
-        memcpy(message + offset, messages[i].message, messages[i].messageSize);
+        memcpy(message + offset, messages[i].message + startPosition, messages[i].messageSize);
         offset += messages[i].messageSize;
     }
 }

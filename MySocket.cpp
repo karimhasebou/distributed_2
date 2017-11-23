@@ -122,6 +122,7 @@ Status MySocket::receive(UDPSocket & socket, Packet & packet) {
     
     do {
         
+        receivedPacket.getPacketMessage().extractHeaders();
         messages.push_back(receivedPacket.getPacketMessage());
         
         socket.sendPacket(ackPacket);
