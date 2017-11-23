@@ -26,6 +26,7 @@ public:
     void setTimeOut(int);
     
     sockaddr_in getSocketAddress();
+    int getSockDesc();
 
 };
 

@@ -19,11 +19,17 @@ Message MySocket::callRPC(const Packet & sentPacket) {
     UDPSocket rpcSocket;
     rpcSocket.bind(0);
     
-    sockaddr_in shit = rpcSocket.getSocketAddress();
+    sockaddr_in address = rpcSocket.getSocketAddress();
+    int sockDesc = rpcSocket.getSockDesc();
+    socklen_t address_length = sizeof address;
     
+    getsockname(sockDesc,(sockaddr *)&address, &address_length);
+    
+    rpcSocket.bind((int)ntohs(address.sin_port));
+
     int requestsCount = 0;
     Status receiveStatus = Pending;
-    
+        
     Packet receivedPacket;
     
     while(receiveStatus != Success &&
@@ -61,7 +67,6 @@ int MySocket::reply(const Packet& sentPacket) {
         
         int sentPacketCount = 0;
         
-        dividedMessage[part].fillHeaders();
         partitionPacket.setPacketMessage(dividedMessage[part]);
         
         int status = 0;
@@ -74,6 +79,7 @@ int MySocket::reply(const Packet& sentPacket) {
             
             status = replySocket.recievePacket(acknowledgementPacket);
             
+            printf("Received acknowledgement Packet\n\n");
             // doing the checks
         }
         
@@ -95,10 +101,8 @@ int MySocket::reply(const Packet& sentPacket) {
 
 Status MySocket::receive(UDPSocket & socket, Packet & packet) {
     
-     
     Packet receivedPacket;
     int status = socket.recievePacket(receivedPacket);
-//    printf("port %d\n", (int)ntohs(packet.getDestSocketAddress().sin_port));
     
     if (status == -1) {
         return PacketFailure;
@@ -106,30 +110,24 @@ Status MySocket::receive(UDPSocket & socket, Packet & packet) {
     
     vector<Message> messages;
     
-    Message fullMessage;
-    
     Message ackMessage;
-    
     ackMessage.setMessageType(Acknowledgement);
     
     Packet ackPacket;
     ackPacket.setPacketMessage(ackMessage);
     
-//    messages.push_back(receivedPacket.getMessage());
-//    fullMessage.combine(messages);
-//    packet.setMessage(fullMessage);
-    
     do {
         
-        receivedPacket.getPacketMessage().extractHeaders();
         messages.push_back(receivedPacket.getPacketMessage());
+        
+        printf("Sending Acknowledgement packet\n\n");
         
         socket.sendPacket(ackPacket);
         
         if (receivedPacket.getPacketMessage().getMessageType() == Last) {
             
-            fullMessage.combine(messages);
-            packet.setPacketMessage(fullMessage);
+            packet.getPacketMessage().combine(messages);
+                        
             return Success;
             
         }
@@ -143,9 +141,9 @@ Status MySocket::receive(UDPSocket & socket, Packet & packet) {
             status = socket.recievePacket(receivedPacket);
             
         }
-    
         
     } while(status != -1);
+    
     
     return StreamFailure;
     

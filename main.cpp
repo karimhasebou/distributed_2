@@ -23,6 +23,11 @@
 /*
 int main() {
     
+    printf("Client Console\n\n");
+    
+    MySocket socket;
+    socket.bind(64000);
+    
     CustomString * customString = new CustomString("Argument Message: Nawawy");
 //    CustomInt * customInt = new CustomInt(14);
 //    CustomVector * customVector = new CustomVector();
@@ -45,19 +50,14 @@ int main() {
     Message sentMessage(marshalledMessage);
     
     sentMessage.setMessageType(Request);
-    sentMessage.setRpcOperation(56);
-    sentMessage.setRpcRequestID(77);
-    sentMessage.setPacketID(23);
-    sentMessage.fillHeaders();
+    sentMessage.setRpcOperation(1);
+    sentMessage.setRpcRequestID(1);
         
 //    sentMessage.setMessageType(Acknowledgement);
 //    sentMessage.setRpcOperation(1);
 //    sentMessage.setRpcOperation(2);
     
-    std::cout<<"Sedning RPC argument"<<std::endl;
-    
-    MySocket socket;
-    socket.bind(64000);
+    std::cout<<"Sending RPC argument"<<std::endl;
     
     Packet packet("127.0.0.1", 63000);
     packet.setPacketMessage(sentMessage);
@@ -74,5 +74,6 @@ int main() {
     
     std::cout<<returnValueString->getValue()<<std::endl;
     
+    std::cout<<"Done"<<std::endl;
 }
 */

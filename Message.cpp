@@ -12,8 +12,11 @@
 #include "CustomObjects/CustomInt.h"
 #include <cstring>
 
+Message::Message() :headerCount(4){}
+
+
 Message::Message(const Message& other)
-    : MarshalledMessage((MarshalledMessage)other){
+    : MarshalledMessage((MarshalledMessage)other), headerCount(4){
     
     this->type = other.type;
     this->rpcRequestID = other.rpcRequestID;
@@ -22,7 +25,7 @@ Message::Message(const Message& other)
 }
 
 Message::Message(const MarshalledMessage& other) 
-    : MarshalledMessage(other) {}
+    : MarshalledMessage(other), headerCount(4) {}
 
 
 Message& Message::operator=(const Message& other) {
@@ -57,6 +60,36 @@ int Message::getPacketID() const {
     
 }
 
+int Message::getHeaderSize() const {
+    
+    return headerCount*4;
+    
+}
+void Message::getMessageWithHeaders(char * mess) const {
+    
+    const int headersCnt = 4;
+    
+    CustomInt headers[headersCnt];
+    headers[0].setValue((int)type);
+    headers[1].setValue(rpcOperation);
+    headers[2].setValue(rpcRequestID);
+    headers[3].setValue(packetID);
+        
+    std::string marshalledHeaders = "";
+    
+    for (int i = 0; i < headersCnt; i++) {
+        
+        marshalledHeaders += headers[i].marshal();
+    }
+    
+    for (int i = 0; i < headersCnt*4; i++) {
+        mess[i] = marshalledHeaders[i];
+    }
+    
+    memcpy(mess + headersCnt*4, message, messageSize);
+    
+}
+
 void Message::setMessageType(const MessageType &type) {
     this->type = type;
 }
@@ -82,20 +115,11 @@ void Message::extractHeaders() {
     
     int bufferPosition = 0;
     
-    std::string shittydebug = "";
-    
-    for(int i=0; i < messageSize; i++) {
-        shittydebug += message[i];
-    }
-    
-    
     for (int i = 0; i < headerCnt; i++) {
         bufferPosition = headers[i].unmarshal(*this, bufferPosition);
     }
     
     startPosition = headerCnt*4;
-    
-    char shit2 = message[startPosition+4];
     
     type = (MessageType)headers[0].getValue();
     rpcOperation = headers[1].getValue();
@@ -103,39 +127,6 @@ void Message::extractHeaders() {
     packetID = headers[3].getValue();
     
     messageSize -= headerCnt * 4;
-    
-}
-
-void Message::fillHeaders() {
-    
-    const int headersCnt = 4;
-    
-    CustomInt headers[headersCnt];
-    headers[0].setValue((int)type);
-    headers[1].setValue(rpcOperation);
-    headers[2].setValue(rpcRequestID);
-    headers[3].setValue(packetID);
-    
-    char * messageContent = this->message;
-    
-    message = new char[messageSize + headersCnt*4];
-        
-    std::string marshalledHeaders = "";
-    
-    for (int i = 0; i < headersCnt; i++) {
-        
-        marshalledHeaders += headers[i].marshal();
-    }
-    
-    for (int i = 0; i < headersCnt*4; i++) {
-        message[i] = marshalledHeaders[i];
-    }
-    
-    memcpy(message + headersCnt*4, messageContent, messageSize);
-    
-    delete [] messageContent;
-    
-    messageSize += headersCnt*4;
     
 }
 
