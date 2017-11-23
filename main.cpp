@@ -16,11 +16,10 @@
 #include "CustomObjects/CustomMap.h"
 #include "Message.h"
 #include "UDPSocket.h"
-#include "Packet.h"
 #include "MySocket.h"
 #include <iostream>
 // #include "CustMapMain.h"
-/*
+
 int main() {
     
     printf("Client Console\n\n");
@@ -77,4 +76,4 @@ int main() {
     
     std::cout<<"Done"<<std::endl;
 }
-*/
+

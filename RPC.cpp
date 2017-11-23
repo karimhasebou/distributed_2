@@ -13,9 +13,6 @@ Image getImage(string imgName)
 
         img.content = new char[img.length];
         file.read(img.content, img.length);
-
-#include "CustomObjects/CustomVector.h"
-#include "CustomObjects/CustomBool.h"
         file.close();
     }else{
         img.content = NULL;

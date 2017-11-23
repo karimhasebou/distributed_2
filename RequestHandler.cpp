@@ -30,28 +30,39 @@ void shutdown()
 void handleRequests()
 {
     while(!shouldShutdown){
-        Packet packet;
-        if(requestSocket.recvFrom(packet) == Success){
-            packet.getPacketMessage().extractHeaders();
-            pushToQueue(packet);
+        Message msg;
+        if(requestSocket.recvFrom(msg) == Success){
+            msg.extractHeaders();
+            pushToQueue(msg);
         }
     }
 }
 
-void pushToQueue(Packet packet)
+bool queueContains(Message& msg)
+{
+    for(auto& item : requestQueue){
+        if(item.getRpcRequestId() == msg.getRpcRequestId()){
+            return true;
+        }
+    }
+    return false;
+}
+
+
+void pushToQueue(Message msg)
 {
     bool shouldDiscard;
     
     executingRPCMtx.lock();
-    shouldDiscard = executingRPC.count(packet.getPacketMessage().getRpcOperation()) > 0;    
+    shouldDiscard = executingRPC.count(
+        msg.getRpcOperation()) > 0;    
     executingRPCMtx.unlock();
     
     requestQueueMtx.lock();
-    shouldDiscard |= std::find(requestQueue.begin(), 
-        requestQueue.end(), packet) != requestQueue.end();
+    shouldDiscard |= queueContains(msg);
     
     if(!shouldDiscard){
-        requestQueue.push_back(packet);
+        requestQueue.push_back(msg);
         isRequestQueueEmpty.notify_one();
     }
     
@@ -59,25 +70,25 @@ void pushToQueue(Packet packet)
 
 }
 
-Packet popFromQueue()
+Message popFromQueue()
 {
-    Packet packet;
+    Message msg;
     std::unique_lock<std::mutex> lck(requestQueueMtx);
 
     while(requestQueue.size() == 0)
         isRequestQueueEmpty.wait(lck);
 
-    packet = requestQueue.front();
+    msg = requestQueue.front();
     requestQueue.pop_front();
 
-    return packet;
+    return msg;
 }
 
 void processRequest()
 {
     while(!shouldShutdown){
-        Packet packet = popFromQueue();
-        int rpcOperation = packet.getPacketMessage().getRpcOperation();
+        Message packet = popFromQueue();
+        int rpcOperation = packet.getRpcOperation();
         
         if(requestHandlers.count(rpcOperation) > 0){
             requestHandlers[rpcOperation](packet);

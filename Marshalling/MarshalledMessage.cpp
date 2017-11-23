@@ -8,6 +8,7 @@
 
 #include "MarshalledMessage.h"
 #include <exception>
+#include <cstring>
 
 MarshalledMessage::MarshalledMessage(const MarshalledMessage& other) {
     

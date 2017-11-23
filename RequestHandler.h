@@ -10,15 +10,14 @@
 #include <algorithm>
 #include "MySocket.h"
 #include "Message.h"
-#include "Packet.h"
 
 
 #define THREAD_COUNT 10
 #define LISTENER_PORT 64000
 using namespace std;
-typedef  Packet (*Handler)(Packet);
+typedef  Message (*Handler)(Message);
 
-deque<Packet> requestQueue;
+deque<Message> requestQueue;
 set<int> executingRPC;
 map<int, Handler> requestHandlers;
 
@@ -32,9 +31,10 @@ void registerRequestHandler(int operationID, Handler);
 void initRequestHandler();
 void shutdown();
 void handleRequests();
-void pushToQueue(Packet msg);
+void pushToQueue(Message msg);
 void processRequest();
-Packet popFromQueue();
+Message popFromQueue();
+bool queueContains(Message& msg);
 
 #endif
 

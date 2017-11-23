@@ -1,11 +1,12 @@
 #ifndef __RPCStub
 #define __RPCStub
 #include "RPC.h"
-#include "Packet.h"
+#include "Message.h"
 
-void getImage(Packet);
-void getAccessibleImages(Packet);
-void canUpdateCount(Packet);
-void updateCount(Packet);
+
+void getImage(Message);
+void getAccessibleImages(Message);
+void canUpdateCount(Message);
+void updateCount(Message);
 
 #endif
