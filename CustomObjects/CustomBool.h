@@ -22,7 +22,7 @@ public:
     void setValue(const bool&);
     bool getValue();
     virtual std::string marshal();
-    virtual int unmarshal(char *, const int&);
+    virtual int unmarshal(MarshalledMessage &, const int&);
     
 };
 

@@ -28,7 +28,7 @@ public:
     size_t getMessageSize() const;
     
     void createMessage(size_t);
-//    void fillMessage(char *);
+    void fillMessage(char *);
     char& operator[](int);
 };
 

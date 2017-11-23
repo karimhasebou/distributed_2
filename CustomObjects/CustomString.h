@@ -22,7 +22,7 @@ public:
     void setValue(const std::string&);
     std::string getValue();
     virtual std::string marshal();
-    virtual int unmarshal(char *, const int&);
+    virtual int unmarshal(MarshalledMessage &, const int&);
 };
 
 #endif /* CustomString_hpp */

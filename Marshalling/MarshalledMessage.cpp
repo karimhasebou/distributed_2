@@ -12,6 +12,7 @@
 MarshalledMessage::MarshalledMessage(const MarshalledMessage& other) {
     
     copyMessageArray(other.message, other.messageSize);
+    startPosition = other.startPosition;
     
 }
 
@@ -46,12 +47,12 @@ void MarshalledMessage::createMessage(size_t messageSize) {
     this->messageSize = messageSize;
     
 }
-//
-//void MarshalledMessage::fillMessage(char * message) {
-//    
-//    strncpy(this->message, message, this->messageSize);
-//
-//}
+
+void MarshalledMessage::fillMessage(char * message) {
+    
+    memcpy(this->message, message, this->messageSize);
+
+}
 
 char& MarshalledMessage::operator[](int index) {
     

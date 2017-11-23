@@ -30,7 +30,7 @@ std::string CustomBool::marshal() {
     
 }
 
-int CustomBool::unmarshal(char * buffer, const int & bufferIndex) {
+int CustomBool::unmarshal(MarshalledMessage & buffer, const int & bufferIndex) {
     
     value = (bool)buffer[bufferIndex];
     

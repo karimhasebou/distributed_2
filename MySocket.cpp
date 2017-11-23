@@ -114,6 +114,8 @@ Status MySocket::receive(UDPSocket & socket, Packet & packet) {
     
     Packet ackPacket;
     ackPacket.setPacketMessage(ackMessage);
+    
+    receivedPacket.getPacketMessage().extractHeaders();
 //    messages.push_back(receivedPacket.getMessage());
 //    fullMessage.combine(messages);
 //    packet.setMessage(fullMessage);

@@ -22,7 +22,7 @@ public:
     std::vector<std::string> getValue();
     std::string& operator[](int);
     virtual std::string marshal();
-    virtual int unmarshal(char *, const int&);
+    virtual int unmarshal(MarshalledMessage &, const int&);
 };
 
 

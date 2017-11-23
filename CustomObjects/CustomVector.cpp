@@ -45,7 +45,7 @@ std::string CustomVector::marshal() {
     return marshalledVector;
 }
 
-int CustomVector::unmarshal(char * buffer, const int & startPosition) {
+int CustomVector::unmarshal(MarshalledMessage & buffer, const int & startPosition) {
     
     int bufferPosition = startPosition;
     

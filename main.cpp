@@ -43,10 +43,11 @@ int main() {
     Message sentMessage(marshalledMessage);
     
     sentMessage.setMessageType(Request);
-    sentMessage.setRpcOperation(2);
-    sentMessage.setRpcRequestID(1);
+    sentMessage.setRpcOperation(56);
+    sentMessage.setRpcRequestID(77);
+    sentMessage.setPacketID(23);
     sentMessage.fillHeaders();
-    
+        
 //    sentMessage.setMessageType(Acknowledgement);
 //    sentMessage.setRpcOperation(1);
 //    sentMessage.setRpcOperation(2);
@@ -56,7 +57,7 @@ int main() {
     MySocket socket;
     socket.bind(64000);
     
-    Packet packet("10.40.48.60", 64000);
+    Packet packet("127.0.0.1", 64000);
     packet.setPacketMessage(sentMessage);
     
     Message returnValue = socket.callRPC(packet);

@@ -28,7 +28,9 @@ int main() {
     
     socket.recvFrom(recievedPacket);
     
-    MarshalledMessage marshalledMessage = recievedPacket.getPacketMessage();
+    recievedPacket.getPacketMessage().extractHeaders();
+    
+    MarshalledMessage marshalledMessage = (MarshalledMessage)recievedPacket.getPacketMessage();
     
     std::vector<CustomObject* > receivedValues = {new CustomString()};
     
@@ -51,6 +53,11 @@ int main() {
     marshal(marshalled, paramteres);
     
     Message replyMessage(marshalled);
+    
+    replyMessage.setMessageType(Last);
+    replyMessage.setRpcRequestID(7);
+    
+    replyMessage.fillHeaders();
     
     recievedPacket.setPacketMessage (replyMessage);
     

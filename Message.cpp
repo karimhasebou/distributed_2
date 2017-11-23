@@ -71,10 +71,14 @@ void Message::setPacketID(int packetid) {
 void Message::extractHeaders() {
     
     CustomInt headers[4];
-
+    
+    int bufferPosition = 0;
+    
     for (int i = 0; i < 4; i++) {
-        startPosition = headers[i].unmarshal(message, startPosition);
+        bufferPosition = headers[i].unmarshal(*this, bufferPosition);
     }
+    
+    startPosition = 16;
     
     type = (MessageType)headers[0].getValue();
     rpcOperation = headers[1].getValue();
@@ -96,16 +100,19 @@ void Message::fillHeaders() {
     char * messageContent = this->message;
     
     message = new char[messageSize + headersCnt*4];
-    
-    int bufferIndex = 0;
+        
+    std::string marshalledHeaders = "";
     
     for (int i = 0; i < headersCnt; i++) {
         
-        bufferIndex = headers[i].unmarshal(message, bufferIndex);
-        
+        marshalledHeaders += headers[i].marshal();
     }
     
-    memcpy(message + bufferIndex, messageContent, messageSize);
+    for (int i = 0; i < headersCnt*4; i++) {
+        message[i] = marshalledHeaders[i];
+    }
+    
+    memcpy(message + headersCnt*4, messageContent, messageSize);
     
     delete messageContent;
     
