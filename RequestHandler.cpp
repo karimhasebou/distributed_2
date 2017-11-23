@@ -15,7 +15,7 @@ void shutdown()
 void handleRequests()
 {
     Packet packet;
-    while(1){
+    while(shutdown){
         if(requestSocket->recvFrom(packet) == Success){
             pushToQueue(packet.message);
         }

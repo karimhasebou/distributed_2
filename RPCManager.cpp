@@ -59,7 +59,7 @@ void unstegUserList(string filePath)
 set<string> getAuthorizedUsers(string filePath)
 {
     set<string> usersList;
-    extractUserList(filePath);
+    unstegUserList(filePath);
 
     ifstream file(AUTHORIZED_USERS, ios::in);
 
