@@ -3,7 +3,7 @@
 /**
  * #include "requestHandler.h"
  * #include 
- * registerRQ(4, getimage)
+ * registerRQ(4, getimage) 
  * reisgterRQ(5, updateCount)
  * initRequestHandler();
  * 
@@ -23,36 +23,35 @@ void initRequestHandler()
 
 void shutdown()
 {
-    shutdown = true;
-    requestSocket.shutdown();
+    shouldShutdown = true;
+    // requestSocket.shutdown();
 }
 
 void handleRequests()
 {
-    Packet packet;
-    while(!shutdown){
-        if(requestSocket->recvFrom(packet) == Success){
-            pushToQueue(packet.message);
+    while(!shouldShutdown){
+        Packet packet;
+        if(requestSocket.recvFrom(packet) == Success){
+            packet.getPacketMessage().extractHeaders();
+            pushToQueue(packet);
         }
     }
 }
 
-void pushToQueue(Message msg)
-{processingQueue
-processingQueue
-processingQueue
+void pushToQueue(Packet packet)
+{
     bool shouldDiscard;
     
     executingRPCMtx.lock();
-    shouldDiscard = executingRPC.count(msg.rpcRequestID) > 0;    
+    shouldDiscard = executingRPC.count(packet.getPacketMessage().getRpcOperation()) > 0;    
     executingRPCMtx.unlock();
     
     requestQueueMtx.lock();
     shouldDiscard |= std::find(requestQueue.begin(), 
-        requestQueue.end(), msg) != requestQueue.end();
+        requestQueue.end(), packet) != requestQueue.end();
     
     if(!shouldDiscard){
-        requestQueue.push_back(msg);
+        requestQueue.push_back(packet);
         isRequestQueueEmpty.notify_one();
     }
     
@@ -60,38 +59,38 @@ processingQueue
 
 }
 
-Message popFromQueue()
+Packet popFromQueue()
 {
-    Messages msg;
-    requestQueueMtx.lock();
+    Packet packet;
+    std::unique_lock<std::mutex> lck(requestQueueMtx);
 
     while(requestQueue.size() == 0)
-        isRequestQueueEmpty.wait(requestQueueMtx);
+        isRequestQueueEmpty.wait(lck);
 
-    msg = requestQueue.pop();
-    requestQueueMtx.unlock();
+    packet = requestQueue.front();
+    requestQueue.pop_front();
 
-    return msg;
+    return packet;
 }
 
 void processRequest()
 {
-    while(!shutdown){
-        Message msg = popFromQueue();
-        int rpcOperation = msg.getRpcOperation();
+    while(!shouldShutdown){
+        Packet packet = popFromQueue();
+        int rpcOperation = packet.getPacketMessage().getRpcOperation();
         
-        if(map.count(rpcOperation) > 0){
-            map[rpcOperation](msg);
+        if(requestHandlers.count(rpcOperation) > 0){
+            requestHandlers[rpcOperation](packet);
         }
 
         executingRPCMtx.lock();
-        executingRPC.erase(msg);
+        executingRPC.erase(rpcOperation);
         executingRPCMtx.unlock();
     }
 }
 
 void registerRequestHandler(int operationID, 
-    Message (*handler)(Message))
+    Handler RPC)
 {
-    requestHandlers[operationID] = handler;
+    requestHandlers[operationID] = RPC;
 }

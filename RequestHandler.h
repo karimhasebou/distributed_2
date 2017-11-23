@@ -4,34 +4,37 @@
 #include <thread>
 #include <map>
 #include <set>
-#include <queue>
-#include <<condition_variable>
+#include <deque>
+#include <condition_variable>
 #include <mutex>
+#include <algorithm>
 #include "MySocket.h"
 #include "Message.h"
+#include "Packet.h"
 
 
 #define THREAD_COUNT 10
 #define LISTENER_PORT 64000
 using namespace std;
+typedef  Packet (*Handler)(Packet);
 
-queue<Message> requestQueue;
+deque<Packet> requestQueue;
 set<int> executingRPC;
-map<int, Message (*handler)(Message)> requestHandlers;
+map<int, Handler> requestHandlers;
 
 //thread threadPool[THREAD_COUNT];
 MySocket requestSocket;
 mutex requestQueueMtx, executingRPCMtx;
 condition_variable isRequestQueueEmpty;
-bool shutdown = false;
+bool shouldShutdown = false;
 
-void registerRequestHandler(int operationID, Message (*handler)(Message));
+void registerRequestHandler(int operationID, Handler);
 void initRequestHandler();
 void shutdown();
 void handleRequests();
-void pushToQueue(Message msg);
+void pushToQueue(Packet msg);
 void processRequest();
-Message popFromQueue();
+Packet popFromQueue();
 
 #endif
 
