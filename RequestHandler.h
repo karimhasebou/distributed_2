@@ -33,3 +33,9 @@ void processRequest();
 Message popFromQueue();
 
 #endif
+
+// getImageList(string peer name)
+// getImage(imgName)
+// updateCount(string imgname, int newCount )
+// updateCount(string imgname, )
+
