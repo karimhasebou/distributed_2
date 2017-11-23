@@ -1,8 +1,22 @@
 #include "RequestHandler.h"
 
+/**
+ * #include "requestHandler.h"
+ * #include 
+ * registerRQ(4, getimage)
+ * reisgterRQ(5, updateCount)
+ * initRequestHandler();
+ * 
+ */
+
 
 void initRequestHandler()
 {
+    requestSocket.bind(LISTENER_PORT);
+
+    for(int i = 0; i < THREAD_COUNT; ++i){
+        thread threadPool(processRequest);
+    }
 
     thread requestListener(handleRequests);
 }
@@ -10,33 +24,40 @@ void initRequestHandler()
 void shutdown()
 {
     shutdown = true;
+    requestSocket.shutdown();
 }
 
 void handleRequests()
 {
     Packet packet;
-    while(shutdown){
+    while(!shutdown){
         if(requestSocket->recvFrom(packet) == Success){
             pushToQueue(packet.message);
         }
     }
 }
 
-
 void pushToQueue(Message msg)
-{
+{processingQueue
+processingQueue
+processingQueue
     bool shouldDiscard;
     
-    processingQueueMtx.lock();
-    shouldDiscard = processingQueue.count(msg.rpcRequestID) > 0;
-    processingQueueMtx.unlock();
+    executingRPCMtx.lock();
+    shouldDiscard = executingRPC.count(msg.rpcRequestID) > 0;    
+    executingRPCMtx.unlock();
+    
+    requestQueueMtx.lock();
+    shouldDiscard |= std::find(requestQueue.begin(), 
+        requestQueue.end(), msg) != requestQueue.end();
     
     if(!shouldDiscard){
-        requestQueueMtx.lock();
         requestQueue.push_back(msg);
         isRequestQueueEmpty.notify_one();
-        requestQueueMtx.unlock();
     }
+    
+    requestQueueMtx.unlock();
+
 }
 
 Message popFromQueue()
@@ -57,11 +78,15 @@ void processRequest()
 {
     while(!shutdown){
         Message msg = popFromQueue();
-        int rpcOperationID = msg.getRpcOperation();
+        int rpcOperation = msg.getRpcOperation();
         
-        if(map.count(rpcOperationID) > 0){
-            map[rpcOperationID](msg);
+        if(map.count(rpcOperation) > 0){
+            map[rpcOperation](msg);
         }
+
+        executingRPCMtx.lock();
+        executingRPC.erase(msg);
+        executingRPCMtx.unlock();
     }
 }
 

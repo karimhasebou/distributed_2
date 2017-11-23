@@ -12,15 +12,16 @@
 
 
 #define THREAD_COUNT 10
+#define LISTENER_PORT 64000
 using namespace std;
 
 queue<Message> requestQueue;
-set<int> processingQueue;
+set<int> executingRPC;
 map<int, Message (*handler)(Message)> requestHandlers;
 
-thread threadPool[THREAD_COUNT];
-MySocket *requestSocket;
-mutex requestQueueMtx, processingQueueMtx;
+//thread threadPool[THREAD_COUNT];
+MySocket requestSocket;
+mutex requestQueueMtx, executingRPCMtx;
 condition_variable isRequestQueueEmpty;
 bool shutdown = false;
 
