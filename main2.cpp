@@ -26,11 +26,11 @@ int main() {
     MySocket socket;
     socket.bind(63000);
     
-    Packet recievedPacket;
+    Message receivedMessage;
     
-    socket.recvFrom(recievedPacket);
+    socket.recvFrom(receivedMessage);
         
-    MarshalledMessage marshalledMessage = (MarshalledMessage)recievedPacket.getPacketMessage();
+    MarshalledMessage marshalledMessage = (MarshalledMessage)receivedMessage;
     
     std::vector<CustomObject* > receivedValues = {new CustomString()};
     
@@ -42,7 +42,15 @@ int main() {
     
     std::cout<<returnValueString->getValue()<<std::endl;
     
-    CustomString * replyString = new CustomString("Reply Message: Kareem");
+    std::string bigString = "";
+    
+    for (int i = 0; i < 1000; i++) {
+        
+        bigString += "Message" + std::to_string(i);
+        
+    }
+    
+    CustomString * replyString = new CustomString(bigString);
     
     CustomObject * bigBoss = replyString;
     
@@ -54,15 +62,15 @@ int main() {
     
     Message replyMessage(marshalled);
     
+    replyMessage.setSocketAddress(receivedMessage.getSocketAddress());
+    
     replyMessage.setMessageType(Reply);
     replyMessage.setRpcRequestID(1);
     replyMessage.setRpcOperation(1);
     
-    recievedPacket.setPacketMessage (replyMessage);
-    
     std::cout<<"Sending reply message"<<std::endl;
 
-    socket.reply(recievedPacket);
+    socket.reply(replyMessage);
     
     std::cout<<"Done"<<std::endl;
     

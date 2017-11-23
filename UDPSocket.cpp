@@ -28,26 +28,22 @@ void UDPSocket::bind(unsigned short portNumber){
         
         int randomSocketDesr = socket(AF_INET, SOCK_DGRAM, 0);
         
-        int st1 = ::bind(randomSocketDesr, (struct sockaddr*)&address, sizeof address);
+        ::bind(randomSocketDesr, (struct sockaddr*)&address, sizeof address);
         
         socklen_t addressLength = sizeof address;
         
         getsockname(randomSocketDesr, (struct sockaddr *)&address, &addressLength);
         
         int randomPort = ntohs(address.sin_port);
-        
-        printf("Here is the random port: %d\n", ntohs(address.sin_port));
-        
+                
         close(randomSocketDesr);
         
         sockaddr_in nawawy;
         
         fillAddress(nawawy, randomPort);
         
-        int st = ::bind(socketDesc, (struct sockaddr*)&address, sizeof nawawy);
+        ::bind(socketDesc, (struct sockaddr*)&address, sizeof nawawy);
         
-        printf("Bind Status = %d, %d\n", st, st1);
-
     } else {
         
         ::bind(socketDesc, (struct sockaddr*)&address, sizeof address);
@@ -59,53 +55,56 @@ void UDPSocket::bind(unsigned short portNumber){
 }
 
 
-int UDPSocket::sendPacket(const Packet& packet){
+int UDPSocket::sendPacket(const Message& sentMessage){
     
-    sockaddr_in destAddress = packet.getSocketAddress();
+    sockaddr_in destAddress = sentMessage.getSocketAddress();
     
-   
-    printf("Sending Packet. Adding Header\n");
-    
-    size_t messageWithHeaderLen = packet.getPacketMessage().getHeaderSize()
-                + packet.getPacketMessage().getMessageSize();
+    size_t messageWithHeaderLen = sentMessage.getHeaderSize()
+                + sentMessage.getMessageSize();
     
     char * messageWithHeader = new char[messageWithHeaderLen];
     
-    packet.getPacketMessage().getMessageWithHeaders(messageWithHeader);
+    sentMessage.getMessageWithHeaders(messageWithHeader);
             
     int status = (int)sendto(socketDesc,
                              messageWithHeader,
                              messageWithHeaderLen, 0,
                              (sockaddr *) & destAddress,
                              sizeof(destAddress));
-        
+    
+    sockaddr_in address;
+
+       socklen_t addressLength = sizeof address;
+
+       getsockname(this->socketDesc, (struct sockaddr *)&address, &addressLength);
+    
+       printf("Sending from port:  %d to port %d\n", ntohs(address.sin_port), ntohs(destAddress.sin_port));
+    
     return status;
 }
 
 
-int UDPSocket::recievePacket(Packet & packet)
+int UDPSocket::recievePacket(Message & receivedMessage)
 {
-    sockaddr_in myaddress;
-    socklen_t length = sizeof myaddress;
-    getsockname(this->socketDesc, (struct sockaddr *) &myaddress, &length);
-    
     sockaddr_in senderAddress;
     socklen_t senderLen = sizeof(senderAddress);
     
-    size_t maxLength = 4096;
-    packet.getPacketMessage().createMessage(maxLength);
+    size_t maxLength = 66;
+    receivedMessage.createMessage(maxLength);
 
     int status = (int)recvfrom(this->socketDesc,
-                               packet.getPacketMessage().getMessageBuffer(),
+                               receivedMessage.getMessageBuffer(),
                                maxLength, MSG_WAITALL,
                                (sockaddr *) &senderAddress, &senderLen);
     
     printf("Received from port number : %d\n", (int)ntohs(senderAddress.sin_port));
     
-    packet.setSocketAddress(senderAddress);
+    receivedMessage.setSocketAddress(senderAddress);
     
-    packet.getPacketMessage().extractHeaders();
-                
+    receivedMessage.extractHeaders();
+    
+    printf("Packet ID : %d, Request ID: %d, RPCoperation: %d, Type: %d \n", receivedMessage.getPacketID(), receivedMessage.getRpcRequestId(), receivedMessage.getRpcOperation(), receivedMessage.getMessageType());
+    
     return status;
     
 }

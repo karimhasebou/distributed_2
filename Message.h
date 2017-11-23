@@ -19,6 +19,8 @@ enum MessageType {
 #include "Marshalling/MarshalledMessage.h"
 #include <iostream>
 #include <vector>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 class Message : public MarshalledMessage {
     
@@ -28,6 +30,7 @@ private:
     int rpcRequestID;
     int packetID;
     const int headerCount;
+    sockaddr_in sAddress;
     
 public:
     Message();
@@ -41,6 +44,12 @@ public:
     int getPacketID() const;
     int getHeaderSize() const;
     void getMessageWithHeaders(char *) const;
+    
+    void setDestIPAddress(const std::string);
+    void setDestPortNumber(const unsigned short& portNumber);
+    void setSocketAddress(const sockaddr_in &);
+    
+    sockaddr_in getSocketAddress() const;
     
     void setMessageType(const MessageType&);
     void setRpcOperation(int);
