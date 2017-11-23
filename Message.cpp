@@ -136,6 +136,7 @@ void Message::extractHeaders() {
     CustomInt headers[headerCnt];
     
     int bufferPosition = 0;
+    startPosition = 0;
     
     for (int i = 0; i < headerCnt; i++) {
         bufferPosition = headers[i].unmarshal(*this, bufferPosition);

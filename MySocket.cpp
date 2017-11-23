@@ -89,8 +89,10 @@ int MySocket::reply(const Message& sentMessage) {
     
 }
 
-Status MySocket::receive(UDPSocket & socket, Message & receivedMessage) {
+Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
     
+    Message receivedMessage;
+
     int status = socket.recievePacket(receivedMessage);
     
     if (status == -1) {
@@ -106,8 +108,6 @@ Status MySocket::receive(UDPSocket & socket, Message & receivedMessage) {
     ackMessage.setMessageType(Acknowledgement);
     ackMessage.setSocketAddress(receivedMessage.getSocketAddress());
     
-    Message replyMessage;
-    
     do {
         
         messages.push_back(receivedMessage);
@@ -118,7 +118,7 @@ Status MySocket::receive(UDPSocket & socket, Message & receivedMessage) {
         
         if (receivedMessage.getMessageType() == Last) {
             
-            replyMessage.combine(messages);
+            fullMessage.combine(messages);
                         
             return Success;
             

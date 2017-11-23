@@ -97,13 +97,13 @@ int UDPSocket::recievePacket(Message & receivedMessage)
                                maxLength, MSG_WAITALL,
                                (sockaddr *) &senderAddress, &senderLen);
     
-    printf("Received from port number : %d ", (int)ntohs(senderAddress.sin_port));
+    printf("Received from port number : %d\n", (int)ntohs(senderAddress.sin_port));
     
     receivedMessage.setSocketAddress(senderAddress);
     
     receivedMessage.extractHeaders();
     
-    printf("Packet ID : %d, Request ID: %d, RPCoperation: %d, Type: %d n", receivedMessage.getPacketID(), receivedMessage.getRpcRequestId(), receivedMessage.getRpcOperation(), receivedMessage.getMessageType());
+    printf("Packet ID : %d, Request ID: %d, RPCoperation: %d, Type: %d \n", receivedMessage.getPacketID(), receivedMessage.getRpcRequestId(), receivedMessage.getRpcOperation(), receivedMessage.getMessageType());
     
     return status;
     
