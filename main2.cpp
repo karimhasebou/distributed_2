@@ -21,15 +21,15 @@
 
 int main() {
     
+    printf("Server Console \n\n");
+    
     MySocket socket;
     socket.bind(63000);
     
     Packet recievedPacket;
     
     socket.recvFrom(recievedPacket);
-    
-    recievedPacket.getPacketMessage().extractHeaders();
-    
+        
     MarshalledMessage marshalledMessage = (MarshalledMessage)recievedPacket.getPacketMessage();
     
     std::vector<CustomObject* > receivedValues = {new CustomString()};
@@ -54,15 +54,16 @@ int main() {
     
     Message replyMessage(marshalled);
     
-    replyMessage.setMessageType(Last);
-    replyMessage.setRpcRequestID(3);
-    replyMessage.setRpcOperation(4);
-    replyMessage.setPacketID(8);
+    replyMessage.setMessageType(Reply);
+    replyMessage.setRpcRequestID(1);
+    replyMessage.setRpcOperation(1);
     
     recievedPacket.setPacketMessage (replyMessage);
     
     std::cout<<"Sending reply message"<<std::endl;
 
     socket.reply(recievedPacket);
+    
+    std::cout<<"Done"<<std::endl;
     
 }

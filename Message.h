@@ -27,9 +27,10 @@ private:
     int rpcOperation;
     int rpcRequestID;
     int packetID;
+    const int headerCount;
     
 public:
-    Message(){};
+    Message();
     Message(const Message&);
     Message(const MarshalledMessage&);
     Message& operator=(const Message&);
@@ -38,6 +39,8 @@ public:
     int getRpcOperation() const;
     int getRpcRequestId() const;
     int getPacketID() const;
+    int getHeaderSize() const;
+    void getMessageWithHeaders(char *) const;
     
     void setMessageType(const MessageType&);
     void setRpcOperation(int);
@@ -45,7 +48,6 @@ public:
     void setPacketID(int);
     
     void extractHeaders();
-    void fillHeaders();
     
     std::vector<Message> divide(const size_t&) const;
     void combine(std::vector<Message>);
