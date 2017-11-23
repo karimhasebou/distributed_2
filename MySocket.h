@@ -5,7 +5,7 @@
 #include "UDPSocket.h"
 #include "Packet.h"
 #include <vector>
-#define CHUNK_SIZE 312231   // adjust
+#define CHUNK_SIZE 50   // adjust
 #define MAX_RESEND 40       // adjust
 #define MAX_RESEND_PACK 10  // adjust
 #define MAX_REQUESTS 10     // adjust
@@ -23,8 +23,8 @@ class MySocket{
     
 private:
     UDPSocket mainSocket;
-    Status receive(UDPSocket&, Packet&);
-    Status send(UDPSocket&, const Packet&);
+    Status receive(UDPSocket&, Message&);
+    Status send(UDPSocket&, const Message&);
 
     
 public:
@@ -32,9 +32,9 @@ public:
     ~MySocket(){};
     void bind(const unsigned short&);
     
-    Message callRPC(const Packet&);
-    int reply(const Packet&);
-    int recvFrom(Packet&);
+    Message callRPC(const Message&);
+    int reply(const Message&);
+    int recvFrom(Message&);
 };
 
 #endif 

@@ -26,7 +26,7 @@ int main() {
     MySocket socket;
     socket.bind(64000);
     
-    CustomString * customString = new CustomString("Argument Message: Nawawy");
+    CustomString * customString = new CustomString("Ya rab");
 //    CustomInt * customInt = new CustomInt(14);
 //    CustomVector * customVector = new CustomVector();
 //    CustomBool * customBool = new CustomBool(false);
@@ -57,10 +57,11 @@ int main() {
     
     std::cout<<"Sending RPC argument"<<std::endl;
     
-    Packet packet("127.0.0.1", 63000);
-    packet.setPacketMessage(sentMessage);
+    sentMessage.setDestIPAddress("127.0.0.1");
+    sentMessage.setDestPortNumber(63000);
     
-    Message returnValue = socket.callRPC(packet);
+
+    Message returnValue = socket.callRPC(sentMessage);
         
     std::vector<CustomObject* > returnValues = {new CustomString()};
     

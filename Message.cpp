@@ -22,6 +22,7 @@ Message::Message(const Message& other)
     this->rpcRequestID = other.rpcRequestID;
     this->rpcOperation = other.rpcOperation;
     this->packetID = other.packetID;
+    this->sAddress = other.sAddress;
 }
 
 Message::Message(const MarshalledMessage& other) 
@@ -35,6 +36,7 @@ Message& Message::operator=(const Message& other) {
     this->rpcRequestID = other.rpcRequestID;
     this->rpcOperation = other.rpcOperation;
     this->packetID = other.packetID;
+    this->sAddress = other.sAddress;
     return *this;
 }
 
@@ -90,6 +92,26 @@ void Message::getMessageWithHeaders(char * mess) const {
     
 }
 
+void Message::setDestIPAddress(const std::string ipAddress) {
+
+    sAddress.sin_addr.s_addr = inet_addr(ipAddress.c_str());
+}
+
+void Message::setSocketAddress(const sockaddr_in & sockAddress) {
+    
+    sAddress = sockAddress;
+}
+
+void Message::setDestPortNumber(const unsigned short &portNumber) {
+    
+    sAddress.sin_port = htons(portNumber);
+}
+
+sockaddr_in Message::getSocketAddress() const {
+    
+    return sAddress;
+}
+
 void Message::setMessageType(const MessageType &type) {
     this->type = type;
 }
@@ -118,7 +140,8 @@ void Message::extractHeaders() {
     for (int i = 0; i < headerCnt; i++) {
         bufferPosition = headers[i].unmarshal(*this, bufferPosition);
     }
-    
+
+        
     startPosition = headerCnt*4;
     
     type = (MessageType)headers[0].getValue();
@@ -134,12 +157,13 @@ std::vector<Message> Message::divide(const size_t & chunkSize) const {
     
     int packetsNumber = ceil(float(messageSize)/ chunkSize);
 
-    std::vector<Message> packets;
+    std::vector<Message> dividedMessages;
     
-    Message packet;
-    packet.setRpcOperation(this->rpcOperation);
-    packet.setRpcRequestID(this->rpcRequestID);
-    packet.setMessageType(this->type);
+    Message singleMessage;
+    singleMessage.setRpcOperation(this->rpcOperation);
+    singleMessage.setRpcRequestID(this->rpcRequestID);
+    singleMessage.setMessageType(this->type);
+    singleMessage.setSocketAddress(this->sAddress);
     
     int messageIndex = 0;
         
@@ -147,17 +171,17 @@ std::vector<Message> Message::divide(const size_t & chunkSize) const {
         
         size_t packetSize = (order == packetsNumber) ? (messageSize - messageIndex) : chunkSize;
         
-        packet.createMessage(packetSize);
+        singleMessage.createMessage(packetSize);
         
         for(int i = 0; i < packetSize; i++) {
-            packet[i] = message[messageIndex++];
+            singleMessage[i] = message[messageIndex++];
         }
         
-        packet.setPacketID(order);
-        packets.push_back(packet);
+        singleMessage.setPacketID(order);
+        dividedMessages.push_back(singleMessage);
     }
     
-    return packets;
+    return dividedMessages;
 }
 
 void Message::combine(std::vector<Message> messages)

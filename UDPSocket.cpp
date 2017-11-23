@@ -55,16 +55,16 @@ void UDPSocket::bind(unsigned short portNumber){
 }
 
 
-int UDPSocket::sendPacket(const Packet& packet){
+int UDPSocket::sendPacket(const Message& sentMessage){
     
-    sockaddr_in destAddress = packet.getSocketAddress();
+    sockaddr_in destAddress = sentMessage.getSocketAddress();
     
-    size_t messageWithHeaderLen = packet.getPacketMessage().getHeaderSize()
-                + packet.getPacketMessage().getMessageSize();
+    size_t messageWithHeaderLen = sentMessage.getHeaderSize()
+                + sentMessage.getMessageSize();
     
     char * messageWithHeader = new char[messageWithHeaderLen];
     
-    packet.getPacketMessage().getMessageWithHeaders(messageWithHeader);
+    sentMessage.getMessageWithHeaders(messageWithHeader);
             
     int status = (int)sendto(socketDesc,
                              messageWithHeader,
@@ -74,40 +74,37 @@ int UDPSocket::sendPacket(const Packet& packet){
     
     sockaddr_in address;
 
-    socklen_t addressLength = sizeof address;
-    
-    getsockname(this->socketDesc, (struct sockaddr *)&address, &addressLength);
-    
-    printf("Sending from port:  %d to port %d\n", ntohs(address.sin_port), ntohs(destAddress.sin_port));
+       socklen_t addressLength = sizeof address;
 
+       getsockname(this->socketDesc, (struct sockaddr *)&address, &addressLength);
+    
+       printf("Sending from port:  %d to port %d\n", ntohs(address.sin_port), ntohs(destAddress.sin_port));
     
     return status;
 }
 
 
-int UDPSocket::recievePacket(Packet & packet)
+int UDPSocket::recievePacket(Message & receivedMessage)
 {
-    sockaddr_in myaddress;
-    socklen_t length = sizeof myaddress;
-    getsockname(this->socketDesc, (struct sockaddr *) &myaddress, &length);
-    
     sockaddr_in senderAddress;
     socklen_t senderLen = sizeof(senderAddress);
     
-    size_t maxLength = 4096;
-    packet.getPacketMessage().createMessage(maxLength);
+    size_t maxLength = 66;
+    receivedMessage.createMessage(maxLength);
 
     int status = (int)recvfrom(this->socketDesc,
-                               packet.getPacketMessage().getMessageBuffer(),
+                               receivedMessage.getMessageBuffer(),
                                maxLength, MSG_WAITALL,
                                (sockaddr *) &senderAddress, &senderLen);
     
-    printf("Received from port number : %d\n", (int)ntohs(senderAddress.sin_port));
+    printf("Received from port number : %d ", (int)ntohs(senderAddress.sin_port));
     
-    packet.setSocketAddress(senderAddress);
+    receivedMessage.setSocketAddress(senderAddress);
     
-    packet.getPacketMessage().extractHeaders();
-                
+    receivedMessage.extractHeaders();
+    
+    printf("Packet ID : %d, Request ID: %d, RPCoperation: %d, Type: %d n", receivedMessage.getPacketID(), receivedMessage.getRpcRequestId(), receivedMessage.getRpcOperation(), receivedMessage.getMessageType());
+    
     return status;
     
 }

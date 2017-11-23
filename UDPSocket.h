@@ -19,8 +19,8 @@ public:
     
     void bind(unsigned short);
 
-    int sendPacket(const Packet&);
-    int recievePacket(Packet &);
+    int sendPacket(const Message&);
+    int recievePacket(Message &);
     
     void shutdown();
     void setTimeOut(int);
