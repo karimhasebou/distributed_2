@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 2.8)
+project( DisplayImage )
+find_package( OpenCV REQUIRED )
+
+FILE(GLOB sources *.cpp */*.cpp)
+include_directories( ${OpenCV_INCLUDE_DIRS} headers)
+list (REMOVE_ITEM sources ${CMAKE_CURRENT_SOURCE_DIR}/main2.cpp)
+list (REMOVE_ITEM sources ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
+#list (REMOVE_ITEM sources ${CMAKE_CURRENT_SOURCE_DIR}/test_callrpc.cpp)
+list (REMOVE_ITEM sources ${CMAKE_CURRENT_SOURCE_DIR}/test_stub_recv.cpp)
+
+list( APPEND CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread -Wall -g -ftest-coverage -fprofile-arcs")
+add_executable(client ${sources})
+target_link_libraries(client ${OpenCV_LIBS} )
+
+#add_executable(server ${sources})
+#target_link_libraries( server ${OpenCV_LIBS} )
+
