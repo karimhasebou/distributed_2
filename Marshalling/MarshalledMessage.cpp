@@ -32,6 +32,7 @@ MarshalledMessage::~MarshalledMessage() {
 
 MarshalledMessage& MarshalledMessage::operator=(const MarshalledMessage & other) {
     
+    puts("IAM FUCKHERERER");
     copyMessageArray(other.message, other.messageSize);
     startPosition = other.startPosition;
     return *this;
@@ -75,7 +76,9 @@ void MarshalledMessage::copyMessageArray(char * message, size_t messageSize) {
     
     this->messageSize = messageSize;
     this->message = new char[messageSize];
-    this->startPosition = 0;
+    puts("HEWWHEHWEHwhe");
+
+    size_t actualMessageSize = sizeof message;
     
     for (int i = 0; i < messageSize; i++) {
         this->message[i] = message[i];
