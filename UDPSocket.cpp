@@ -121,7 +121,7 @@ int UDPSocket::recievePacket(Message & receivedMessage)
     printf("received %d bytes myport <== %d ; pid %d rid %d rpco %d t %d\n",
         status, (int)ntohs(senderAddress.sin_port), pid, rid, rpco, t);
     for (int i = 16; i < status; ++i) {
-        printf("%d ", (int)receivedMessage.getMessageBuffer()[i]);
+        printf("%#x ", (int)receivedMessage.getMessageBuffer()[i]);
     }
     printf("\n");
     

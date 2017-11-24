@@ -11,15 +11,108 @@
 
 using namespace std;
 
-
-void canUpdateCount(Message)
+//returns username of currently logged-in user
+void isOnline(Message request)
 {
+	string currentlyLoggedIn = getLoggedUsername();
+
+	if(currentlyLoggedIn.size() > 0){
+		vector<CustomObject*> marshallingVector;
+
+		CustomString *customImage = new CustomString;
+		customImage->setValue(currentlyLoggedIn);
+
+		marshallingVector.push_back(customImage);
+
+		MarshalledMessage marshalledMsg;
+		marshal(marshalledMsg, marshallingVector);
+		
+		Message replyMessage(marshalledMsg);
+		replyMessage.setSocketAddress(request.getSocketAddress());
+		replyMessage.setMessageType(Reply);
+		replyMessage.setRpcRequestID(request.getRpcRequestId());
+		replyMessage.setRpcOperation(request.getRpcOperation());
+
+		MySocket socket;
+		socket.bind(0);
+
+		socket.reply(replyMessage);
+	}
+}
+
+// checks server db for given credentials
+// incomplete
+void serverLogin(Message request)
+{
+	vector<CustomObject*> marshallingVector;
+	marshallingVector.push_back(new CustomString());
+	unmarshal(request, marshallingVector);
+
+	string username = ((CustomString*) marshallingVector[0])->getValue();
+	string password = ((CustomString*) marshallingVector[1])->getValue();
+
 
 }
 
-void updateCount(Message)
+void canUpdateCount(Message request)
 {
+	vector<CustomObject*> marshallingVector;
+	marshallingVector.push_back(new CustomString());
+	unmarshal(request, marshallingVector);
 
+	string imagename = ((CustomString*) marshallingVector[0])->getValue();
+	string username = ((CustomString*) marshallingVector[1])->getValue();
+
+	CustomBool *wasUpdated = new CustomBool();
+	wasUpdated->setValue(canUpdateCount(imagename, username));
+
+	marshallingVector.clear();
+	marshallingVector.push_back(wasUpdated);
+
+	MarshalledMessage marshalledMsg;
+	marshal(marshalledMsg, marshallingVector);
+	
+	Message replyMessage(marshalledMsg);
+    replyMessage.setSocketAddress(request.getSocketAddress());
+	replyMessage.setMessageType(Reply);
+    replyMessage.setRpcRequestID(request.getRpcRequestId());
+    replyMessage.setRpcOperation(request.getRpcOperation());
+
+	MySocket socket;
+    socket.bind(0);
+
+	socket.reply(replyMessage);
+}
+
+void updateCount(Message request)
+{
+	vector<CustomObject*> marshallingVector;
+	marshallingVector.push_back(new CustomString());
+	unmarshal(request, marshallingVector);
+
+	string imagename = ((CustomString*) marshallingVector[0])->getValue();
+	string username = ((CustomString*) marshallingVector[1])->getValue();
+	int viewCount = ((CustomInt*) marshallingVector[2])->getValue();
+
+	CustomBool *wasUpdated = new CustomBool();
+	wasUpdated->setValue(updateCount(imagename, username, viewCount));
+
+	marshallingVector.clear();
+	marshallingVector.push_back(wasUpdated);
+
+	MarshalledMessage marshalledMsg;
+	marshal(marshalledMsg, marshallingVector);
+	
+	Message replyMessage(marshalledMsg);
+    replyMessage.setSocketAddress(request.getSocketAddress());
+	replyMessage.setMessageType(Reply);
+    replyMessage.setRpcRequestID(request.getRpcRequestId());
+    replyMessage.setRpcOperation(request.getRpcOperation());
+
+	MySocket socket;
+    socket.bind(0);
+
+	socket.reply(replyMessage);
 }
 
 void getImage(Message imgMsg)
@@ -117,33 +210,4 @@ void getAccessibleImages(Message msg)
     socket.bind(0);
 
 	socket.reply(replyMessage);	
-
-	// string username;
-	// CustomString* mName;
-	// MarshalledMessage mmsg;
-	// vector <CustomObject*> args = {new CustomString()};
-	// mmsg = (MarshalledMessage)packet.getPacketMessage();
-	// unmarshal(mmsg, args);
-	// mName = dynamic_cast<CustomString*>(args[0]);
-	// username = mName->getValue();
-
-	// vector<string> imageList;
-	// imageList = getAccessibleImages(username);
-
-	// CustomVector* returnVal = new CustomVector();
-	// for (string& img : imageList) {
-	// 	returnVal->push_back(img);
-	// }
-	// vector <CustomObject*> reply = {returnVal}; // to be checked
-	// MarshalledMessage rmmsg;
-	// marshal(rmmsg, reply);
-	// Message rmsg(rmmsg);
-	// rmsg.setRpcOperation(0);
-	// rmsg.setRpcRequestID(0);
-
-	// MySocket socket;
-	// int port = 40000;
-	// socket.bind(port);
-	// packet.setPacketMessage(rmsg);
-	// socket.reply(packet);
 }
