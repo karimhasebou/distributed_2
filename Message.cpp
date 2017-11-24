@@ -212,27 +212,27 @@ void Message::combine(std::vector<Message> messages)
     message = new char[packetsSize];
     messageSize = packetsSize;
 
-    printf("\n");
-    printf("p1 startPosition %d, p2 sp %d\n", messages[0].startPosition, messages[1].startPosition);
-    for (int i = 0; i < 1000; ++i)
-    {
-        printf("%d ", (int) messages[0][i]);
-    }
+    // printf("\n");
+    // printf("p1 startPosition %d, p2 sp %d\n", messages[0].startPosition, messages[1].startPosition);
+    // for (int i = 0; i < 1000; ++i)
+    // {
+    //     printf("%d ", (int) messages[0][i]);
+    // }
 
-    printf("\n");
+    // printf("\n");
 
-    printf("Message Size: %d\n", (int)messages[1].getMessageSize());
-    for (int i = 0; i < 1000; ++i)
-    {
-        printf("%d ", (int)messages[1][i]);
-    }
-    printf("\n");
+    // printf("Message Size: %d\n", (int)messages[1].getMessageSize());
+    // for (int i = 0; i < 1000; ++i)
+    // {
+    //     printf("%d ", (int)messages[1][i]);
+    // }
+    // printf("\n");
 
-    for (int i = 0; i < 504; ++i)
-    {
-        printf("%d ", (int)messages[2][i]);
-    }
-    printf("\n\n\n");
+    // for (int i = 0; i < 504; ++i)
+    // {
+    //     printf("%d ", (int)messages[2][i]);
+    // }
+    // printf("\n\n\n");
 
     int offset = 0;
     for (int i = 0; i < messages.size(); ++i)
@@ -243,11 +243,11 @@ void Message::combine(std::vector<Message> messages)
         // memcpy(message + offset, messages[i].message + 16, messages[i].messageSize);
         offset += messages[i].messageSize - messages[i].getHeaderSize();
     }
-    for (int i = 0; i < 2520; ++i)
-    {
-        printf("%d ", message[i]);
-    }
-    printf("\n");
+    // for (int i = 0; i < 2520; ++i)
+    // {
+    //     printf("%d ", message[i]);
+    // }
+    // printf("\n");
     
     this->setRpcOperation(messages[0].rpcOperation);
     this->setRpcRequestID(messages[0].rpcRequestID);
