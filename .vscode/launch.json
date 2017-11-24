@@ -5,7 +5,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/home/hasebou/Desktop/Distributed_hw1/server",
+            "program": "/home/omar_nawawy/Downloads/dist/distributed_2.1.1.1/client",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",

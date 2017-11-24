@@ -4,7 +4,7 @@
 #include "Message.h"
 #include "UDPSocket.h"
 #include <vector>
-#define CHUNK_SIZE 50   // adjust
+#define CHUNK_SIZE 1000   // adjust
 #define MAX_RESEND 40       // adjust
 #define MAX_RESEND_PACK 10  // adjust
 #define MAX_REQUESTS 10     // adjust

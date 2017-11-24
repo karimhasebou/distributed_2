@@ -1,5 +1,19 @@
 #include "RequestHandler.h"
 
+
+deque<Message> requestQueue;
+set<int> executingRPC;
+map<int, Handler> requestHandlers;
+
+//thread threadPool[THREAD_COUNT];
+MySocket requestSocket;
+mutex requestQueueMtx, executingRPCMtx;
+condition_variable isRequestQueueEmpty;
+bool shouldShutdown = false;
+
+thread threadPool[THREAD_COUNT];
+thread requestListener;
+
 /**
  * #include "requestHandler.h"
  * #include 
@@ -15,10 +29,10 @@ void initRequestHandler()
     requestSocket.bind(LISTENER_PORT);
 
     for(int i = 0; i < THREAD_COUNT; ++i){
-        thread threadPool(processRequest);
+        threadPool[i] = thread(processRequest);
     }
 
-    thread requestListener(handleRequests);
+    requestListener = thread(handleRequests);
 }
 
 void shutdown()
@@ -31,9 +45,15 @@ void handleRequests()
 {
     while(!shouldShutdown){
         Message msg;
-        if(requestSocket.recvFrom(msg) == Success){
+        puts("waiting for incoming requests zzz");
+        if(requestSocket.recvFrom(msg) >= 0){
+            puts("received msg");
             //msg.extractHeaders();  done in socket class
             pushToQueue(msg);
+            puts("pushed to queue");
+        }
+        else {
+            puts("received request is bad :'(");
         }
     }
 }

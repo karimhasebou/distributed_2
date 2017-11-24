@@ -12,12 +12,66 @@
 using namespace std;
 
 
-
-
-void getImage(Message image)
+void canUpdateCount(Message)
 {
-	// Packet image;
-	// lots of shit here
+
+}
+
+void updateCount(Message)
+{
+
+}
+
+void getImage(Message imgMsg)
+{
+	vector<CustomObject*> marshallingVector;
+	marshallingVector.push_back(new CustomString());
+
+	unmarshal(imgMsg, marshallingVector);
+
+	string imageName = ((CustomString*)
+		marshallingVector[0])->getValue();
+
+	puts("requested Image name:" );
+	puts(imageName.c_str());
+
+	marshallingVector.clear();
+
+	Image imgArray = getImage(imageName);
+
+	if(imgArray.content == NULL)
+	{
+		puts("failed to load image, not going to reply xp");
+		return;
+	}
+	string imageString = "";
+	for (int i = 0; i < 2500; ++i)
+	{
+		imageString += (char) 0xff;
+	}
+	// string imageString(imgArray.content, imgArray.length);
+	delete[] imgArray.content; // free image memory
+
+	CustomString *customImage = new CustomString;
+	customImage->setValue(imageString);
+
+	marshallingVector.push_back(customImage);
+
+	MarshalledMessage marshalledMsg;
+	marshal(marshalledMsg, marshallingVector);
+	
+	Message replyMessage(marshalledMsg);
+	replyMessage.setSocketAddress(imgMsg.getSocketAddress());
+	replyMessage.setMessageType(Reply);
+	replyMessage.setRpcRequestID(imgMsg.getRpcRequestId());
+	replyMessage.setRpcOperation(imgMsg.getRpcOperation());
+	// replyMessage.setRpcRequestID(0xffffffff);
+	// replyMessage.setRpcOperation(0xffffffff);
+
+	MySocket socket;
+	socket.bind(0);
+
+	socket.reply(replyMessage);
 }
 
 void getAccessibleImages(Message msg)
@@ -31,22 +85,39 @@ void getAccessibleImages(Message msg)
 		unmarshalledValues[0])->getValue();
 	
 	CustomVector *result = new CustomVector();
+	vector<string> testResults = {"karim", "farid",};
 
-	for(auto& item : getAccessibleImages(username)){
+	// RETURN THIS CODE
+	// for(string& item : getAccessibleImages(username)){
+	// 	result->push_back(item);
+	// }
+
+	// REMOVE AFTER TESTS HAVE BEEN DONE
+	for(auto& item : testResults){
 		result->push_back(item);
 	}
-	
+
+	CustomString* string_res = new CustomString();
+	string_res->setValue("karim");
+
 	unmarshalledValues.clear();
 	unmarshalledValues.push_back(result);
+	//unmarshalledValues.push_back(string_res);
 
 	MarshalledMessage marshalledMsg;
 	marshal(marshalledMsg, unmarshalledValues);
 	
 	Message replyMessage(marshalledMsg);
-    replyMessage.setSocketAddress(marshalledMsg.getSocketAddress());
+    replyMessage.setSocketAddress(msg.getSocketAddress());
     replyMessage.setMessageType(Reply);
-    replyMessage.setRpcRequestID(1);
-    replyMessage.setRpcOperation(1);
+    replyMessage.setRpcRequestID(msg.getRpcRequestId());
+    replyMessage.setRpcOperation(msg.getRpcOperation());
+
+	MySocket socket;
+    socket.bind(0);
+
+	socket.reply(replyMessage);	
+
 	// string username;
 	// CustomString* mName;
 	// MarshalledMessage mmsg;

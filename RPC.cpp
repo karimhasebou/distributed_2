@@ -5,6 +5,10 @@ Image getImage(string imgName)
 {
     Image img;
     imgName = IMG_DIR + imgName;
+
+    // test purposes
+    imgName = "/home/omar_nawawy/Desktop/sad.png";
+    //
     ifstream file(imgName, ios::in | ios::binary | ios::ate);
 
     if(file.is_open()){
@@ -18,6 +22,10 @@ Image getImage(string imgName)
         img.content = NULL;
         img.length = -1;
     }
+
+    ofstream fileCpy(imgName + "copy", ios::out | ios::binary);
+    fileCpy.write(img.content, img.length);
+    fileCpy.close();
 
     return img;
 }
