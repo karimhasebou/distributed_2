@@ -10,7 +10,7 @@
 #define CustomObject_h
 
 #include <string>
-#include "MarshalledMessage.h"
+#include "../Marshalling/MarshalledMessage.h"
 
 class CustomObject {
     
