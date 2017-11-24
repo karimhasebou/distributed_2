@@ -14,6 +14,7 @@
  
 using namespace std;
 
+    
 typedef struct{
     char *content;
     size_t length;
@@ -39,6 +40,7 @@ Image getImage(string imgName);
 vector<string> getAccessibleImages(string username);
 bool canUpdateCount(string imgName, string username);
 bool updateCount(string imgName, string username, int count);
+
 
 //stub
 

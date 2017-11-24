@@ -13,19 +13,9 @@
 
 
 #define THREAD_COUNT 10
-#define LISTENER_PORT 64000
+#define LISTENER_PORT 63000
 using namespace std;
-typedef  Message (*Handler)(Message);
-
-deque<Message> requestQueue;
-set<int> executingRPC;
-map<int, Handler> requestHandlers;
-
-//thread threadPool[THREAD_COUNT];
-MySocket requestSocket;
-mutex requestQueueMtx, executingRPCMtx;
-condition_variable isRequestQueueEmpty;
-bool shouldShutdown = false;
+typedef  void (*Handler)(Message);
 
 void registerRequestHandler(int operationID, Handler);
 void initRequestHandler();

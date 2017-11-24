@@ -11,6 +11,7 @@
 #include <math.h>
 #include "CustomObjects/CustomInt.h"
 #include <cstring>
+#include <fstream>
 
 Message::Message() :headerCount(4){}
 
@@ -95,6 +96,9 @@ void Message::getMessageWithHeaders(char * mess) const {
 void Message::setDestIPAddress(const std::string ipAddress) {
 
     sAddress.sin_addr.s_addr = inet_addr(ipAddress.c_str());
+    sAddress.sin_family = AF_INET;
+    // sAddress.sin_addr.s_addr = inet_addr("127.0.0.1");
+
 }
 
 void Message::setSocketAddress(const sockaddr_in & sockAddress) {
@@ -156,6 +160,9 @@ void Message::extractHeaders() {
 
 std::vector<Message> Message::divide(const size_t & chunkSize) const {
     
+        img.length
+
+
     int packetsNumber = ceil(float(messageSize)/ chunkSize);
 
     std::vector<Message> dividedMessages;
@@ -170,7 +177,8 @@ std::vector<Message> Message::divide(const size_t & chunkSize) const {
         
     for (int order = 1; order <= packetsNumber; order++) {
         
-        size_t packetSize = (order == packetsNumber) ? (messageSize - messageIndex) : chunkSize;
+        size_t packetSize = (order == packetsNumber) ? 
+            (messageSize - messageIndex) : chunkSize;
         
         singleMessage.createMessage(packetSize);
         
@@ -179,6 +187,8 @@ std::vector<Message> Message::divide(const size_t & chunkSize) const {
         }
         
         singleMessage.setPacketID(order);
+        singleMessage.setRpcOperation(this->rpcOperation);
+        singleMessage.setRpcRequestID(this->rpcRequestID);
         dividedMessages.push_back(singleMessage);
     }
     
@@ -190,7 +200,6 @@ void Message::combine(std::vector<Message> messages)
     size_t packetsSize = 0;
     
     for(int i = 0; i < messages.size(); ++i) {
-        
         packetsSize += messages[i].messageSize;
     }
     
@@ -201,6 +210,7 @@ void Message::combine(std::vector<Message> messages)
     for (int i = 0; i < messages.size(); ++i)
     {
         memcpy(message + offset, messages[i].message + messages[i].startPosition, messages[i].messageSize);
+        // memcpy(message + offset, messages[i].message + 16, messages[i].messageSize);
         offset += messages[i].messageSize;
     }
     
