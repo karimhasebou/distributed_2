@@ -7,7 +7,7 @@ Image getImage(string imgName)
     imgName = IMG_DIR + imgName;
 
     // test purposes
-    imgName = "/home/omar_nawawy/Desktop/sad.png";
+    imgName = "/Users/faridaeid/Desktop/Desktop/Project Files/GitHub/distributed_2/circle.png";
     //
     ifstream file(imgName, ios::in | ios::binary | ios::ate);
 

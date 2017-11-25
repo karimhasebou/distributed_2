@@ -13,14 +13,12 @@
 MarshalledMessage::MarshalledMessage(const MarshalledMessage& other) {
     
     copyMessageArray(other.message, other.messageSize);
-    startPosition = other.startPosition;
     
 }
 
 MarshalledMessage::MarshalledMessage() {
     
     this->message = NULL;
-    this->startPosition = 0;
 }
 
 MarshalledMessage::~MarshalledMessage() {
@@ -32,9 +30,7 @@ MarshalledMessage::~MarshalledMessage() {
 
 MarshalledMessage& MarshalledMessage::operator=(const MarshalledMessage & other) {
     
-    puts("IAM FUCKHERERER");
     copyMessageArray(other.message, other.messageSize);
-    startPosition = other.startPosition;
     return *this;
 }
 
@@ -65,20 +61,17 @@ void MarshalledMessage::fillMessage(char * message) {
 
 char& MarshalledMessage::operator[](int index) {
     
-    if (index + startPosition >= messageSize) {
+    if (index >= messageSize) {
         throw("Bad aceess");
     }
     
-    return this->message[index + startPosition];
+    return this->message[index];
 }
 
 void MarshalledMessage::copyMessageArray(char * message, size_t messageSize) {
     
     this->messageSize = messageSize;
     this->message = new char[messageSize];
-    puts("HEWWHEHWEHwhe");
-
-    size_t actualMessageSize = sizeof message;
     
     for (int i = 0; i < messageSize; i++) {
         this->message[i] = message[i];

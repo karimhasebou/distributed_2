@@ -44,12 +44,14 @@ void getImage(Message imgMsg)
 		puts("failed to load image, not going to reply xp");
 		return;
 	}
-	// string imageString = "";
-	// for (int i = 0; i < 1500; ++i)
-	// {
-	// 	imageString += (char) 0xaa;
-	// }
-	string imageString(imgArray.content, imgArray.length);
+    
+	 string imageString = "";
+	 for (int i = 0; i < 2500; ++i)
+	 {
+	 	imageString += (char) 0xff;
+	 }
+    
+//	string imageString(imgArray.content, imgArray.length);
 	delete[] imgArray.content; // free image memory
 
 	CustomString *customImage = new CustomString;

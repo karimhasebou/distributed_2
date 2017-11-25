@@ -16,7 +16,6 @@ class MarshalledMessage {
 protected:
     char * message;
     size_t messageSize;
-    int startPosition;
     void copyMessageArray(char *, size_t);
     
 public:

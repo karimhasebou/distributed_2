@@ -67,7 +67,7 @@ int main() {
     CustomString* returnString = dynamic_cast<CustomString*> (returnValues[0]);
     //puts(returnString->getValue().c_str());
 
-    std::ofstream file("myrecievedImage.png", std::ofstream::binary);
+    std::ofstream file("../myrecievedImage.png", std::ofstream::binary);
     
     if(file.is_open()){
         file.write(returnString->getValue().c_str(),

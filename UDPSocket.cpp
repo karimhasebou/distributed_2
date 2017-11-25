@@ -73,16 +73,11 @@ int UDPSocket::sendPacket(const Message& sentMessage){
                              (sockaddr *) & destAddress,
                              sizeof(destAddress));
     
-    sockaddr_in address;
-    socklen_t addressLength = sizeof address;
-    getsockname(this->socketDesc, (struct sockaddr *)&address, &addressLength);
-    
     char str[3 * 4 + 3];
     inet_ntop(AF_INET, &ipAddr, str, 3 * 4 + 3 );
 
-
     printf("sending to %s port %d ==> %d status %d errno %d\n"
-    , str, ntohs(address.sin_port), ntohs(destAddress.sin_port), status, errno  );
+    , str, ntohs(destAddress.sin_port), ntohs(destAddress.sin_port), status, errno  );
     
     return status;
 }
@@ -100,14 +95,10 @@ int UDPSocket::recievePacket(Message & receivedMessage)
     socklen_t addressLength = sizeof address;
     getsockname(this->socketDesc, (struct sockaddr *)&address, &addressLength);
 
-    // printf("port %d waiting zzz\n", ntohs(address.sin_port));
-
     int status = (int)recvfrom(this->socketDesc,
                                receivedMessage.getMessageBuffer(),
                                maxLength, MSG_WAITALL,
                                (sockaddr *) &senderAddress, &senderLen);
-    
-    // printf("Received from port number : %d\n", (int)ntohs(senderAddress.sin_port));
     
     receivedMessage.setSocketAddress(senderAddress);
     
@@ -120,10 +111,6 @@ int UDPSocket::recievePacket(Message & receivedMessage)
     
     printf("received %d bytes myport <== %d ; pid %d rid %d rpco %d t %d\n",
         status, (int)ntohs(senderAddress.sin_port), pid, rid, rpco, t);
-    for (int i = 16; i < status; ++i) {
-        printf("%d ", (int)receivedMessage.getMessageBuffer()[i]);
-    }
-    printf("\n");
     
     return status;
     
