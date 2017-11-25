@@ -10,6 +10,13 @@
 #include "CustomInt.h"
 #include "CustomString.h"
 
+CustomVector::CustomVector(const std::vector<std::string>& other) {
+    
+    for (int i = 0; i < other.size(); i++) {
+        
+        this->value.push_back(other[i]);
+    }
+}
 
 void CustomVector::push_back(const std::string & str) {
     this->value.push_back(str);

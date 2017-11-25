@@ -18,6 +18,7 @@ private:
     
 public:
     CustomVector(){}
+    CustomVector(const std::vector<std::string>&);    
     void push_back(const std::string&);
     std::vector<std::string> getValue();
     std::string& operator[](int);

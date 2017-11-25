@@ -1,5 +1,6 @@
 #include "HomePage.h"
 #include "../ui_HomePage.h"
+#include "../RPC/RpcCalls.h"
 
 int views = 5; //global for now
 
@@ -78,25 +79,15 @@ void HomePage::on_viewImageButton_clicked()
 
 void HomePage::on_getImagesButton_clicked()
 {
+    
+    std::vector<std::string> IPAddresses =  client::getIPAddress();
+
+   // std::string username =  client::getUsername("10.40.48.60");
+    
+  //  printf("Found Username: %s ", username.c_str());
+
+    
     /*
-     
-     std::vector<std::string> get_connected_peers()
-     {
-     
-     //Messagetype = request
-     //id = 1
-     
-     //msg = marshall(Messagetype, id)
-     
-     //sendto msg server
-     
-     //rcvfrom server the vector of connected peers
-     
-     //unmarshal recieved msg
-     
-     return vector
-     }
-     
      vector<pair<int, std::string>> getImagesList()
      {
      for(int i = 0; i < ip_addresses.size(); i++)
@@ -116,20 +107,15 @@ void HomePage::on_getImagesButton_clicked()
      
      //Loop over vector
      //makepair<i, vector[iter]>
-     
-     
      }
      
      }
-     
-     
-     
-     
-     
      */
+    
     
     model = new QStringListModel(this);
     QStringList List;
+    
     List << "nawawy.jpg" << "farida.jpg" << "karim.jpg";
     // Populate our model
     model->setStringList(List);

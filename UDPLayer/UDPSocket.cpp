@@ -49,9 +49,16 @@ void UDPSocket::bind(unsigned short portNumber){
         ::bind(socketDesc, (struct sockaddr*)&address, sizeof address);
 
     }
+//    sockaddr_in myAddressIn;
+//    address.sin_addr.s_addr = htonl(INADDR_ANY);
+    in_addr myAddress = address.sin_addr;
     
-    printf("Created New Socket, Port Number : %d\n", (int)ntohs(address.sin_port));
-
+    char myIPChar[3 * 4 + 3];
+    inet_ntop(AF_INET, &myAddress, myIPChar, 3 * 4 + 3 );
+    
+    printf("Created New Socket, Port Number : %d ", (int)ntohs(address.sin_port));
+    printf("My IP adrress is %s\n", myIPChar);
+    
 }
 
 

@@ -14,3 +14,13 @@ LoginStatus authserver::login(std::string username, std::string password) {
     return (LoginStatus)checkInDatabase(username, password);
 
 }
+
+std::vector<std::string> authserver::getIPAddress()
+{
+    return getOnlinePeers();
+}
+
+std::string authserver::getUsername(std::string IPAddress)
+{
+    return getUserNamefromIP(IPAddress);
+}

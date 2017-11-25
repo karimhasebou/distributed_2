@@ -17,6 +17,9 @@ int main() {
     readDatabase();
 
     addRequestHandler(1, login);
+    addRequestHandler(2, getIPAddress);
+    addRequestHandler(3, getUsername);
+    
     initRequestHandler(63000);
 
     std::this_thread::sleep_for(std::chrono::seconds(300));

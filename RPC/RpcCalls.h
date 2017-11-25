@@ -31,12 +31,14 @@ namespace client {
     
     LoginStatus login(std::string, std::string);
     std::vector<std::string> getIPAddress();
+    std::string getUsername(std::string);
     
 }
 
 namespace authserver {
     LoginStatus login(std::string, std::string);
     std::vector<std::string> getIPAddress();
+    std::string getUsername(std::string);
 }
 
 

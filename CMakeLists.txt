@@ -99,7 +99,7 @@ ${ALL_HDR})
 
 source_group(Marshalling FILES ${MAR_SRC} ${MAR_HDR})
 source_group(UDPLayer FILES ${UDP_SRC} ${UDP_HDR})
-source_group(RPC FILES ${RPC_SRC} ${RPC_HDR})
+source_group(RPC FILES ${RPC_AUTH_SRC} ${RPC_SRV_SRC} ${RPC_HDR})
 source_group(Pages FILES ${PAG_SRC} ${PAG_HDR})
 source_group(CustomObjects FILES ${CUST_SRC} ${CUST_HDR})
 source_group(Database FILES ${DB_SRC} ${DB_HDR})
