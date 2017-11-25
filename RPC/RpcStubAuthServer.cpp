@@ -46,13 +46,15 @@ Message login(Message& messageParamters) {
 
 Message getIPAddress(Message& messageParamters) {
     
-    CustomVector * ipAddresses = new CustomVector(authserver::getIPAddress());
+    struct in_addr senderIPAddress = messageParamters.getSocketAddress().sin_addr;
     
-    struct in_addr ipAddr = messageParamters.getSocketAddress().sin_addr;
-    char myIPChar[15];
-    inet_ntop(AF_INET, &ipAddr, myIPChar, 15);
+    char senderAddressChar[15];
     
-    printf("My IP adrress is %s\n", myIPChar);
+    inet_ntop(AF_INET, &senderIPAddress, senderAddressChar , 15);
+    
+    std::string senderAddressString(senderAddressChar);
+    
+    CustomVector * ipAddresses = new CustomVector(authserver::getIPAddress(senderAddressString));
     
     std::vector<CustomObject*> returnValues = {dynamic_cast<CustomObject*>(ipAddresses)};
     
@@ -74,7 +76,6 @@ Message getUsername(Message& messageParamters)
     std::string IPAddress = (dynamic_cast<CustomString *>(parameters[0]))->getValue();
 
     std::string username_val = authserver::getUsername(IPAddress);
-    
     
     CustomString * username = new CustomString((std::string)username_val);
     

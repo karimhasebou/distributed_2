@@ -15,9 +15,17 @@ LoginStatus authserver::login(std::string username, std::string password) {
 
 }
 
-std::vector<std::string> authserver::getIPAddress()
+std::vector<std::string> authserver::getIPAddress(const std::string& senderAddress)
 {
-    return getOnlinePeers();
+    std::vector<std::string> onlineList = getOnlinePeers();
+    
+    for (int i = 0; i < onlineList.size(); i++) {
+        if (senderAddress == onlineList[i]) {
+            onlineList.erase(onlineList.begin() + i);
+        }
+    }
+    
+    return onlineList;
 }
 
 std::string authserver::getUsername(std::string IPAddress)

@@ -37,7 +37,7 @@ namespace client {
 
 namespace authserver {
     LoginStatus login(std::string, std::string);
-    std::vector<std::string> getIPAddress();
+    std::vector<std::string> getIPAddress(const std::string&);
     std::string getUsername(std::string);
 }
 
