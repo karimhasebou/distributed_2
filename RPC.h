@@ -41,8 +41,8 @@ vector<string> getAccessibleImages(string username);
 bool canUpdateCount(string imgName, string username);
 bool updateCount(string imgName, string username, int count);
 
-
-//stub
+// returns empty string if no user is currently logged in
+string getLoggedUsername();
 
 
 #endif

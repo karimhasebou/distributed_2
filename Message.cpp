@@ -209,6 +209,9 @@ void Message::combine(std::vector<Message> messages)
     for(int i = 0; i < messages.size(); ++i) {
         packetsSize += messages[i].messageSize;
     }
+    
+    message = new char[packetsSize];
+    messageSize = packetsSize;
 
     int offset = 0;
     for (int i = 0; i < messages.size(); ++i) {

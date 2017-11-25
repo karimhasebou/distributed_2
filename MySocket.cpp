@@ -54,7 +54,7 @@ int MySocket::reply(const Message& sentMessage) {
     
     dividedMessage[dividedMessage.size() - 1].setMessageType(Last);
     
-    for (int part = 0; part < dividedMessage.size() && !stopProcess; part++) {
+    for (int part = 0; part < int(dividedMessage.size()) && !stopProcess; part++) {
         
         int sentPacketCount = 0;
         
@@ -97,7 +97,7 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
         return PacketFailure;
     }
     
-    int received = 1;
+    //int received = 1;
     
     vector<Message> messages;
     
@@ -105,52 +105,34 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
     ackMessage.createMessage(0);
     ackMessage.setMessageType(Acknowledgement);
     ackMessage.setSocketAddress(receivedMessage.getSocketAddress());
-    messages.push_back(receivedMessage);
-    socket.sendPacket(ackMessage);
-    Message msg2;
-    socket.recievePacket(msg2);
-    socket.sendPacket(ackMessage);
-    messages.push_back(msg2);
-    Message msg3;
-    socket.recievePacket(msg3);
-    socket.sendPacket(ackMessage);
-    messages.push_back(msg3);
-    
 
-
-    fullMessage.combine(messages);
-    return Success;
-
-
-
-    // do {
+    do {
         
-    //     messages.push_back(*receivedMessage);
+        messages.push_back(receivedMessage);
         
-    //     printf("Sending Acknowledgement packet\n\n");
+        printf("Sending Acknowledgement packet\n\n");
         
-    //     socket.sendPacket(ackMessage);
+        socket.sendPacket(ackMessage);
         
-    //     if (receivedMessage->getMessageType() == Last) {
+        if (receivedMessage.getMessageType() == Last) {
             
-    //         fullMessage.combine(messages);
+            fullMessage.combine(messages);
                         
-    //         return Success;
+            return Success;
             
-    //     }
-    //     receivedMessage = new Message;
-    //     status = -1;
+        }
+        status = -1;
         
-    //     int packetResend = 0;
+        int packetResend = 0;
         
-    //     while(status == -1 && packetResend++ < MAX_RESEND_PACK) {
+        while(status == -1 && packetResend++ < MAX_RESEND_PACK) {
             
-    //         status = socket.recievePacket(*receivedMessage);
+            status = socket.recievePacket(receivedMessage);
             
-    //         // printf("Packet received %d", ++received);
+            // printf("Packet received %d", ++received);
             
-    //     }
-    // }while(status != -1);
+        }
+    }while(status != -1);
 
     
     return StreamFailure;

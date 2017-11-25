@@ -1,5 +1,9 @@
 #include "RPC.h"
 
+string getLoggedUsername()
+{
+    return ""; // tmp
+}
 
 Image getImage(string imgName)
 {
@@ -7,8 +11,9 @@ Image getImage(string imgName)
     imgName = IMG_DIR + imgName;
 
     // test purposes
+
     imgName = "/Users/faridaeid/Desktop/Desktop/Project Files/GitHub/distributed_2/circle.png";
-    //
+
     ifstream file(imgName, ios::in | ios::binary | ios::ate);
 
     if(file.is_open()){
@@ -36,7 +41,7 @@ vector<string> listImages()
     vector<string> imageList;
 
     ifstream file(IMG_LIST_FILE, ios::in);
-    bool eof = false;
+    //bool eof = false;
 
     while(file.is_open()) {
         string img;
@@ -53,9 +58,17 @@ vector<string> listImages()
     return imageList;
 }
 
+void hideInfoInImage(string imagename)
+{
+    string exec_command = "/usr/bin/steghide embed -cf ";
+    exec_command += imagename +" -ef "+AUTHORIZED_USERS+" -p root";
+
+    FILE *exec_steghide = popen(exec_command.c_str(), "w");
+    pclose(exec_steghide);
+}
+
 void unstegUserList(string filePath)
 {
-    
     string exec_command = "/usr/bin/steghide extract -sf ";
     exec_command += filePath + " -p root";
 
@@ -129,7 +142,6 @@ map<string, int> readAuthorizedUsersDB()
     map<string, int> list;
 
     ifstream file(IMG_LIST_FILE, ios::in);
-    bool eof = false;
 
     while(file.is_open()) {
         string username;
