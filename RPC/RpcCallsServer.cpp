@@ -6,8 +6,11 @@
 //  Copyright © 2017 Farida Eid. All rights reserved.
 //
 
-#include <stdio.h>
 #include "RpcCalls.h"
+
+#define IMG_DIR ""
+#define IMG_LIST_FILE ""
+#define AUTHORIZED_USERS ""
 
 using namespace std;
 
@@ -205,5 +208,10 @@ void updateCountInImage(map<string, int> list)
 
         imageListFile.close();
     }
+}
+
+std::string server::pingUser()    //change
+{
+        return "s";
 }
 

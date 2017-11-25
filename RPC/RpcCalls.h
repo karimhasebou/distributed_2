@@ -25,10 +25,6 @@
 #include "../Marshalling/MarshallingManager.h"
 #include "../UDPLayer/Message.h"
 
-#define IMG_DIR ""
-#define IMG_LIST_FILE ""
-#define AUTHORIZED_USERS ""
-
 enum LoginStatus {
     loginSucess = 1,
     wrongPassword = 2,
@@ -46,8 +42,7 @@ namespace server{
     std::vector<std::string> getAccessibleImages(const std::string&);
     bool canUpdateCount(std::string, std::string);
     bool updateCount(std::string, std::string, int);
-
-    std::string pingUser(){return "s";}     //change
+    std::string pingUser();     //change
 }
 
 namespace client {
