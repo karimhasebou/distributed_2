@@ -1,18 +1,6 @@
 #include "RequestHandler.h"
 
 
-deque<Message> requestQueue;
-set<int> executingRPC;
-map<int, Handler> requestHandlers;
-
-//thread threadPool[THREAD_COUNT];
-MySocket requestSocket;
-mutex requestQueueMtx, executingRPCMtx;
-condition_variable isRequestQueueEmpty;
-bool shouldShutdown = false;
-
-thread threadPool[THREAD_COUNT];
-thread requestListener;
 
 /**
  * #include "requestHandler.h"
@@ -23,16 +11,33 @@ thread requestListener;
  * 
  */
 
+deque<Message> requestsQueue;
+set<int> executingRPC;
+map<int, Handler> requestsHandlers;
 
-void initRequestHandler()
+MySocket mainSocket;
+mutex requestQueueMtx, executingRPCMtx;
+condition_variable isRequestQueueEmpty;
+bool shouldShutdown = false;
+
+thread threadPool[THREAD_COUNT];
+thread requestListener;
+
+
+void initRequestHandler(const unsigned short& port)
 {
-    requestSocket.bind(LISTENER_PORT);
+    mainSocket.bind(port);
 
     for(int i = 0; i < THREAD_COUNT; ++i){
-        threadPool[i] = thread(processRequest);
+        threadPool[i] = thread(&processRequest);
     }
 
-    requestListener = thread(handleRequests);
+    requestListener = thread(&handleRequests);
+}
+
+void addRequestHandler(int operationID, Handler RPC) {
+    
+    requestsHandlers[operationID] = RPC;
 }
 
 void shutdown()
@@ -44,23 +49,41 @@ void shutdown()
 void handleRequests()
 {
     while(!shouldShutdown){
-        Message msg;
-        puts("waiting for incoming requests zzz");
-        if(requestSocket.recvFrom(msg) >= 0){
-            puts("received msg");
-            //msg.extractHeaders();  done in socket class
-            pushToQueue(msg);
-            puts("pushed to queue");
+        
+        Message requestMessage;
+        
+        if(mainSocket.recvFrom(requestMessage) >= 0){
+            
+            pushToQueue(requestMessage);
+        
         }
-        else {
-            puts("received request is bad :'(");
-        }
+
     }
+}
+
+void pushToQueue(Message receivedMessage)
+{
+    bool discardMessage;
+    
+    executingRPCMtx.lock();
+    discardMessage = executingRPC.count(receivedMessage.getRpcOperation()) > 0;
+    executingRPCMtx.unlock();
+    
+    requestQueueMtx.lock();
+    discardMessage |= queueContains(receivedMessage);       // ques here
+    
+    if(!discardMessage){
+        requestsQueue.push_back(receivedMessage);
+        isRequestQueueEmpty.notify_one();
+    }
+    
+    requestQueueMtx.unlock();
+    
 }
 
 bool queueContains(Message& msg)
 {
-    for(auto& item : requestQueue){
+    for(auto& item : requestsQueue){
         if(item.getRpcRequestId() == msg.getRpcRequestId()){
             return true;
         }
@@ -68,60 +91,35 @@ bool queueContains(Message& msg)
     return false;
 }
 
-
-void pushToQueue(Message msg)
-{
-    bool shouldDiscard;
-    
-    executingRPCMtx.lock();
-    shouldDiscard = executingRPC.count(
-        msg.getRpcOperation()) > 0;    
-    executingRPCMtx.unlock();
-    
-    requestQueueMtx.lock();
-    shouldDiscard |= queueContains(msg);
-    
-    if(!shouldDiscard){
-        requestQueue.push_back(msg);
-        isRequestQueueEmpty.notify_one();
-    }
-    
-    requestQueueMtx.unlock();
-
-}
-
 Message popFromQueue()
 {
-    Message msg;
+    Message receivedMessage;
     std::unique_lock<std::mutex> lck(requestQueueMtx);
 
-    while(requestQueue.size() == 0)
+    while(requestsQueue.size() == 0)
         isRequestQueueEmpty.wait(lck);
 
-    msg = requestQueue.front();
-    requestQueue.pop_front();
+    receivedMessage = requestsQueue.front();
+    requestsQueue.pop_front();
 
-    return msg;
+    return receivedMessage;
 }
 
 void processRequest()
 {
     while(!shouldShutdown){
-        Message packet = popFromQueue();
-        int rpcOperation = packet.getRpcOperation();
         
-        if(requestHandlers.count(rpcOperation) > 0){
-            requestHandlers[rpcOperation](packet);
+        Message receivedMessage = popFromQueue();
+        int rpcOperation = receivedMessage.getRpcOperation();
+        
+        if(requestsHandlers.count(rpcOperation) > 0){
+            Message replyMessage = requestsHandlers[rpcOperation](receivedMessage);
+            mainSocket.reply(replyMessage);
         }
-
+        
         executingRPCMtx.lock();
         executingRPC.erase(rpcOperation);
         executingRPCMtx.unlock();
     }
 }
 
-void registerRequestHandler(int operationID, 
-    Handler RPC)
-{
-    requestHandlers[operationID] = RPC;
-}

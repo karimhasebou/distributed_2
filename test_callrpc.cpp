@@ -15,8 +15,8 @@
 #include "CustomObjects/CustomBool.h"
 #include "CustomObjects/CustomMap.h"
 #include "Message.h"
-#include "UDPSocket.h"
-#include "MySocket.h"
+#include "UDPLayer/UDPSocket.h"
+#include "UDPLayer/MySocket.h"
 #include <iostream>
 #include <fstream>
 // #include "CustMapMain.h"

@@ -13,13 +13,15 @@
 
 
 #define THREAD_COUNT 10
-#define LISTENER_PORT 63000
-using namespace std;
-typedef  void (*Handler)(Message);
 
-void registerRequestHandler(int operationID, Handler);
-void initRequestHandler();
+using namespace std;
+
+typedef  Message (*Handler)(Message);
+
+void initRequestHandler(const unsigned short&);
+void addRequestHandler(int operationID, Handler);
 void shutdown();
+
 void handleRequests();
 void pushToQueue(Message msg);
 void processRequest();
