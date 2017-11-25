@@ -1,6 +1,5 @@
 #ifndef __RPCStub
 #define __RPCStub
-#include "RPC.h"
 #include "../UDPLayer/Message.h"
 
 Message isOnline(Message&);     //returns username of currently logged-in user
@@ -11,6 +10,7 @@ Message updateCount(Message&);
 
 Message login(Message&);
 Message getIPAddress(Message&);
+Message getUsername(Message&);
 
 
 #endif

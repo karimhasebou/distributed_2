@@ -35,45 +35,29 @@ enum LoginStatus {
     wrongUsername = 3
 };
 
+typedef struct{
+    char * content;
+    size_t length;
+} Image;
+
 namespace server{
-    typedef struct{
-        char *content;
-        size_t length;
-    } Image;
 
-    typedef struct{
-        std::string username;
-        int viewCount;
-    } DBEntry;
+    Image getImage(std::string);
+    std::vector<std::string> getAccessibleImages(const std::string&);
+    bool canUpdateCount(std::string, std::string);
+    bool updateCount(std::string, std::string, int);
 
-    //utilities
-    std::map<std::string, int> readAuthorizedUsersDB();
-    void writeDB(std::map<std::string, int> list);
-
-    std::vector<std::string> listImages();
-    std::set<std::string> getAuthorizedUsers(std::string filePath);
-    
-    void server::stegUserList(std::string imagename);
-    void unstegUserList(std::string filePath);
-    std::string getPath(std::string imgName);
-
-    Image getImage(std::string imgName);
-    std::vector<std::string> getAccessibleImages(std::string username);
-
-    bool canUpdateCount(std::string imgName, 
-        std::string username);
-    bool updateCount(std::string imgName, 
-        std::string username, int count);
-
-    // returns empty string if 
-    // no user is currently logged in
-    std::string getLoggedUsername();
+    std::string pingUser(){return "s";}     //change
 }
 
 namespace client {
     
     LoginStatus login(std::string, std::string);
     std::vector<std::string> getIPAddress();
+    Image getImage(std::string);
+    std::vector<std::string> getAccessibleImages(std::string);
+    bool updateCount(std::string, std::string, int);
+
 }
 
 namespace authserver {

@@ -25,7 +25,6 @@ RPC/RpcCallsAuthServer.cpp
 RPC/RpcStubAuthServer.cpp)
 
 set(RPC_SRV_SRC
-RPC/RPC.cpp
 RPC/RpcCallsClient.cpp
 RPC/RpcCallsServer.cpp
 RPC/RpcStubServer.cpp)
@@ -52,7 +51,6 @@ UDPLayer/UDPSocket.h
 UDPLayer/Message.h)
 
 set(RPC_HDR
-RPC/RPC.h
 RPC/RpcCalls.h
 RPC/RpcStub.h)
 

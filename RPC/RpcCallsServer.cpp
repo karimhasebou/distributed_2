@@ -11,111 +11,123 @@
 
 using namespace std;
 
-string server::getLoggedUsername()
+vector<string> listImages();
+set<string> getAuthorizedUsers(const string&);
+map<string, int> getAuthorizedUsersCount();
+void updateCountInImage(map<string, int>);
+void stegUserList(const string&);
+void unstegUserList(const string&);
+
+const string currentDir = "";
+
+Image server::getImage(string imageName)
 {
-    return ""; // tmp
-}
+    Image image;
+    imageName = currentDir + imageName;
 
-server::Image server::getImage(string imgName)
-{
-    server::Image img;
-    imgName = IMG_DIR + imgName;
+//    imgName = "/Users/faridaeid/Desktop/Desktop/Project Files/GitHub/distributed_2/circle.png";
 
-    // test purposes
+    ifstream imagefile(imageName, ios::in | ios::binary | ios::ate);
 
-    imgName = "/Users/faridaeid/Desktop/Desktop/Project Files/GitHub/distributed_2/circle.png";
-
-    ifstream file(imgName, ios::in | ios::binary | ios::ate);
-
-    if(file.is_open()){
-        img.length = file.tellg();
-        file.seekg(0, file.beg) ;
-
-        img.content = new char[img.length];
-        file.read(img.content, img.length);
-        file.close();
-    }else{
-        img.content = NULL;
-        img.length = -1;
+    if(imagefile.is_open()) {
+        
+        image.length = imagefile.tellg();
+        imagefile.seekg(0, imagefile.beg) ;
+        image.content = new char[image.length];
+        imagefile.read(image.content, image.length);
+        imagefile.close();
+        
+    } else {
+        
+        image.content = NULL;
+        image.length = -1;
+        
     }
-
-    ofstream fileCpy(imgName + "copy", ios::out | ios::binary);
-    fileCpy.write(img.content, img.length);
-    fileCpy.close();
-
-    return img;
+    
+    return image;
 }
 
 
-vector<string> server::listImages()
+vector<string> listImages()
 {
     vector<string> imageList;
 
-    ifstream file(IMG_LIST_FILE, ios::in);
-    //bool eof = false;
+    ifstream imageListfile(IMG_LIST_FILE, ios::in);      // change
 
-    while(file.is_open()) {
-        string img;
-        file>>img;
+    while(imageListfile.is_open()) {
+        
+        string imageName;
+        imageListfile>>imageName;
 
-        if(!file.eof()) {
-            imageList.push_back(img);
+        if(!imageListfile.eof()) {
+            
+            imageList.push_back(imageName);
+            
         }
         else {
-            file.close();
+            
+            imageListfile.close();
         }
     }
 
     return imageList;
 }
 
-void server::stegUserList(string imagename)
+void stegUserList(const string& imagename)
 {
     string exec_command = "/usr/bin/steghide embed -cf ";
     exec_command += imagename +" -ef "+AUTHORIZED_USERS+" -p root";
-
     system(exec_command.c_str());
 }
 
-void server::unstegUserList(string filePath)
+void unstegUserList(const string& filePath)
 {
     string exec_command = "/usr/bin/steghide extract -sf ";
     exec_command += filePath + " -p root";
-
     system(exec_command.c_str());
 }
 
-set<string> server::getAuthorizedUsers(string filePath)
+set<string> getAuthorizedUsers(const string& filePath)
 {
     set<string> usersList;
+    int userViewCount;
+    
     unstegUserList(filePath);
 
-    ifstream file(AUTHORIZED_USERS, ios::in);
+    ifstream usernamesFile(AUTHORIZED_USERS, ios::in);
 
-    while(file.is_open()){
+    while(usernamesFile.is_open()){
+        
         string username;
-        file>>username;
+        usernamesFile>>username;
 
-        if(!file.eof()) {
+        if(!usernamesFile.eof()) {
+            
             usersList.insert(username);
-            file>>username; // skip user image count
+            usernamesFile>>username;
+            usernamesFile>>userViewCount;   // skip user image count
+            
         }
         else {
-            file.close();
+            
+            usernamesFile.close();
         }
     }
 
     return usersList;
 }
 
-vector<string> server::getAccessibleImages(string username)
+
+vector<string> server::getAccessibleImages(const string& username)
 {
     vector<string> imageList;
 
     for(string& image : listImages()){
+        
         set<string> imageUsers = getAuthorizedUsers(username);
         
-        if(imageUsers.count(username)){
+        if(imageUsers.count(username)) {
+            
             imageList.push_back(image);
         }
     }
@@ -125,70 +137,73 @@ vector<string> server::getAccessibleImages(string username)
 
 bool server::canUpdateCount(string imgName, string username)
 {
-    return true; // xp
+    return true; // ;p
 }
 
-string server::getPath(string imgName)
-{
-    string currDir;
-    return currDir + imgName;
-}
 
 bool server::updateCount(string imgName, string username, int count)
 {
-    unstegUserList(getPath(imgName));
+    unstegUserList(currentDir + imgName);
     // getAuthorizedUsers(imgName); // use it for its side effect,
     // // which is extracting the secret file from the img
-    map<string, int> countList = readAuthorizedUsersDB();
+    map<string, int> countList = getAuthorizedUsersCount();
+    
     countList[username] = count;
-    // write db
-    writeDB(countList);
+    
+    updateCountInImage(countList);
 
     stegUserList(imgName);
     
-    return true; // xp
+    return true;
 }
 
-map<string, int> server::readAuthorizedUsersDB()
+map<string, int> getAuthorizedUsersCount()
 {
     map<string, int> list;
 
-    ifstream file(IMG_LIST_FILE, ios::in);
+    ifstream imageListFile(IMG_LIST_FILE, ios::in);
 
-    while(file.is_open()) {
+    while(imageListFile.is_open()) {
+        
         string username;
         int viewCount;
         
-        file>>username;
-        file>>viewCount;
+        imageListFile>>username;
+        imageListFile>>viewCount;
 
-        if(!file.eof()) {
+        if(!imageListFile.eof()) {
+            
             list[username] = viewCount;
         }
         else {
-            file.close();
+            
+            imageListFile.close();
         }
     }
 
     return list;
 }
 
-void server::writeDB(map<string, int> list)
+void updateCountInImage(map<string, int> list)
 {
-    ofstream file(IMG_LIST_FILE, ios::out);
+    ofstream imageListFile(IMG_LIST_FILE, ios::out);
     
-    if(file.is_open()){
+    if(imageListFile.is_open()){
+        
         for(auto& entry : list){
-            file<<entry.first<<" "<<entry.second<<endl;
+            
+            imageListFile<<entry.first<<" "<<entry.second<<endl;
         }
 
-        long pos = file.tellp();
+        long pos = imageListFile.tellp();
+        
         if(pos > 0){
-            file.seekp(pos - 1);
-            file.put(EOF);
+            
+            imageListFile.seekp(pos - 1);
+            imageListFile.put(EOF);
         }
 
-        file.close();
+        imageListFile.close();
     }
 }
 

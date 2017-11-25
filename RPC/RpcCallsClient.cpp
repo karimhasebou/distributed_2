@@ -67,30 +67,9 @@ std::vector<std::string> client::getIPAddress()
     CustomVector * ipList = dynamic_cast<CustomVector *>(returnValues[0]);
     
     return ipList->getValue();
-//    std::vector<std::string> ipAddresses = ipList->getValue();
-//    
-//    sockaddr_in myAddressIn;
-//    myAddressIn.sin_addr.s_addr = htonl(INADDR_ANY);
-//    in_addr myAddress = myAddressIn.sin_addr;
-//    
-//    char myIPChar[3 * 4 + 3];
-//    inet_ntop(AF_INET, &myAddress, myIPChar, 3 * 4 + 3 );
-//    
-//    printf("My IP adrress is %s\n", myIPChar);
-//
-//    std::string myIPString(myIPChar);
-//    
-//    for ( int i = 0; i < ipAddresses.size(); ++i)
-//    {
-//        if(ipAddresses[i] == myIPString) {
-//            ipAddresses.erase(ipAddresses.begin() + i);
-//        }
-//    }
-//    
-//    return ipAddresses;
 }
 
-std::string client::getUsername(std::string IPAddr)
+std::string authserver::getUsername(std::string IPAddr)
 {
     CustomString * IPAddress = new CustomString(IPAddr);
     
