@@ -8,7 +8,7 @@ LoginPage::LoginPage(QWidget *parent) :
     ui(new Ui::LoginPage)
 {
     ui->setupUi(this);
-    readDataBase();
+   // readDataBase();
     
 //    connect(ui->signInButton, &QPushButton::clicked, this, &LoginPage::on_signInButton_clicked);
 
@@ -56,7 +56,7 @@ void LoginPage::on_signInButton_clicked()
     
     std::string password = password_q.toUtf8().constData();
     
-    bool loginStatus = client::login(username, password);
+   // bool loginStatus = client::login(username, password);
         
     
     std::map<std::string, std::pair<std::string, bool>>::iterator it;

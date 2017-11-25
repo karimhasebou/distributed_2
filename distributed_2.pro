@@ -23,7 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
-SOURCES += maingui.cpp \
+SOURCES += ApplicationStart.cpp \
         Pages/HomePage.cpp \
         Pages/LoginPage.cpp
 
@@ -32,5 +32,5 @@ HEADERS += \
         Pages/LoginPage.h
 
 FORMS += \
-        Forms/HomePage.ui \
-        Forms/LoginPage.ui
+    Pages/HomePage.ui \
+    Pages/LoginPage.ui

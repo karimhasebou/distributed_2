@@ -18,7 +18,7 @@
 #include "../CustomObjects/CustomBool.h"
 #include "../Marshalling/MarshalledMessage.h"
 #include "../Marshalling/MarshallingManager.h"
-#include "../Message.h"
+#include "../UDPLayer/Message.h"
 
 namespace client {
     

@@ -1,7 +1,7 @@
 #ifndef __MY_SOCKET__
 #define __MY_SOCKET__
 
-#include "../Message.h"
+#include "../UDPLayer/Message.h"
 #include "UDPSocket.h"
 #include <vector>
 #define CHUNK_SIZE 1000   // adjust

@@ -1,10 +1,10 @@
 /********************************************************************************
-** Form generated from reading UI file 'LoginPage.ui'
-**
-** Created by: Qt User Interface Compiler version 5.9.1
-**
-** WARNING! All changes made in this file will be lost when recompiling UI file!
-********************************************************************************/
+ ** Form generated from reading UI file 'LoginPage.ui'
+ **
+ ** Created by: Qt User Interface Compiler version 5.9.1
+ **
+ ** WARNING! All changes made in this file will be lost when recompiling UI file!
+ ********************************************************************************/
 
 #ifndef UI_LOGINPAGE_H
 #define UI_LOGINPAGE_H
@@ -43,7 +43,7 @@ public:
     QPushButton *signInButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
-
+    
     void setupUi(QMainWindow *LoginPage)
     {
         if (LoginPage->objectName().isEmpty())
@@ -63,47 +63,47 @@ public:
         label = new QLabel(gridLayoutWidget);
         label->setObjectName(QStringLiteral("label"));
         label->setAlignment(Qt::AlignCenter);
-
+        
         formLayout->setWidget(0, QFormLayout::SpanningRole, label);
-
+        
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
+        
         formLayout->setItem(2, QFormLayout::SpanningRole, verticalSpacer);
-
+        
         label_2 = new QLabel(gridLayoutWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
-
+        
         formLayout->setWidget(3, QFormLayout::LabelRole, label_2);
-
+        
         usernameInputEdit = new QLineEdit(gridLayoutWidget);
         usernameInputEdit->setObjectName(QStringLiteral("usernameInputEdit"));
-
+        
         formLayout->setWidget(3, QFormLayout::FieldRole, usernameInputEdit);
-
+        
         verticalSpacer_2 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
+        
         formLayout->setItem(5, QFormLayout::SpanningRole, verticalSpacer_2);
-
+        
         label_3 = new QLabel(gridLayoutWidget);
         label_3->setObjectName(QStringLiteral("label_3"));
-
+        
         formLayout->setWidget(6, QFormLayout::LabelRole, label_3);
-
+        
         passwordInputEdit = new QLineEdit(gridLayoutWidget);
         passwordInputEdit->setObjectName(QStringLiteral("passwordInputEdit"));
         passwordInputEdit->setEchoMode(QLineEdit::Password);
-
+        
         formLayout->setWidget(6, QFormLayout::FieldRole, passwordInputEdit);
-
+        
         verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
+        
         formLayout->setItem(8, QFormLayout::SpanningRole, verticalSpacer_3);
-
+        
         signInButton = new QPushButton(gridLayoutWidget);
         signInButton->setObjectName(QStringLiteral("signInButton"));
-
+        
         formLayout->setWidget(9, QFormLayout::SpanningRole, signInButton);
-
+        
         LoginPage->setCentralWidget(centralwidget);
         menubar = new QMenuBar(LoginPage);
         menubar->setObjectName(QStringLiteral("menubar"));
@@ -112,12 +112,12 @@ public:
         statusbar = new QStatusBar(LoginPage);
         statusbar->setObjectName(QStringLiteral("statusbar"));
         LoginPage->setStatusBar(statusbar);
-
+        
         retranslateUi(LoginPage);
-
+        
         QMetaObject::connectSlotsByName(LoginPage);
     } // setupUi
-
+    
     void retranslateUi(QMainWindow *LoginPage)
     {
         LoginPage->setWindowTitle(QApplication::translate("LoginPage", "MainWindow", Q_NULLPTR));
@@ -127,7 +127,7 @@ public:
         passwordInputEdit->setText(QString());
         signInButton->setText(QApplication::translate("LoginPage", "Sign In", Q_NULLPTR));
     } // retranslateUi
-
+    
 };
 
 namespace Ui {

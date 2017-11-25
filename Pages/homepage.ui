@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>HomePage</class>
- <widget class="QMainWindow" name="HomePage">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,8 +17,8 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>80</y>
+      <x>370</x>
+      <y>25</y>
       <width>171</width>
       <height>131</height>
      </rect>
@@ -36,50 +36,11 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>80</y>
-      <width>221</width>
-      <height>121</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="viewsToUpdateEdit"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Enter Username:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Enter Number of Views :</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="usernameToUpdateEdit"/>
-     </item>
-     <item row="2" column="0" colspan="2">
-      <widget class="QPushButton" name="update_views">
-       <property name="text">
-        <string>Update</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QWidget" name="gridLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>220</y>
+      <x>420</x>
+      <y>165</y>
       <width>351</width>
       <height>321</height>
      </rect>
@@ -134,8 +95,8 @@
    <widget class="QLabel" name="Image_holder">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>65</y>
+      <x>10</x>
+      <y>10</y>
       <width>331</width>
       <height>481</height>
      </rect>
@@ -143,6 +104,45 @@
     <property name="text">
      <string>Image</string>
     </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>25</y>
+      <width>221</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="viewsToUpdateEdit"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Enter Username:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Enter Number of Views :</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="usernameToUpdateEdit"/>
+     </item>
+     <item row="2" column="0" colspan="2">
+      <widget class="QPushButton" name="update_views">
+       <property name="text">
+        <string>Update</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

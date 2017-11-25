@@ -1,7 +1,7 @@
 #ifndef __RPCStub
 #define __RPCStub
 #include "RPC.h"
-#include "../Message.h"
+#include "../UDPLayer/Message.h"
 
 Message isOnline(Message&);     //returns username of currently logged-in user
 Message getImage(Message&);

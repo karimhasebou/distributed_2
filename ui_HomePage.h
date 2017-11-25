@@ -1,10 +1,10 @@
 /********************************************************************************
-** Form generated from reading UI file 'HomePage.ui'
-**
-** Created by: Qt User Interface Compiler version 5.9.1
-**
-** WARNING! All changes made in this file will be lost when recompiling UI file!
-********************************************************************************/
+ ** Form generated from reading UI file 'HomePage.ui'
+ **
+ ** Created by: Qt User Interface Compiler version 5.9.1
+ **
+ ** WARNING! All changes made in this file will be lost when recompiling UI file!
+ ********************************************************************************/
 
 #ifndef UI_HOMEPAGE_H
 #define UI_HOMEPAGE_H
@@ -52,7 +52,7 @@ public:
     QLabel *Image_holder;
     QMenuBar *menubar;
     QStatusBar *statusbar;
-
+    
     void setupUi(QMainWindow *HomePage)
     {
         if (HomePage->objectName().isEmpty())
@@ -68,14 +68,14 @@ public:
         gridLayout->setContentsMargins(0, 0, 0, 0);
         my_images = new QListView(gridLayoutWidget);
         my_images->setObjectName(QStringLiteral("my_images"));
-
+        
         gridLayout->addWidget(my_images, 1, 0, 1, 1);
-
+        
         label = new QLabel(gridLayoutWidget);
         label->setObjectName(QStringLiteral("label"));
-
+        
         gridLayout->addWidget(label, 0, 0, 1, 1);
-
+        
         gridLayoutWidget_2 = new QWidget(centralwidget);
         gridLayoutWidget_2->setObjectName(QStringLiteral("gridLayoutWidget_2"));
         gridLayoutWidget_2->setGeometry(QRect(570, 80, 221, 121));
@@ -84,29 +84,29 @@ public:
         gridLayout_2->setContentsMargins(0, 0, 0, 0);
         viewsToUpdateEdit = new QLineEdit(gridLayoutWidget_2);
         viewsToUpdateEdit->setObjectName(QStringLiteral("viewsToUpdateEdit"));
-
+        
         gridLayout_2->addWidget(viewsToUpdateEdit, 1, 1, 1, 1);
-
+        
         label_2 = new QLabel(gridLayoutWidget_2);
         label_2->setObjectName(QStringLiteral("label_2"));
-
+        
         gridLayout_2->addWidget(label_2, 0, 0, 1, 1);
-
+        
         label_3 = new QLabel(gridLayoutWidget_2);
         label_3->setObjectName(QStringLiteral("label_3"));
-
+        
         gridLayout_2->addWidget(label_3, 1, 0, 1, 1);
-
+        
         usernameToUpdateEdit = new QLineEdit(gridLayoutWidget_2);
         usernameToUpdateEdit->setObjectName(QStringLiteral("usernameToUpdateEdit"));
-
+        
         gridLayout_2->addWidget(usernameToUpdateEdit, 0, 1, 1, 1);
-
+        
         update_views = new QPushButton(gridLayoutWidget_2);
         update_views->setObjectName(QStringLiteral("update_views"));
-
+        
         gridLayout_2->addWidget(update_views, 2, 0, 1, 2);
-
+        
         gridLayoutWidget_3 = new QWidget(centralwidget);
         gridLayoutWidget_3->setObjectName(QStringLiteral("gridLayoutWidget_3"));
         gridLayoutWidget_3->setGeometry(QRect(440, 220, 351, 321));
@@ -115,34 +115,34 @@ public:
         gridLayout_3->setContentsMargins(0, 0, 0, 0);
         requestImageButton = new QPushButton(gridLayoutWidget_3);
         requestImageButton->setObjectName(QStringLiteral("requestImageButton"));
-
+        
         gridLayout_3->addWidget(requestImageButton, 2, 0, 1, 1);
-
+        
         viewImageButton = new QPushButton(gridLayoutWidget_3);
         viewImageButton->setObjectName(QStringLiteral("viewImageButton"));
-
+        
         gridLayout_3->addWidget(viewImageButton, 3, 0, 1, 1);
-
+        
         imageStatusLabel = new QLabel(gridLayoutWidget_3);
         imageStatusLabel->setObjectName(QStringLiteral("imageStatusLabel"));
-
+        
         gridLayout_3->addWidget(imageStatusLabel, 2, 1, 1, 1);
-
+        
         viewsNumLabel = new QLabel(gridLayoutWidget_3);
         viewsNumLabel->setObjectName(QStringLiteral("viewsNumLabel"));
-
+        
         gridLayout_3->addWidget(viewsNumLabel, 3, 1, 1, 1);
-
+        
         imagesList = new QListView(gridLayoutWidget_3);
         imagesList->setObjectName(QStringLiteral("imagesList"));
-
+        
         gridLayout_3->addWidget(imagesList, 1, 0, 1, 2);
-
+        
         getImagesButton = new QPushButton(gridLayoutWidget_3);
         getImagesButton->setObjectName(QStringLiteral("getImagesButton"));
-
+        
         gridLayout_3->addWidget(getImagesButton, 0, 0, 1, 2);
-
+        
         getImagesButton->raise();
         imagesList->raise();
         requestImageButton->raise();
@@ -160,12 +160,12 @@ public:
         statusbar = new QStatusBar(HomePage);
         statusbar->setObjectName(QStringLiteral("statusbar"));
         HomePage->setStatusBar(statusbar);
-
+        
         retranslateUi(HomePage);
-
+        
         QMetaObject::connectSlotsByName(HomePage);
     } // setupUi
-
+    
     void retranslateUi(QMainWindow *HomePage)
     {
         HomePage->setWindowTitle(QApplication::translate("HomePage", "MainWindow", Q_NULLPTR));
@@ -180,7 +180,7 @@ public:
         getImagesButton->setText(QApplication::translate("HomePage", "Get Images", Q_NULLPTR));
         Image_holder->setText(QApplication::translate("HomePage", "Image", Q_NULLPTR));
     } // retranslateUi
-
+    
 };
 
 namespace Ui {

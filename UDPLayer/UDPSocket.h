@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include "../Message.h"
+#include "../UDPLayer/Message.h"
 
 class UDPSocket {
     

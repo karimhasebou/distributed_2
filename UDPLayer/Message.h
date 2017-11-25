@@ -16,7 +16,7 @@ enum MessageType {
     Reply
 };
 
-#include "Marshalling/MarshalledMessage.h"
+#include "../Marshalling/MarshalledMessage.h"
 #include <iostream>
 #include <vector>
 #include <netinet/in.h>

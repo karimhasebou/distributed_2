@@ -8,8 +8,8 @@
 #include <condition_variable>
 #include <mutex>
 #include <algorithm>
-#include "MySocket.h"
-#include "Message.h"
+#include "UDPLayer/MySocket.h"
+#include "UDPLayer/Message.h"
 
 
 #define THREAD_COUNT 10
