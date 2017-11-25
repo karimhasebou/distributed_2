@@ -7,21 +7,25 @@
 //
 
 #include "RequestHandler.h"
-#include "RPCStub.h"
+#include "Database/DatabaseHandler.h"
+#include "RPC/RpcStub.h"
 
 int main() {
     
-    // DatabaseManager.h
-    // DatabaseManager.cpp
+    using namespace std::chrono;
     
-    // InitializeDatabase , read file, put in a map
-    // int lookInDatabase(std::string, std::sting )
-    // 1 -> sucess, 2 -> passward incorrect 3-> username not found
+    readDatabase();
+
     addRequestHandler(1, login);
-    addRequestHandler(2, getIPAddress);
+    initRequestHandler(63000);
+
+    std::this_thread::sleep_for(std::chrono::seconds(300));
+    puts("server shutting down...\n");
     
-    initRequestHandler(64000);
+    shutdown();
     
-    
+    std::this_thread::sleep_for(std::chrono::seconds(100));
+    puts("server shut down...\n");
+
     
 }

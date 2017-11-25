@@ -12,7 +12,7 @@
 std::string authServerIP = "127.0.0.1";
 const unsigned short authServerPort = 63000;
 
-bool client::login(std::string username, std::string password) {
+LoginStatus client::login(std::string username, std::string password) {
     
     CustomString * usernameString = new CustomString(username);
     CustomString * passwordString = new CustomString(password);
@@ -34,12 +34,12 @@ bool client::login(std::string username, std::string password) {
     
     Message rpcReplyMessage =  rpcSocket.callRPC(rpcCallMessage);
     
-    std::vector<CustomObject *> returnValues = {new CustomBool()};
+    std::vector<CustomObject *> returnValues = {new CustomInt()};
     
     unmarshal(rpcReplyMessage, returnValues);
     
-    CustomBool * loginStatus = dynamic_cast<CustomBool *>(returnValues[0]);
+    CustomInt * loginStatus = dynamic_cast<CustomInt *>(returnValues[0]);
     
-    return loginStatus->getValue();
+    return (LoginStatus)loginStatus->getValue();
     
 }

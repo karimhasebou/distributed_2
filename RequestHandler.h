@@ -16,7 +16,7 @@
 
 using namespace std;
 
-typedef  Message (*Handler)(Message);
+typedef  Message (*Handler)(Message&);
 
 void initRequestHandler(const unsigned short&);
 void addRequestHandler(int operationID, Handler);

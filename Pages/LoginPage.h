@@ -24,9 +24,6 @@ private slots:
 private:
     HomePage* home;
     Ui::LoginPage *ui;
-    void readDataBase();
-    std::map<std::string, std::pair<std::string, bool>> db;
-     std::vector<std::string> connected_peers;
 };
 
 #endif // LOGINPAGE_H

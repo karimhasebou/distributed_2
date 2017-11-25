@@ -18,23 +18,25 @@
 #include "../CustomObjects/CustomBool.h"
 #include "../UDPLayer/MySocket.h"
 
-Message login(Message& messqgeParamters) {
+Message login(Message& messageParamters) {
     
     std::vector<CustomObject *> parameters = {new CustomString(), new CustomString()};
     
-    unmarshal(messqgeParamters, parameters);
+    unmarshal(messageParamters, parameters);
     
     std::string username = (dynamic_cast<CustomString *>(parameters[0]))->getValue();
     
     std::string password = (dynamic_cast<CustomString *>(parameters[1]))->getValue();
 
-    bool status = authserver::login(username, password);
+    LoginStatus status = authserver::login(username, password);
 
-    CustomBool * loginStatus = new CustomBool(status);
+    CustomInt * loginStatus = new CustomInt((int)status);
     
     std::vector<CustomObject *> returnValues = {dynamic_cast<CustomObject*>(loginStatus)};
     
     Message replyMessage;
+    
+    replyMessage.setSocketAddress(messageParamters.getSocketAddress());
     
     marshal(replyMessage, returnValues);
     

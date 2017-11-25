@@ -7,9 +7,10 @@
 //
 
 #include "RpcCalls.h"
+#include "../Database/DatabaseHandler.h"
 
-bool authserver::login(std::string username, std::string password) {
-    
-    
-    return true;
+LoginStatus authserver::login(std::string username, std::string password) {
+
+    return (LoginStatus)checkInDatabase(username, password);
+
 }

@@ -20,15 +20,22 @@
 #include "../Marshalling/MarshallingManager.h"
 #include "../UDPLayer/Message.h"
 
+enum LoginStatus {
+
+    loginSucess = 1,
+    wrongPassword = 2,
+    wrongUsername = 3
+};
+
 namespace client {
     
-    bool login(std::string, std::string);
+    LoginStatus login(std::string, std::string);
     std::vector<std::string> getIPAddress();
     
 }
 
 namespace authserver {
-    bool login(std::string, std::string);
+    LoginStatus login(std::string, std::string);
     std::vector<std::string> getIPAddress();
 }
 
