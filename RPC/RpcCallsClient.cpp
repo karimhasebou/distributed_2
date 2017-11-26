@@ -178,7 +178,6 @@ Image client::getImage(std::string imageName, std::string ipAddress)
 
 bool client::updateCount(std::string imgName, std::string username, int count)
 {
-   
 
     CustomString * imageNameString = new CustomString(imgName);
     CustomString * usernameString = new CustomString(username);
@@ -188,17 +187,19 @@ bool client::updateCount(std::string imgName, std::string username, int count)
     
     Message dbRpcMessage;
     dbRpcMessage.setDestIPAddress(authServerIP);
-    dbRpcMessage.setDestPortNumber(serverPort);
+    dbRpcMessage.setDestPortNumber(authServerPort);
     
-    marshal(dbRpcMessage, parametersDB);
         
     dbRpcMessage.setRpcOperation(8);
     dbRpcMessage.setRpcRequestID(7); // ?
     dbRpcMessage.setMessageType(Request);
     
-    MySocket rpcSocket;
+    marshal(dbRpcMessage, parametersDB);
+
     
-    Message dbReply =  rpcSocket.callRPC(dbRpcMessage);
+    MySocket dbSocket;
+    
+    Message dbReply =  dbSocket.callRPC(dbRpcMessage);
 
 
     std::vector<CustomObject *> returnValuesDB = {new CustomString()};
@@ -211,7 +212,8 @@ bool client::updateCount(std::string imgName, std::string username, int count)
 
 
 
-
+    MySocket rpcSocket;
+    
 
     std::vector<CustomObject * > parameters = {dynamic_cast<CustomObject *>(imageNameString),
         dynamic_cast<CustomObject *>(usernameString), dynamic_cast<CustomObject *>(countInt)};
@@ -219,12 +221,13 @@ bool client::updateCount(std::string imgName, std::string username, int count)
     Message rpcCallMessage;
     rpcCallMessage.setDestIPAddress(ipAdd);
     rpcCallMessage.setDestPortNumber(serverPort);
-    
-    // marshal(rpcCallMessage, parameters);
-        
+            
     rpcCallMessage.setRpcOperation(6);
     rpcCallMessage.setRpcRequestID(7); // ?
     rpcCallMessage.setMessageType(Request);
+
+    marshal(rpcCallMessage, parameters);
+    
         
     Message rpcReplyMessage =  rpcSocket.callRPC(rpcCallMessage);
 

@@ -111,6 +111,8 @@ set<string> getAuthorizedUsers(const string& filePath)
         usernamesFile>>userViewCount;   // skip user image count
         if(!usernamesFile.eof()) {
             usersList.insert(username);
+           
+            
         }
         else {
             usernamesFile.close();
