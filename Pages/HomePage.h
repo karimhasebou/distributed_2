@@ -24,6 +24,8 @@ public:
     
     void set_ips(const std::vector<std::string> &);
     void setUsername(std::string);
+    void extractViews(std::string);
+    
     
 private slots:
     void on_getImagesButton_clicked();

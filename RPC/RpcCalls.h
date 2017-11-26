@@ -31,10 +31,10 @@ enum LoginStatus {
     wrongUsername = 3
 };
 
-typedef struct{
+struct Image{
     char * content;
     size_t length;
-} Image;
+};
 
 namespace server{
 

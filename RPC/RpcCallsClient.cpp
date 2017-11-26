@@ -10,6 +10,7 @@
 #include "../UDPLayer/MySocket.h"
 #include <errno.h>
 #include <unistd.h>
+#include "../Database/DatabaseHandler.h"
 
 std::string authServerIP = "127.0.0.1"; //192.168.1.4
 const unsigned short authServerPort = 63000;
@@ -19,6 +20,7 @@ LoginStatus client::login(std::string username, std::string password) {
     
     CustomString * usernameString = new CustomString(username);
     CustomString * passwordString = new CustomString(password);
+
     
     std::vector<CustomObject * > parameters = {dynamic_cast<CustomObject *>(usernameString),
         dynamic_cast<CustomObject *>(passwordString)};
@@ -143,7 +145,7 @@ Image client::getImage(std::string imageName, std::string ipAddress)
 
     CustomString * image_name = new CustomString(imageName);
         
-    std::vector<CustomObject * > parameters = {dynamic_cast<CustomObject *>(image_name)};
+    std::vector<CustomObject *> parameters = {dynamic_cast<CustomObject *>(image_name)};
 
     marshal(rpcCallMessage, parameters);
 
@@ -154,29 +156,58 @@ Image client::getImage(std::string imageName, std::string ipAddress)
     Message rpcReplyMessage = rpcSocket.callRPC(rpcCallMessage);
 
 
-
     std::vector<CustomObject *> returnValues = {new CustomString()};
         
     unmarshal(rpcReplyMessage, returnValues);
-        
+
     CustomString* returnVector = dynamic_cast<CustomString *>(returnValues[0]);
 
     std::string imageString = returnVector->getValue();
 
     Image img;
-
     img.length = imageString.length();
-    img.content = new char[img.length];
+    
+    img.content = new char[imageString.length()];
 
-    for (int i = 0; i < img.length; i++)
+    for (int i = 0; i < imageString.length(); i++)
         img.content[i] = imageString[i];
 
-    std::string imageFilePath = "../DownloadedImages/" + imageName;
-        
-    std::ofstream outfile(imageFilePath , std::ofstream::binary);
-        
-    printf("length of image %s" , img.length);
-    outfile.write(img.content, img.length);
 
     return img;
+}
+
+bool client::updateCount(std::string imgName, std::string username, int count)
+{
+    std::map<std::string, std::string> UserIps = getMapUsers();
+    
+    printf("HPHPHPHP %s\n" , UserIps["omar_nawawy"]);
+
+    CustomString * imageNameString = new CustomString(imgName);
+    CustomString * usernameString = new CustomString(username);
+    CustomInt * countInt = new CustomInt(count);
+    
+    std::vector<CustomObject * > parameters = {dynamic_cast<CustomObject *>(imageNameString),
+        dynamic_cast<CustomObject *>(usernameString), dynamic_cast<CustomObject *>(countInt)};
+    
+    Message rpcCallMessage;
+    rpcCallMessage.setDestIPAddress(UserIps[username]);
+    rpcCallMessage.setDestPortNumber(serverPort);
+    
+    marshal(rpcCallMessage, parameters);
+        
+    rpcCallMessage.setRpcOperation(6);
+    rpcCallMessage.setRpcRequestID(7); // ?
+    rpcCallMessage.setMessageType(Request);
+    
+    MySocket rpcSocket;
+    
+    Message rpcReplyMessage =  rpcSocket.callRPC(rpcCallMessage);
+
+    std::vector<CustomObject *> returnValues = {new CustomBool()};
+    
+    unmarshal(rpcReplyMessage, returnValues);
+    
+    CustomBool* returnVector = dynamic_cast<CustomBool *>(returnValues[0]);
+
+    return returnVector->getValue();
 }

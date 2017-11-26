@@ -343,6 +343,7 @@ Database/DatabaseHandler.o: Database/DatabaseHandler.cpp.o
 # target to build an object file
 Database/DatabaseHandler.cpp.o:
 	$(MAKE) -f CMakeFiles/centralserver.dir/build.make CMakeFiles/centralserver.dir/Database/DatabaseHandler.cpp.o
+	$(MAKE) -f CMakeFiles/application.dir/build.make CMakeFiles/application.dir/Database/DatabaseHandler.cpp.o
 .PHONY : Database/DatabaseHandler.cpp.o
 
 Database/DatabaseHandler.i: Database/DatabaseHandler.cpp.i
@@ -352,6 +353,7 @@ Database/DatabaseHandler.i: Database/DatabaseHandler.cpp.i
 # target to preprocess a source file
 Database/DatabaseHandler.cpp.i:
 	$(MAKE) -f CMakeFiles/centralserver.dir/build.make CMakeFiles/centralserver.dir/Database/DatabaseHandler.cpp.i
+	$(MAKE) -f CMakeFiles/application.dir/build.make CMakeFiles/application.dir/Database/DatabaseHandler.cpp.i
 .PHONY : Database/DatabaseHandler.cpp.i
 
 Database/DatabaseHandler.s: Database/DatabaseHandler.cpp.s
@@ -361,6 +363,7 @@ Database/DatabaseHandler.s: Database/DatabaseHandler.cpp.s
 # target to generate assembly for a file
 Database/DatabaseHandler.cpp.s:
 	$(MAKE) -f CMakeFiles/centralserver.dir/build.make CMakeFiles/centralserver.dir/Database/DatabaseHandler.cpp.s
+	$(MAKE) -f CMakeFiles/application.dir/build.make CMakeFiles/application.dir/Database/DatabaseHandler.cpp.s
 .PHONY : Database/DatabaseHandler.cpp.s
 
 Marshalling/MarshalledMessage.o: Marshalling/MarshalledMessage.cpp.o

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 
+
 struct UserInfo {
     
     std::string password;
@@ -10,6 +11,7 @@ struct UserInfo {
 };
 
 std::map<std::string, UserInfo> database;
+std::map<std::string, std::string> UsersIps;
 std::vector<std::string> onlinePeers;
 
 void readDatabase()
@@ -36,6 +38,7 @@ void readDatabase()
             userInfo.ipAddress = ipAddress;
             
             database[username] = userInfo;
+            UsersIps[username] = ipAddress;
         }
     }
 }
@@ -78,4 +81,8 @@ std::string getUserNamefromIP(std::string IPAddress)
     return username;
 }
 
+std::map<std::string, std::string> getMapUsers()
+{
+    return UsersIps;
+}
 

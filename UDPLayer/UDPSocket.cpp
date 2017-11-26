@@ -87,7 +87,7 @@ int UDPSocket::sendPacket(const Message& sentMessage){
     socklen_t adrLen = sizeof (myAddress);
     getsockname(this->socketDesc, (struct sockaddr*) &myAddress, &adrLen);
     printf("sending to %s port %d ==> %d status %d errno %d\n"
-    , str, ntohs(myAddress.sin_port), ntohs(destAddress.sin_port), status, errno  );
+    , str, ntohs(myAddress.sin_port), ntohs(destAddress.sin_port), status, errno);
     
     return status;
 }

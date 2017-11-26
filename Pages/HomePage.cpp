@@ -4,7 +4,7 @@
 #include "../RequestHandler.h"
 #include "../RPC/RpcStub.h"
 
-int views = 5; //global for 
+int views_num = 0;
 
 
 struct imageEntry {
@@ -20,9 +20,9 @@ HomePage::HomePage(QWidget *parent) :
     ui(new Ui::HomePage)
 {
     ui->setupUi(this);
-    image_path = "../Images/";
+    image_path = "/home/nawawy/Nawawy/dist_final/distributed_2/DownloadedImages/";
     
-    img_default.load(image_path+"default.jpg");
+    img_default.load("/home/nawawy/Nawawy/dist_final/distributed_2/MyImages/default.jpg");
     
     ui->Image_holder->setPixmap(img_default);
     ui->Image_holder->setScaledContents(true);
@@ -36,6 +36,7 @@ HomePage::~HomePage()
     delete ui;
 }
 
+//remove this
 void HomePage::set_ips(const std::vector<std::string> & ips)
 {
     ip_addresses = ips;
@@ -50,49 +51,67 @@ void HomePage::on_requestImageButton_clicked()
     std::string imageName = image_selected.toUtf8().constData();    
 
     Image img = client::getImage(imageName, imageEntries[index].ipAddress);
-
-    // std::cout << "Image name selected :" << imageName << std::endl; 
     
 
-    // std::string imageFilePath = "../DownloadedImages/" + imageName;
-
-    // std::ofstream outfile(imageFilePath , std::ofstream::binary);
-
-    // printf("length of image %s" , img.length);
-    // outfile.write(img.content, img.length);
-
+    std::string imageFilePath = "/home/nawawy/Nawawy/dist_final/distributed_2/DownloadedImages/" + imageName;
     
-    // ui->imageStatusLabel->setText("Image Available");
+    std::ofstream outfile(imageFilePath , std::ios::out | std::ios::binary);
 
-    // outfile.close();
+    outfile.write(img.content, img.length);
     
+    outfile.close();
+
+
+    std:string image_name = image_selected.toUtf8().constData();  
+    extractViews(image_name);
+
+    std::string username; 
+    
+    std::string path_to_list = "/home/nawawy/Nawawy/dist_final/distributed_2/" + image_name + ".txt";
+    
+    ifstream file;
+    file.open(path_to_list.c_str());
+    
+    if(file.fail())
+        printf("Opening list of view failed: %s\n", image_name);
+    else
+    {
+        while(!file.eof())
+        {
+            file >> username >> views_num;
+
+            if (username == MyUsername)
+                break;
+        }
+    }
+
+    ui->imageStatusLabel->setText("Image Available");    
     
 }
 
 void HomePage::on_viewImageButton_clicked()
 {
-    if(views!=0)
+    int index = ui->imagesList->currentIndex().row();
+    QString image_selected = model->stringList().at(index);
+    QString path = image_path + image_selected; 
+        
+   
+    if(views_num!=0)
     {
-        
-        int index = ui->imagesList->currentIndex().row();
-        QString image_selected = model->stringList().at(index);
-        QString path = image_path + image_selected;
-        
         QPixmap img;
         img.load(path);
+
         ui->Image_holder->setPixmap(img);
         ui->Image_holder->setScaledContents(true);
-        ui->viewsNumLabel->setText("No. of Views " + QString::number(views));
-        views--;
+        ui->viewsNumLabel->setText("No. of Views " + QString::number(views_num));
+        views_num--;
     }
     else
     {
         ui->viewsNumLabel->setText("No. of Views reached 0!!");
         ui->imageStatusLabel->setText("No Image Requested");
         
-        ui->Image_holder->setPixmap(img_default);
-        
-        
+        ui->Image_holder->setPixmap(img_default);   
     }
 }
 
@@ -119,8 +138,9 @@ void HomePage::on_getImagesButton_clicked()
     
 
     model = new QStringListModel(this);
+    
     QStringList List;
-    printf("got %d images\n", (int)imageEntries.size());
+    // printf("got %d images\n", (int)imageEntries.size());
     for(int i = 0; i < (int)imageEntries.size(); i++)
         List << imageEntries[i].imageName.c_str();
 
@@ -131,6 +151,8 @@ void HomePage::on_getImagesButton_clicked()
     ui->imagesList->setModel(model);
     
     
+    //ls and get images in my directory
+    //hn3mlhom steghide we kda wla l2?
     
     model_my_images = new QStringListModel(this);
     QStringList List2;
@@ -152,7 +174,19 @@ void HomePage::on_update_views_clicked()
     int index = ui->my_images->currentIndex().row();
     QString image_selected = model_my_images->stringList().at(index);
     QString path = image_path + image_selected;
-    \
+
+    std::string usernameToUpdate = username_to_update.toUtf8().constData(); 
+    std::string viewsString = views_to_update.toUtf8().constData();
+
+    int viewsToUpdate = atoi(viewsString.c_str());
+
+    std::string imageName = image_selected.toUtf8().constData(); 
+    
+    
+    bool updated = client::updateCount(imageName, usernameToUpdate, viewsToUpdate);
+    
+    
+
     //callRPC
     
     
@@ -162,5 +196,13 @@ void HomePage::on_update_views_clicked()
 void HomePage::setUsername(std::string username)
 {
     this->MyUsername = username;
+}
+
+void HomePage::extractViews(std::string imageName)
+{
+    std::string exec_command = "steghide extract -sf /home/nawawy/Nawawy/dist_final/distributed_2/DownloadedImages/" + imageName;
+    exec_command += " -p root -f";
+
+    system(exec_command.c_str());
 }
 

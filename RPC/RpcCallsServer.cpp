@@ -113,7 +113,7 @@ set<string> getAuthorizedUsers(const string& filePath)
             
         }
         else {
-            
+
             usernamesFile.close();
         }
     }
@@ -151,7 +151,7 @@ bool server::updateCount(string imgName, string username, int count)
     // getAuthorizedUsers(imgName); // use it for its side effect,
     // // which is extracting the secret file from the img
     map<string, int> countList = getAuthorizedUsersCount();
-    
+
     countList[username] = count;
     
     updateCountInImage(countList);
