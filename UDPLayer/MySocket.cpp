@@ -31,6 +31,7 @@ Message MySocket::callRPC(const Message & sentMessage) {
     while(receiveStatus != Success &&
           requestsCount++ < MAX_REQUESTS) {
         printf("try (%d) ", requestsCount);
+        
         rpcSocket.sendPacket(sentMessage);
         
         receiveStatus = receive(rpcSocket, receivedMessage);
@@ -51,8 +52,6 @@ Status MySocket::reply(const Message& sentMessage) {
     UDPSocket replySocket;
     replySocket.bind(0);
     
-    int expectingAck = 1;
-    
     replySocket.setTimeOut(2);
     
     std::vector<Message> dividedMessage = sentMessage.divide(CHUNK_SIZE);
@@ -70,6 +69,8 @@ Status MySocket::reply(const Message& sentMessage) {
         printf("Send Packet with Packet number %d\n", dividedMessage[part].getPacketID());
         
         replySocket.sendPacket(dividedMessage[part]);
+        
+        int expectingAck = dividedMessage[part].getPacketID();
 
         while(status == Failure && (resendPacketCount++ <= MAX_RESEND_PACK)) {
             
@@ -81,8 +82,8 @@ Status MySocket::reply(const Message& sentMessage) {
             
                 status = (Status)replySocket.recievePacket(acknowledgementMessage);
                 
-            } while ((status == Failure || acknowledgementMessage.getPacketID()) != expectingAck &&
-                     wrongReceive <= MAX_WAIT_PACK);
+            } while ((status == Failure || (acknowledgementMessage.getPacketID() != expectingAck)) &&
+                     wrongReceive++ <= MAX_WAIT_PACK);
             
             if (status == Failure && acknowledgementMessage.getPacketID() != expectingAck) {
                 
@@ -111,7 +112,7 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
     
     int lastAcknowledgement = expectingPacketID - 1;
     
-    socket.setTimeOut(5);
+    socket.setTimeOut(2);
     
     vector<Message> messages;
     Message receivedMessage, ackMessage;

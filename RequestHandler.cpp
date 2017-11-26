@@ -1,5 +1,5 @@
 #include "RequestHandler.h"
-
+#include <string>
 
 
 /**
@@ -12,7 +12,7 @@
  */
 
 deque<Message> requestsQueue;
-set<int> executingRPC;
+set<std::string> executingRPC;
 map<int, Handler> requestsHandlers;
 
 MySocket mainSocket;
@@ -23,6 +23,7 @@ bool shouldShutdown = false;
 thread threadPool[THREAD_COUNT];
 thread requestListener;
 
+std::string getMessageUniqueKey(Message);
 
 void initRequestHandler(const unsigned short& port)
 {
@@ -70,7 +71,9 @@ void pushToQueue(Message receivedMessage)
     bool discardMessage;
     
     executingRPCMtx.lock();
-    discardMessage = executingRPC.count(receivedMessage.getRpcOperation()) > 0;
+//    discardMessage = executingRPC.count(receivedMessage.getIPAdrress() + std::to_string(receivedMessage.getRpcOperation())) > 0;
+    std::string receivedMsgKey = getMessageUniqueKey(receivedMessage);
+    discardMessage = executingRPC.count(receivedMsgKey) > 0;
     executingRPCMtx.unlock();
     requestQueueMtx.lock();
     discardMessage |= queueContains(receivedMessage);       // ques here
@@ -87,7 +90,9 @@ void pushToQueue(Message receivedMessage)
 bool queueContains(Message& msg)
 {
     for(auto& item : requestsQueue){
-        if(item.getRpcRequestId() == msg.getRpcRequestId()){
+        std::string msgKey = getMessageUniqueKey(msg);
+        std::string queueMsgKey = getMessageUniqueKey(item);
+        if(msgKey == queueMsgKey){
             return true;
         }
     }
@@ -115,14 +120,24 @@ void processRequest()
         Message receivedMessage = popFromQueue();
         int rpcOperation = receivedMessage.getRpcOperation();
         
+        std::string msgKey = getMessageUniqueKey(receivedMessage);
+        executingRPCMtx.lock();
+        executingRPC.insert(msgKey);
+        executingRPCMtx.unlock();
+
         if(requestsHandlers.count(rpcOperation) > 0){
             Message replyMessage = requestsHandlers[rpcOperation](receivedMessage);
             mainSocket.reply(replyMessage);
         }
         
         executingRPCMtx.lock();
-        executingRPC.erase(rpcOperation);
+        executingRPC.erase(msgKey);
         executingRPCMtx.unlock();
     }
 }
 
+std::string getMessageUniqueKey(Message message)
+{
+    std::string key = message.getIPAdrress() + std::to_string(message.getRpcOperation());
+    return key;
+}

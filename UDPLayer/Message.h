@@ -43,6 +43,7 @@ public:
     int getRpcRequestId() const;
     int getPacketID() const;
     int getHeaderSize() const;
+    std::string getIPAdrress() const;
     void getMessageWithHeaders(char *) const;
     
     bool isAcknowledgement() const;

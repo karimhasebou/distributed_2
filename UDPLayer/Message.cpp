@@ -68,6 +68,21 @@ int Message::getHeaderSize() const {
     return headerCount*4;
     
 }
+
+std::string Message::getIPAdrress() const {
+
+    struct in_addr IPAddress = this ->sAddress.sin_addr;
+    
+    char addressChar[15];
+    
+    inet_ntop(AF_INET, &IPAddress, addressChar , 15);
+    
+    std::string addressString(addressChar);
+    
+    return addressString;
+}
+
+
 void Message::getMessageWithHeaders(char * mess) const {
     
     const int headersCnt = 4;

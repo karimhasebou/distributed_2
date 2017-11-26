@@ -101,6 +101,7 @@ Message updateCount(Message& messageParamters)
 Message getImage(Message& messageParamters)
 {
     vector<CustomObject*> marshallingVector;
+    
     marshallingVector.push_back(new CustomString());
     
     unmarshal(messageParamters, marshallingVector);

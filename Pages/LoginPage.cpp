@@ -32,7 +32,7 @@ LoginPage::LoginPage(QWidget *parent) :
 
     std::cout<<"Sending RPC argument"<<std::endl;
     
-    sentMessage.setDestIPAddress("192.168.1.8"); //192.168.1.8
+    sentMessage.setDestIPAddress("10.40.52.105"); //192.168.1.8
     sentMessage.setDestPortNumber(63000);
     
     Message reply = socket.callRPC(sentMessage);
@@ -42,17 +42,17 @@ LoginPage::LoginPage(QWidget *parent) :
     std::string result = dynamic_cast<CustomString*>(returnValues[0])->getValue();
     
     std::cout<<result<<std::endl;
-//
+
     
-//    QPixmap backgroundImage("/Users/faridaeid/Desktop/Desktop/Project Files/GitHub/distributed_2/Pages/LoginPageBackground.png");
-//    backgroundImage = backgroundImage.scaled(this->size(), Qt::IgnoreAspectRatio);
-//    QPalette palette;
-//    palette.setBrush(QPalette::Background, backgroundImage);
-//    this->setPalette(palette);
-//    
-//    ui->label->setStyleSheet("QLabel {color: #ffffff;}");
-//    ui->label_2->setStyleSheet("QLabel {color: #ffffff;}");
-//    ui->label_3->setStyleSheet("QLabel {color: #ffffff;}");
+    QPixmap backgroundImage("/Users/faridaeid/Desktop/Desktop/Project Files/GitHub/distributed_2/Pages/LoginPageBackground2.png");
+    backgroundImage = backgroundImage.scaled(this->size(), Qt::IgnoreAspectRatio);
+    QPalette palette;
+    palette.setBrush(QPalette::Background, backgroundImage);
+    this->setPalette(palette);
+    
+    ui->label->setStyleSheet("QLabel {color: #ffffff;}");
+    ui->label_2->setStyleSheet("QLabel {color: #ffffff;}");
+    ui->label_3->setStyleSheet("QLabel {color: #ffffff;}");
 
 
 }
