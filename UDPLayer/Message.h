@@ -45,6 +45,8 @@ public:
     int getHeaderSize() const;
     void getMessageWithHeaders(char *) const;
     
+    bool isAcknowledgement() const;
+    
     void setDestIPAddress(const std::string);
     void setDestPortNumber(const unsigned short& portNumber);
     void setSocketAddress(const sockaddr_in &);

@@ -27,15 +27,6 @@ int main(int argc, char *argv[])
     LoginPage loginPage;
     
     loginPage.show();
-    // std::this_thread::sleep_for(std::chrono::seconds(300));
-    // puts("server shutting down...\n");
-    
-    // shutdown();
-    
-    // std::this_thread::sleep_for(std::chrono::seconds(100));
-    // puts("server shut down...\n");
-
-    
     return application.exec();
 }
 

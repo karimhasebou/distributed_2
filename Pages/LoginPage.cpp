@@ -3,6 +3,8 @@
 #include "../RPC/RpcCalls.h"
 #include "../UDPLayer/MySocket.h"
 #include <QMessageBox>
+#include <QPixmap>
+#include <QPalette>
 
 LoginPage::LoginPage(QWidget *parent) :
     QMainWindow(parent),
@@ -27,13 +29,24 @@ LoginPage::LoginPage(QWidget *parent) :
     sentMessage.setMessageType(Request);
     sentMessage.setRpcOperation(1);
     sentMessage.setRpcRequestID(1);
-    
+
     std::cout<<"Sending RPC argument"<<std::endl;
     
-    sentMessage.setDestIPAddress("127.0.0.1");
+    sentMessage.setDestIPAddress("127.0.0.1"); //192.168.1.8
     sentMessage.setDestPortNumber(63000);
     
     socket.callRPC(sentMessage);
+//
+//    QPixmap backgroundImage("/Users/faridaeid/Desktop/Desktop/Project Files/GitHub/distributed_2/Pages/LoginPageBackground.png");
+//    backgroundImage = backgroundImage.scaled(this->size(), Qt::IgnoreAspectRatio);
+//    QPalette palette;
+//    palette.setBrush(QPalette::Background, backgroundImage);
+//    this->setPalette(palette);
+//    
+//    ui->label->setStyleSheet("QLabel {color: #ffffff;}");
+//    ui->label_2->setStyleSheet("QLabel {color: #ffffff;}");
+//    ui->label_3->setStyleSheet("QLabel {color: #ffffff;}");
+
 
 }
 

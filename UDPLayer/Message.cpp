@@ -93,6 +93,12 @@ void Message::getMessageWithHeaders(char * mess) const {
     
 }
 
+bool Message::isAcknowledgement() const {
+
+    return this->type == Acknowledgement;
+
+}
+
 void Message::setDestIPAddress(const std::string ipAddress) {
 
     sAddress.sin_addr.s_addr = inet_addr(ipAddress.c_str());
@@ -100,6 +106,7 @@ void Message::setDestIPAddress(const std::string ipAddress) {
     // sAddress.sin_addr.s_addr = inet_addr("127.0.0.1");
 
 }
+
 
 void Message::setSocketAddress(const sockaddr_in & sockAddress) {
     

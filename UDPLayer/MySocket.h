@@ -7,15 +7,15 @@
 #define CHUNK_SIZE 60   // adjust
 #define MAX_RESEND 40       // adjust
 #define MAX_RESEND_PACK 10  // adjust
+#define MAC_PACK_FAIL 20    // adjust
 #define MAX_REQUESTS 10     // adjust
 #define MAX_RECEIVE 12      // adjust
 #define TIMEOUT 11          // adjust
 
 enum Status {
-    PacketFailure,
-    StreamFailure,
-    Pending,
-    Success
+    Failure = -1,
+    Pending = 0,
+    Success = 1
 };
 
 class MySocket{
@@ -32,7 +32,7 @@ public:
     void bind(const unsigned short&);
     
     Message callRPC(const Message&);
-    int reply(const Message&);
+    Status reply(const Message&);
     int recvFrom(Message&);
 };
 
