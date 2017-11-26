@@ -65,6 +65,12 @@ void HomePage::on_requestImageButton_clicked()
     std:string image_name = image_selected.toUtf8().constData();  
     extractViews(image_name);
 
+  //  std::ofstream outfile(imageFilePath , std::ofstream::binary);
+    
+   // outfile.write(img.content, img.length);
+    // printf("length of image %s" , img.length);
+    // outfile.write(img.content, img.length);
+
     std::string username; 
     
     std::string path_to_list = "/home/nawawy/Nawawy/dist_final/distributed_2/" + image_name + ".txt";
@@ -111,7 +117,8 @@ void HomePage::on_viewImageButton_clicked()
         ui->viewsNumLabel->setText("No. of Views reached 0!!");
         ui->imageStatusLabel->setText("No Image Requested");
         
-        ui->Image_holder->setPixmap(img_default);   
+
+        ui->Image_holder->setPixmap(img_default);
     }
 }
 

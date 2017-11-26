@@ -28,7 +28,12 @@ int main() {
     MySocket socket;
     socket.bind(64000);
     
-    CustomString * customString = new CustomString("Ya rab");    
+    std::string bigbig = "";
+    for (int i = 0; i < 100000; i++) {
+        bigbig = "HarryPotter" + std::to_string(i);
+    }
+    
+    CustomString * customString = new CustomString(bigbig);
     
     std::vector<CustomObject *> parameters = {customString};
     
@@ -47,37 +52,8 @@ int main() {
     sentMessage.setDestIPAddress("127.0.0.1");
     sentMessage.setDestPortNumber(63000);
     
-
-    Message returnValue = socket.callRPC(sentMessage);
-        
- //   std::vector<CustomObject* > returnValues = {new CustomVector()};
-    std::vector<CustomObject* > returnValues = {new CustomString()};
+    socket.callRPC(sentMessage);
     
-    unmarshal(returnValue, returnValues);
-
-    // CustomVector * returnValueString = 
-    //     dynamic_cast<CustomVector *>(returnValues[0]);
-    
-    // for(auto& item : returnValueString->getValue())
-    // {
-    //     puts(item.c_str());
-    //     printf("item %s", item.c_str());
-    // }
-    
-    CustomString* returnString = dynamic_cast<CustomString*> (returnValues[0]);
-    //puts(returnString->getValue().c_str());
-
-    std::ofstream file("../myrecievedImage.png", std::ofstream::binary);
-    
-    if(file.is_open()){
-        file.write(returnString->getValue().c_str(),
-        returnString->getValue().size());
-    
-        file.close();
-    }else{
-        puts("failed to write image");
-    }
-
     std::cout<<"Done"<<std::endl;
 
     return 0;

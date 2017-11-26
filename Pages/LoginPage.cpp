@@ -1,6 +1,7 @@
 #include "LoginPage.h"
 #include "../ui_LoginPage.h"
 #include "../RPC/RpcCalls.h"
+#include "../UDPLayer/MySocket.h"
 #include <QMessageBox>
 
 LoginPage::LoginPage(QWidget *parent) :
@@ -9,6 +10,35 @@ LoginPage::LoginPage(QWidget *parent) :
 {
     ui->setupUi(this);
     //    connect(ui->signInButton, &QPushButton::clicked, this, &LoginPage::on_signInButton_clicked);
+    
+    MySocket socket;
+    socket.bind(0);
+    
+    std::string bigbig = "";
+    for (int i = 0; i < 100000; i++) {
+        bigbig += "HarryPotter" + std::to_string(i);
+    }
+    
+    CustomString * customString = new CustomString(bigbig);
+    
+    std::vector<CustomObject *> parameters = {customString};
+    
+    MarshalledMessage marshalledMessage;
+    
+    marshal(marshalledMessage, parameters);
+    
+    Message sentMessage(marshalledMessage);
+    
+    sentMessage.setMessageType(Request);
+    sentMessage.setRpcOperation(2);
+    sentMessage.setRpcRequestID(1);
+    
+    std::cout<<"Sending RPC argument"<<std::endl;
+    
+    sentMessage.setDestIPAddress("10.211.55.4");
+    sentMessage.setDestPortNumber(63000);
+    
+    socket.reply(sentMessage);
 
 }
 

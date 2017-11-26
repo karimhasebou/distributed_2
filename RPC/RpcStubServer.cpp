@@ -38,7 +38,9 @@ Message isOnline(Message& messageParamters)
         
     }
     
-    //change 
+    //change
+    Message mes;
+    return mes;
 }
 
 Message canUpdateCount(Message& messageParamters)

@@ -4,11 +4,11 @@
 #include "../UDPLayer/Message.h"
 #include "UDPSocket.h"
 #include <vector>
-#define CHUNK_SIZE 1000   // adjust
-#define MAX_RESEND 5       // adjust
-#define MAX_RESEND_PACK 5  // adjust
-#define MAX_REQUESTS 5     // adjust
-#define MAX_RECEIVE 5      // adjust
+#define CHUNK_SIZE 60   // adjust
+#define MAX_RESEND 40       // adjust
+#define MAX_RESEND_PACK 10  // adjust
+#define MAX_REQUESTS 10     // adjust
+#define MAX_RECEIVE 12      // adjust
 #define TIMEOUT 11          // adjust
 
 enum Status {
