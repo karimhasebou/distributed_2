@@ -50,7 +50,7 @@ int MySocket::reply(const Message& sentMessage) {
     UDPSocket replySocket;
     replySocket.bind(0);
     
-    std::vector<Message> dividedMessage = sentMessage.divide(CHUNK_SIZE);
+    std::vector<Message> dividedMessage = sentMessage.divide(60);
     
     bool stopProcess = false;
     
