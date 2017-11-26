@@ -11,7 +11,6 @@
 #include "UDPLayer/MySocket.h"
 #include "UDPLayer/Message.h"
 
-
 #define THREAD_COUNT 10
 
 using namespace std;

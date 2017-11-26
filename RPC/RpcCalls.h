@@ -25,6 +25,10 @@
 #include "../Marshalling/MarshallingManager.h"
 #include "../UDPLayer/Message.h"
 
+#define DEBUG 1
+#define debug_print(fmt, ...) \
+            do { if (DEBUG) printf(fmt, __VA_ARGS__); } while (0)
+
 enum LoginStatus {
     loginSucess = 1,
     wrongPassword = 2,
@@ -50,8 +54,10 @@ namespace client {
     LoginStatus login(std::string, std::string);
     std::vector<std::string> getIPAddress();
     Image getImage(std::string);
-    std::vector<std::string> getAccessibleImages(std::string);
+    std::vector<std::string> getAccessibleImages(std::string, std::vector<std::string>);
     bool updateCount(std::string, std::string, int);
+    std::string getUsername(std::string);
+    
 
 }
 

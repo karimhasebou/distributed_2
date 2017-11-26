@@ -2,14 +2,13 @@ cmake_minimum_required(VERSION 2.8)
 
 project (distributed_2)
 
-find_package(Qt5Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 
 set(CMAKE_INCLUDE_CURRECT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-
 set(CMAKE_PREFIX_FILE "/usr/local/Cellar/qt/5.9.1/lib/cmake/Qt5Widgets")
 
-list(APPEND CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
+list(APPEND CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -pthread")
 
 set(MAR_SRC 
 Marshalling/MarshallingManager.cpp 
@@ -77,6 +76,7 @@ ApplicationStart.cpp
 RequestHandler.cpp
 ${ALL_SRC}
 ${PAG_SRC} 
+RPC/RpcStubServer.cpp
 ${RPC_SRV_SRC}
 RequestHandler.h
 ${ALL_HDR} 

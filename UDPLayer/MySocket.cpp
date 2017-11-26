@@ -18,6 +18,7 @@ Message MySocket::callRPC(const Message & sentMessage) {
 
     UDPSocket rpcSocket;
     rpcSocket.bind(0);
+    rpcSocket.setTimeOut(4);
 
     int requestsCount = 0;
     Status receiveStatus = Pending;
@@ -66,8 +67,7 @@ int MySocket::reply(const Message& sentMessage) {
          
             Message acknowledgementMessage;  
             status = replySocket.recievePacket(acknowledgementMessage);
-            
-            printf("Received acknowledgement Packet\n\n");
+            printf("Received acknowledgement Packet for part %d\n", part);
             // doing the checks
         }
         
@@ -110,7 +110,7 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
         
         messages.push_back(receivedMessage);
         
-        printf("Sending Acknowledgement packet\n\n");
+        printf("(ack)");
         
         socket.sendPacket(ackMessage);
         

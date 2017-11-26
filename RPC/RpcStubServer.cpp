@@ -9,6 +9,9 @@
 #include "../CustomObjects/CustomBool.h"
 #include "../CustomObjects/CustomVector.h"
 #include "../CustomObjects/CustomInt.h"
+#define DEBUG 1
+#define debug_print(fmt, ...) \
+            do { if (DEBUG) printf(fmt, __VA_ARGS__); } while (0)
 
 using namespace std;
 
@@ -100,15 +103,12 @@ Message getImage(Message messageParamters)
 {
     vector<CustomObject*> marshallingVector;
     marshallingVector.push_back(new CustomString());
-    
     unmarshal(messageParamters, marshallingVector);
-    
     string imageName = ((CustomString*) marshallingVector[0])->getValue();
-    
-    marshallingVector.clear();
+    debug_print("Unmarshalled image name %s", imageName.c_str());
+    // marshallingVector.clear();
     
     Image imgArray = server::getImage(imageName);
-    
     if(imgArray.content == NULL)
     {
         puts("failed to load image, not going to reply xp");
@@ -121,6 +121,7 @@ Message getImage(Message messageParamters)
     CustomString *customImage = new CustomString;
     customImage->setValue(imageString);
     
+    marshallingVector.clear();
     marshallingVector.push_back(customImage);
     
     MarshalledMessage marshalledMsg;
@@ -135,7 +136,7 @@ Message getImage(Message messageParamters)
     return replyMessage;
 }
 
-Message getAccessibleImages(Message messageParamters)
+Message getAccessibleImages(Message & messageParamters)
 {
     vector<CustomObject*> unmarshalledValues;
     unmarshalledValues.push_back(new CustomString());

@@ -56,8 +56,8 @@ void UDPSocket::bind(unsigned short portNumber){
     char myIPChar[3 * 4 + 3];
     inet_ntop(AF_INET, &myAddress, myIPChar, 3 * 4 + 3 );
     
-    printf("Created New Socket, Port Number : %d ", (int)ntohs(address.sin_port));
-    printf("My IP adrress is %s\n", myIPChar);
+    printf("Created New Socket, Port Number : %d \n", (int)ntohs(address.sin_port));
+    // printf("My IP adrress is %s\n", myIPChar);
     
 }
 
@@ -86,8 +86,9 @@ int UDPSocket::sendPacket(const Message& sentMessage){
     sockaddr_in myAddress;
     socklen_t adrLen = sizeof (myAddress);
     getsockname(this->socketDesc, (struct sockaddr*) &myAddress, &adrLen);
-    printf("sending to %s port %d ==> %d status %d errno %d\n"
-    , str, ntohs(myAddress.sin_port), ntohs(destAddress.sin_port), status, errno  );
+    int err = errno;
+    printf("sending to %s port %d ==> %d status %d errno(%d) %s \n"
+    , str, ntohs(myAddress.sin_port), ntohs(destAddress.sin_port), status, err, strerror(err));
     
     return status;
 }

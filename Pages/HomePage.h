@@ -23,7 +23,7 @@ public:
     ~HomePage();
     
     void set_ips(const std::vector<std::string> &);
-
+    void setUsername(std::string);
     
 private slots:
     void on_getImagesButton_clicked();
@@ -38,7 +38,7 @@ private:
     Ui::HomePage *ui;
     QStringListModel *model;
     QStringListModel *model_my_images;
-    
+    std::string MyUsername;
     QPixmap img_default;
     QString image_path;
     std::vector<std::string> ip_addresses;

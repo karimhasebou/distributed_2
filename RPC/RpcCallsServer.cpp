@@ -8,8 +8,8 @@
 
 #include "RpcCalls.h"
 
-#define IMG_DIR ""
-#define IMG_LIST_FILE ""
+#define IMG_DIR 
+#define IMG_LIST_FILE "/run/media/karim/345858115857CFEA/AUC/FALL17/DIST-CSCE441102/test/distributed_2/MyImages/images.txt"
 #define AUTHORIZED_USERS ""
 
 using namespace std;
@@ -21,32 +21,28 @@ void updateCountInImage(map<string, int>);
 void stegUserList(const string&);
 void unstegUserList(const string&);
 
-const string currentDir = "";
+const string currentDir = "/run/media/karim/345858115857CFEA/AUC/FALL17/DIST-CSCE441102/test/distributed_2/MyImages";
 
 Image server::getImage(string imageName)
 {
     Image image;
     imageName = currentDir + imageName;
-
-//    imgName = "/Users/faridaeid/Desktop/Desktop/Project Files/GitHub/distributed_2/circle.png";
-
     ifstream imagefile(imageName, ios::in | ios::binary | ios::ate);
+    debug_print("reading image (%s)\n", imageName.c_str());
 
     if(imagefile.is_open()) {
-        
         image.length = imagefile.tellg();
         imagefile.seekg(0, imagefile.beg) ;
         image.content = new char[image.length];
         imagefile.read(image.content, image.length);
         imagefile.close();
-        
-    } else {
-        
-        image.content = NULL;
-        image.length = -1;
-        
+	debug_print("done! (%s)\n", imageName.c_str());
     }
-    
+    else {
+        image.content = NULL;
+	debug_print("failed to read image %s\n", imageName.c_str());
+        image.length = -1;
+    }
     return image;
 }
 
@@ -54,18 +50,14 @@ Image server::getImage(string imageName)
 vector<string> listImages()
 {
     vector<string> imageList;
-
     ifstream imageListfile(IMG_LIST_FILE, ios::in);      // change
-
+    printf("searching for images\n");
     while(imageListfile.is_open()) {
-        
         string imageName;
         imageListfile>>imageName;
-
         if(!imageListfile.eof()) {
-            
             imageList.push_back(imageName);
-            
+	    printf("image .. %s", imageName.c_str());
         }
         else {
             
@@ -79,15 +71,17 @@ vector<string> listImages()
 void stegUserList(const string& imagename)
 {
     string exec_command = "/usr/bin/steghide embed -cf ";
-    exec_command += imagename +" -ef "+AUTHORIZED_USERS+" -p root";
+    exec_command += imagename +" -ef "+ imagename + AUTHORIZED_USERS + ".txt" + " -p root";
     system(exec_command.c_str());
 }
 
 void unstegUserList(const string& filePath)
 {
+    printf("unsteging %s ...\n", filePath.c_str());
     string exec_command = "/usr/bin/steghide extract -sf ";
-    exec_command += filePath + " -p root";
+    exec_command += "MyImages/" + filePath +  " -f -p root";
     system(exec_command.c_str());
+    printf("unsetg: done getting list\n");
 }
 
 set<string> getAuthorizedUsers(const string& filePath)
@@ -97,22 +91,21 @@ set<string> getAuthorizedUsers(const string& filePath)
     
     unstegUserList(filePath);
 
-    ifstream usernamesFile(AUTHORIZED_USERS, ios::in);
+    printf("openning list in txt file %s \n", string(filePath + AUTHORIZED_USERS + ".txt").c_str());
+    ifstream usernamesFile(string(filePath + AUTHORIZED_USERS + ".txt").c_str()
+        , ios::in);
 
     while(usernamesFile.is_open()){
         
         string username;
         usernamesFile>>username;
+        usernamesFile>>userViewCount;   // skip user image count
+        printf("name: %s\n", username.c_str());
 
         if(!usernamesFile.eof()) {
-            
             usersList.insert(username);
-            usernamesFile>>username;
-            usernamesFile>>userViewCount;   // skip user image count
-            
         }
         else {
-            
             usernamesFile.close();
         }
     }
@@ -124,11 +117,9 @@ set<string> getAuthorizedUsers(const string& filePath)
 vector<string> server::getAccessibleImages(const string& username)
 {
     vector<string> imageList;
-
+    printf("getting images for %s\n", username.c_str());
     for(string& image : listImages()){
-        
-        set<string> imageUsers = getAuthorizedUsers(username);
-        
+        set<string> imageUsers = getAuthorizedUsers(image);
         if(imageUsers.count(username)) {
             
             imageList.push_back(image);

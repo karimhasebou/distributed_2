@@ -1,6 +1,8 @@
 #include "HomePage.h"
 #include "../ui_HomePage.h"
 #include "../RPC/RpcCalls.h"
+#include "../RequestHandler.h"
+#include "../RPC/RpcStub.h"
 
 int views = 5; //global for now
 
@@ -16,6 +18,9 @@ HomePage::HomePage(QWidget *parent) :
     
     ui->Image_holder->setPixmap(img_default);
     ui->Image_holder->setScaledContents(true);
+
+   
+
 }
 
 HomePage::~HomePage()
@@ -79,44 +84,23 @@ void HomePage::on_viewImageButton_clicked()
 
 void HomePage::on_getImagesButton_clicked()
 {
-    
-    std::vector<std::string> IPAddresses =  client::getIPAddress();
+    // remove when done testing
+    //std::vector<std::string> IPAddresses =  client::getIPAddress();
+    std::vector<std::string> IPAddresses;
+    // IPAddresses.push_back("127.0.0.1");
 
-   // std::string username =  client::getUsername("10.40.48.60");
-    
-  //  printf("Found Username: %s ", username.c_str());
+    std::vector<std::string> ImagesList;    
+    ImagesList = client::getAccessibleImages(MyUsername , IPAddresses);
 
-    
-    /*
-     vector<pair<int, std::string>> getImagesList()
-     {
-     for(int i = 0; i < ip_addresses.size(); i++)
-     {
-     //MessageType = request
-     
-     //id = 2
-     
-     //msg = marshall(Messagetype, id)
-     
-     //sendto msg to ipaddresses[i]
-     
-     //recvfrom server msg
-     
-     //vector = unmarshall(msg)
-     
-     
-     //Loop over vector
-     //makepair<i, vector[iter]>
-     }
-     
-     }
-     */
-    
-    
     model = new QStringListModel(this);
     QStringList List;
+    printf("got %d images\n", (int)ImagesList.size());
+    for(int i = 0; i < (int)ImagesList.size(); i++)
+    {
+        List << ImagesList[i].c_str();
+    }
+
     
-    List << "nawawy.jpg" << "farida.jpg" << "karim.jpg";
     // Populate our model
     model->setStringList(List);
     // Glue model and view together
@@ -150,3 +134,9 @@ void HomePage::on_update_views_clicked()
     
     
 }
+
+void HomePage::setUsername(std::string username)
+{
+    this->MyUsername = username;
+}
+

@@ -11,8 +11,9 @@
 #include <errno.h>
 #include <unistd.h>
 
-std::string authServerIP = "127.0.0.1";
+std::string authServerIP = "192.168.1.4";
 const unsigned short authServerPort = 63000;
+const unsigned short serverPort = 64000;
 
 LoginStatus client::login(std::string username, std::string password) {
     
@@ -69,7 +70,8 @@ std::vector<std::string> client::getIPAddress()
     return ipList->getValue();
 }
 
-std::string authserver::getUsername(std::string IPAddr)
+
+std::string client::getUsername(std::string IPAddr)
 {
     CustomString * IPAddress = new CustomString(IPAddr);
     
@@ -96,7 +98,44 @@ std::string authserver::getUsername(std::string IPAddr)
     CustomString * username = dynamic_cast<CustomString *>(returnValues[0]);
     
     return username->getValue();
+}
 
+std::vector<std::string> client::getAccessibleImages(std::string username, std::vector<std::string> ipAddress)
+{
+    Message rpcCallMessage;
+    MySocket rpcSocket;
 
-    
+    std::vector<std::string> images;
+
+    for (int ip = 0; ip < (int)ipAddress.size(); ++ip) {
+        rpcCallMessage.setDestIPAddress(ipAddress[ip]);
+        rpcCallMessage.setDestPortNumber(serverPort);
+
+        CustomString * usernameString = new CustomString(username);
+        
+        std::vector<CustomObject * > parameters = {dynamic_cast<CustomObject *>(usernameString)};
+
+        marshal(rpcCallMessage, parameters);
+
+        rpcCallMessage.setMessageType(Request);
+        rpcCallMessage.setRpcOperation(4);
+        
+        
+        Message rpcReplyMessage = rpcSocket.callRPC(rpcCallMessage);
+
+        std::vector<CustomObject *> returnValues = {new CustomVector()};
+        
+        unmarshal(rpcReplyMessage, returnValues);
+        
+        CustomVector* returnVector = dynamic_cast<CustomVector *>(returnValues[0]);
+
+        std::vector<std::string> tmp = returnVector->getValue();
+        
+        for (int i = 0; i < (int) tmp.size(); i++)
+            images.push_back(tmp[i]);
+
+    }
+
+    return images;
+
 }
