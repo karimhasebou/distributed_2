@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include "../Database/DatabaseHandler.h"
 
-std::string authServerIP = "127.0.0.1";
+std::string authServerIP = "10.40.37.203";
 const unsigned short authServerPort = 63000;
 const unsigned short serverPort = 64000;
 
@@ -178,19 +178,46 @@ Image client::getImage(std::string imageName, std::string ipAddress)
 
 bool client::updateCount(std::string imgName, std::string username, int count)
 {
-    std::map<std::string, std::string> UserIps = getMapUsers();
-    
-    printf("HPHPHPHP %s\n" , UserIps["omar_nawawy"]);
+   
 
     CustomString * imageNameString = new CustomString(imgName);
     CustomString * usernameString = new CustomString(username);
     CustomInt * countInt = new CustomInt(count);
+
+    std::vector<CustomObject * > parametersDB = {dynamic_cast<CustomObject *>(usernameString)};
     
+    Message dbRpcMessage;
+    dbRpcMessage.setDestIPAddress(authServerIP);
+    dbRpcMessage.setDestPortNumber(serverPort);
+    
+    marshal(dbRpcMessage, parametersDB);
+        
+    dbRpcMessage.setRpcOperation(9);
+    dbRpcMessage.setRpcRequestID(7); // ?
+    dbRpcMessage.setMessageType(Request);
+    
+    MySocket rpcSocket;
+    
+    Message dbReply =  rpcSocket.callRPC(dbRpcMessage);
+
+
+    std::vector<CustomObject *> returnValuesDB = {new CustomString()};
+    
+    unmarshal(dbReply, returnValuesDB);
+    
+    CustomString* returnString = dynamic_cast<CustomString *>(returnValuesDB[0]);
+
+    std::string ipAdd = returnString->getValue();
+
+
+
+
+
     std::vector<CustomObject * > parameters = {dynamic_cast<CustomObject *>(imageNameString),
         dynamic_cast<CustomObject *>(usernameString), dynamic_cast<CustomObject *>(countInt)};
     
     Message rpcCallMessage;
-    rpcCallMessage.setDestIPAddress(UserIps[username]);
+    rpcCallMessage.setDestIPAddress(ipAdd);
     rpcCallMessage.setDestPortNumber(serverPort);
     
     marshal(rpcCallMessage, parameters);
@@ -198,9 +225,7 @@ bool client::updateCount(std::string imgName, std::string username, int count)
     rpcCallMessage.setRpcOperation(6);
     rpcCallMessage.setRpcRequestID(7); // ?
     rpcCallMessage.setMessageType(Request);
-    
-    MySocket rpcSocket;
-    
+        
     Message rpcReplyMessage =  rpcSocket.callRPC(rpcCallMessage);
 
     std::vector<CustomObject *> returnValues = {new CustomBool()};
@@ -231,7 +256,7 @@ std::vector<std::string> client::splitString(std::string sentence)
 std::vector<std::string> client::listFilesInDir()
 {
     using namespace std;
-    FILE  *file = popen("ls", "r");
+    FILE  *file = popen("ls MyImages", "r");
     
     int ch;
     string result;

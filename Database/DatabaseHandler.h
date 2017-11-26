@@ -10,6 +10,6 @@ void readDatabase();
 std::vector<std::string>& getOnlinePeers();
 int checkInDatabase(std::string, std::string);
 std::string getUserNamefromIP(std::string);
-std::map<std::string, std::string> getMapUsers();
+std::string getIPfromUser(std::string);
 
 #endif

@@ -16,12 +16,14 @@ using namespace std;
 
 vector<string> listImages();
 set<string> getAuthorizedUsers(const string&);
-map<string, int> getAuthorizedUsersCount();
+map<string, int> getAuthorizedUsersCount(std::string);
 void updateCountInImage(map<string, int>);
 void stegUserList(const string&);
 void unstegUserList(const string&);
+std::vector<std::string> listFilesInDir();
+std::vector<std::string> splitString(std::string sentence);
 
-const string currentDir = "/home/nawawy/Nawawy/dist_final/distributed_2/MyImages";
+const string currentDir = "MyImages/";
 
 Image server::getImage(string imageName)
 {
@@ -79,14 +81,14 @@ vector<string> listImages()
 void stegUserList(const string& imagename)
 {
     string exec_command = "/usr/bin/steghide embed -cf ";
-    exec_command += imagename +" -ef "+ imagename + AUTHORIZED_USERS + ".txt" + " -p root";
+    exec_command += currentDir + imagename +" -ef "+ imagename + AUTHORIZED_USERS + ".txt" + " -p root";
     system(exec_command.c_str());
 }
 
 void unstegUserList(const string& filePath)
 {
     string exec_command = "/usr/bin/steghide extract -sf ";
-    exec_command += filePath + " -p root";
+    exec_command += filePath + " -p root -f";
     system(exec_command.c_str());
 }
 
@@ -95,7 +97,7 @@ set<string> getAuthorizedUsers(const string& filePath)
     set<string> usersList;
     int userViewCount;
     
-    unstegUserList(filePath);
+    unstegUserList(currentDir + filePath);
 
     ifstream usernamesFile(string(filePath + AUTHORIZED_USERS + ".txt").c_str()
         , ios::in);
@@ -126,7 +128,7 @@ vector<string> server::getAccessibleImages(const string& username)
 {
     vector<string> imageList;
 
-    for(string& image : listImages()){
+    for(string& image : listFilesInDir()){
         
         set<string> imageUsers = getAuthorizedUsers(image);
         
@@ -150,7 +152,7 @@ bool server::updateCount(string imgName, string username, int count)
     unstegUserList(currentDir + imgName);
     // getAuthorizedUsers(imgName); // use it for its side effect,
     // // which is extracting the secret file from the img
-    map<string, int> countList = getAuthorizedUsersCount();
+    map<string, int> countList = getAuthorizedUsersCount(imgName);
 
     countList[username] = count;
     
@@ -161,11 +163,11 @@ bool server::updateCount(string imgName, string username, int count)
     return true;
 }
 
-map<string, int> getAuthorizedUsersCount()
+map<string, int> getAuthorizedUsersCount(std::string imageName)
 {
     map<string, int> list;
 
-    ifstream imageListFile(IMG_LIST_FILE, ios::in);
+    ifstream imageListFile(currentDir + imageName + ".txt", ios::in);
 
     while(imageListFile.is_open()) {
         
@@ -216,3 +218,38 @@ std::string server::pingUser()    //change
         return "s";
 }
 
+std::vector<std::string> listFilesInDir()
+{
+    using namespace std;
+    FILE  *file = popen("ls MyImages", "r");
+    
+    int ch;
+    string result;
+    
+    do{
+        ch = fgetc(file);
+        
+        if(ch == EOF) break;
+        
+        result += ch;
+    }while(1);
+
+    pclose(file);
+
+    return splitString(result);
+}
+
+std::vector<std::string> splitString(std::string sentence)
+{
+  std::stringstream ss;
+  ss<<sentence;
+  
+  std::string to;
+  std::vector<std::string> files;
+
+    while(std::getline(ss,to,'\n')){
+        files.push_back(to);
+    }
+    
+    return files;
+}
