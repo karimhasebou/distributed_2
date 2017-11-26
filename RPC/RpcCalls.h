@@ -14,6 +14,7 @@
 #include <vector>
 #include <fstream>
 #include <cstdio>
+#include <sstream>
 #include <set>
 #include <map>
 #include "../CustomObjects/CustomObject.h"
@@ -54,7 +55,8 @@ namespace client {
     bool updateCount(std::string, std::string, int);
     std::string getUsername(std::string);
     
-
+    std::vector<std::string> splitString(std::string sentence);
+    std::vector<std::string> listFilesInDir();
 }
 
 namespace authserver {

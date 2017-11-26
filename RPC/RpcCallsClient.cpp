@@ -211,3 +211,40 @@ bool client::updateCount(std::string imgName, std::string username, int count)
 
     return returnVector->getValue();
 }
+
+
+std::vector<std::string> client::splitString(std::string sentence)
+{
+  std::stringstream ss;
+  ss<<sentence;
+  
+  std::string to;
+  std::vector<std::string> files;
+
+    while(std::getline(ss,to,'\n')){
+        files.push_back(to);
+    }
+    
+    return files;
+}
+
+std::vector<std::string> client::listFilesInDir()
+{
+    using namespace std;
+    FILE  *file = popen("ls", "r");
+    
+    int ch;
+    string result;
+    
+    do{
+        ch = fgetc(file);
+        
+        if(ch == EOF) break;
+        
+        result += ch;
+    }while(1);
+
+    pclose(file);
+
+    return splitString(result);
+}
