@@ -48,6 +48,7 @@ int MySocket::reply(const Message& sentMessage) {
     
     UDPSocket replySocket;
     replySocket.bind(0);
+    replySocket.setTimeOut(4);
     
     std::vector<Message> dividedMessage = sentMessage.divide(CHUNK_SIZE);
     
@@ -67,7 +68,7 @@ int MySocket::reply(const Message& sentMessage) {
          
             Message acknowledgementMessage;  
             status = replySocket.recievePacket(acknowledgementMessage);
-            printf("Received acknowledgement Packet for part %d\n", part);
+            printf("Received acknowledgement Packet(%d)\n", part);
             // doing the checks
         }
         

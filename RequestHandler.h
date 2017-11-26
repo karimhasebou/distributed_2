@@ -10,6 +10,9 @@
 #include <algorithm>
 #include "UDPLayer/MySocket.h"
 #include "UDPLayer/Message.h"
+#define DEBUG 1
+#define debug_print(fmt, ...) \
+            do { if (DEBUG) printf(fmt, __VA_ARGS__); } while (0)
 
 #define THREAD_COUNT 10
 

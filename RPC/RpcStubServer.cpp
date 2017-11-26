@@ -99,13 +99,13 @@ Message updateCount(Message messageParamters)
     return replyMessage;
 }
 
-Message getImage(Message messageParamters)
+Message getImage(Message& messageParamters)
 {
     vector<CustomObject*> marshallingVector;
     marshallingVector.push_back(new CustomString());
     unmarshal(messageParamters, marshallingVector);
     string imageName = ((CustomString*) marshallingVector[0])->getValue();
-    debug_print("Unmarshalled image name %s", imageName.c_str());
+    debug_print("Unmarshalled image (%s)\n", imageName.c_str());
     // marshallingVector.clear();
     
     Image imgArray = server::getImage(imageName);

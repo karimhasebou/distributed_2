@@ -26,7 +26,7 @@ const string currentDir = "/run/media/karim/345858115857CFEA/AUC/FALL17/DIST-CSC
 Image server::getImage(string imageName)
 {
     Image image;
-    imageName = currentDir + imageName;
+    imageName = currentDir + "/" + imageName;
     ifstream imagefile(imageName, ios::in | ios::binary | ios::ate);
     debug_print("reading image (%s)\n", imageName.c_str());
 
@@ -36,7 +36,7 @@ Image server::getImage(string imageName)
         image.content = new char[image.length];
         imagefile.read(image.content, image.length);
         imagefile.close();
-	debug_print("done! (%s)\n", imageName.c_str());
+	debug_print("done!(%s) img size(%d)\n", imageName.c_str(), image.length);
     }
     else {
         image.content = NULL;

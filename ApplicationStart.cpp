@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
     
 
     addRequestHandler(4, getAccessibleImages);
+    addRequestHandler(5, getImage);
     initRequestHandler(64000);
 
     QApplication application(argc, argv);
