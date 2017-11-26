@@ -91,3 +91,25 @@ Message getUsername(Message& messageParamters)
 }
 
 
+Message getUserNamefromIP(Message& messageParamters)
+{
+    std::vector<CustomObject *> parameters = {new CustomString()};
+    
+    unmarshal(messageParamters, parameters);
+    
+    std::string username = (dynamic_cast<CustomString *>(parameters[0]))->getValue();
+
+    std::string ipAddress_val = authserver::getUsername(username);
+    
+    CustomString * ipAddress = new CustomString((std::string)ipAddress_val);
+    
+    std::vector<CustomObject *> returnValues = {dynamic_cast<CustomObject*>(ipAddress)};
+    
+    Message replyMessage;
+    
+    replyMessage.setSocketAddress(messageParamters.getSocketAddress());
+    
+    marshal(replyMessage, returnValues);
+    
+    return replyMessage;
+}

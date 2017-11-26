@@ -131,6 +131,7 @@ void processRequest()
         executingRPCMtx.unlock();
 
         if(requestsHandlers.count(rpcOperation) > 0){
+            
             Message replyMessage = requestsHandlers[rpcOperation](receivedMessage);
             mainSocket.reply(replyMessage);
         }

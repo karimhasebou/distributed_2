@@ -38,7 +38,8 @@ Message MySocket::callRPC(const Message & sentMessage) {
         receiveStatus = receive(rpcSocket, receivedMessage);
         printf("ya allah\n");
     }
-    
+    expectingPacketID = 1;
+    messages.clear();
     return receivedMessage;
 }
 
@@ -115,7 +116,7 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
     
     socket.setTimeOut(1);
     
-    vector<Message> messages;
+    // vector<Message> messages;
     Message receivedMessage, ackMessage;
     
     ackMessage.createMessage(0);

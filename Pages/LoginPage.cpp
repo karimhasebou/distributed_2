@@ -12,7 +12,6 @@ LoginPage::LoginPage(QWidget *parent) :
 {
     ui->setupUi(this);
     //    connect(ui->signInButton, &QPushButton::clicked, this, &LoginPage::on_signInButton_clicked);
-
     
     QPixmap backgroundImage("Pages/background.jpg");
     backgroundImage = backgroundImage.scaled(this->size(), Qt::IgnoreAspectRatio);

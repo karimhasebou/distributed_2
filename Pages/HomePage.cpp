@@ -6,10 +6,9 @@
 
 int views_num = 0;
 
-namespace homePage
-{
-    std::vector<std::string> splitString(std::string);
-    std::vector<std::string> listFilesInDir();
+namespace homepage {
+std::vector<std::string> splitString(std::string sentence);
+std::vector<std::string> listFilesInDir();
 };
 
 struct imageEntry {
@@ -133,6 +132,11 @@ void HomePage::on_getImagesButton_clicked()
 
     printf("IP numbers %d", IPAddresses.size());
 
+    for ( int i =  0; i < (int) IPAddresses.size(); i++)
+    {
+        printf("\nIP ADDRESSES : %s\n", IPAddresses[i].c_str());
+    }
+
     for (int ip = 0; ip < (int)IPAddresses.size(); ++ip) {
         
         std::vector<std::string> tmp;
@@ -165,7 +169,7 @@ void HomePage::on_getImagesButton_clicked()
     
     //ls and get images in my directory
 
-    std::vector<std::string> myImages = homePage::listFilesInDir();
+    std::vector<std::string> myImages = homepage::listFilesInDir();
 
     model_my_images = new QStringListModel(this);
     QStringList List2;
@@ -200,8 +204,6 @@ void HomePage::on_update_views_clicked()
     
     
     bool updated = client::updateCount(imageName, usernameToUpdate, viewsToUpdate);
-    
-    
 
     //callRPC
     
@@ -222,7 +224,7 @@ void HomePage::extractViews(std::string imageName)
     system(exec_command.c_str());
 }
 
-std::vector<std::string> homePage::splitString(std::string sentence)
+std::vector<std::string> homepage::splitString(std::string sentence)
 {
   std::stringstream ss;
   ss<<sentence;
@@ -237,10 +239,10 @@ std::vector<std::string> homePage::splitString(std::string sentence)
     return files;
 }
 
-std::vector<std::string> homePage::listFilesInDir()
+std::vector<std::string> homepage::listFilesInDir()
 {
     using namespace std;
-    FILE  *file = popen("ls MyImages", "r");
+    FILE  *file = popen("ls MyImages/", "r");
     
     int ch;
     string result;
@@ -255,8 +257,5 @@ std::vector<std::string> homePage::listFilesInDir()
 
     pclose(file);
 
-    return homePage::splitString(result);
+    return homepage::splitString(result);
 }
-
-
- 

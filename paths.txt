@@ -1,0 +1,2 @@
+/home/nawawy/Nawawy/farida/distributed_2/Pages/background.jpg
+/home/nawawy/Nawawy/farida/distributed_2/Database/database.txt

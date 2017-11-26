@@ -26,7 +26,7 @@ private:
     int expectingPacketID;
     Status receive(UDPSocket&, Message&);
     Status send(UDPSocket&, const Message&);
-    
+    std::vector<Message> messages
 
     
 public:

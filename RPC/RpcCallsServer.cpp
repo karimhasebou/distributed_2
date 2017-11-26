@@ -17,6 +17,8 @@ map<string, int> getAuthorizedUsersCount();
 void updateCountInMap(map<string, int>, std::string);
 void stegUserList(const string&);
 void unstegUserList(const string&);
+std::vector<std::string> listFilesInDir();
+std::vector<std::string> splitString(std::string sentence);
 
 std::vector<std::string> listFilesInDir();
 std::vector<std::string> splitString(std::string);
@@ -154,7 +156,7 @@ bool server::updateCount(string imgName, string username, int count)
     return true;
 }
 
-map<string, int> getAuthorizedUsersCount()
+map<string, int> getAuthorizedUsersCount(std::string imageName)
 {
     map<string, int> list;
 
@@ -244,5 +246,4 @@ std::vector<std::string> listFilesInDir()
 
     return splitString(result);
 }
-
 
