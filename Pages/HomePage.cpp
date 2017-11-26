@@ -1,8 +1,17 @@
 #include "HomePage.h"
 #include "../ui_HomePage.h"
 #include "../RPC/RpcCalls.h"
+#include "../RequestHandler.h"
+#include "../RPC/RpcStub.h"
 
-int views = 5; //global for now
+int views = 5; //global for 
+std::vector<imageEntry> imageEntries;
+
+
+struct imageEntry {
+    std::string imageName;
+    std::string ipAddress;
+};
 
 
 HomePage::HomePage(QWidget *parent) :
@@ -16,6 +25,9 @@ HomePage::HomePage(QWidget *parent) :
     
     ui->Image_holder->setPixmap(img_default);
     ui->Image_holder->setScaledContents(true);
+
+   
+
 }
 
 HomePage::~HomePage()
@@ -34,17 +46,15 @@ void HomePage::on_requestImageButton_clicked()
     int index = ui->imagesList->currentIndex().row();
     QString image_selected = model->stringList().at(index);
     
-    //
+    std::string imageName = image_selected.toUtf8().constData();    
     
-    //request image from peer
-    
-    
-    //
-    
-    //download image locally
-    
-    
-    //Acknowledge that image is available
+    Image img = client::getImage(imageName, imageEntries[index].ipAddress);
+
+    std::string imageFilePath = "../DownloadedImages/" + imageName;
+
+    std::ostream outfile(imageFilePath , std::ofstream::binary);
+    outfile.write(img.content, img.length);
+
     
     ui->imageStatusLabel->setText("Image Available");
     
@@ -79,44 +89,33 @@ void HomePage::on_viewImageButton_clicked()
 
 void HomePage::on_getImagesButton_clicked()
 {
-    
     std::vector<std::string> IPAddresses =  client::getIPAddress();
 
-   // std::string username =  client::getUsername("10.40.48.60");
-    
-  //  printf("Found Username: %s ", username.c_str());
+    printf("IP numbers %d", IPAddresses.size());
 
+    for (int ip = 0; ip < (int)IPAddresses.size(); ++ip) {
+        
+        std::vector<std::string> tmp;
+        tmp = client::getAccessibleImages(MyUsername , IPAddresses[ip]);
+
+        for (int i = 0; i < (int) tmp.size(); i++)
+        {
+            imageEntry img;
+            img.imageName = tmp[i]; 
+            img.ipAddress = IPAddresses[ip];
+
+            imageEntries.push_back(img);
+        }
+    }
     
-    /*
-     vector<pair<int, std::string>> getImagesList()
-     {
-     for(int i = 0; i < ip_addresses.size(); i++)
-     {
-     //MessageType = request
-     
-     //id = 2
-     
-     //msg = marshall(Messagetype, id)
-     
-     //sendto msg to ipaddresses[i]
-     
-     //recvfrom server msg
-     
-     //vector = unmarshall(msg)
-     
-     
-     //Loop over vector
-     //makepair<i, vector[iter]>
-     }
-     
-     }
-     */
-    
-    
+
     model = new QStringListModel(this);
     QStringList List;
+    printf("got %d images\n", (int)imageEntries.size());
+    for(int i = 0; i < (int)imageEntries.size(); i++)
+        List << imageEntries[i].imageName.c_str();
+
     
-    List << "nawawy.jpg" << "farida.jpg" << "karim.jpg";
     // Populate our model
     model->setStringList(List);
     // Glue model and view together
@@ -150,3 +149,9 @@ void HomePage::on_update_views_clicked()
     
     
 }
+
+void HomePage::setUsername(std::string username)
+{
+    this->MyUsername = username;
+}
+

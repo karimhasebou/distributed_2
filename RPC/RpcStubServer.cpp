@@ -135,7 +135,7 @@ Message getImage(Message messageParamters)
     return replyMessage;
 }
 
-Message getAccessibleImages(Message messageParamters)
+Message getAccessibleImages(Message & messageParamters)
 {
     vector<CustomObject*> unmarshalledValues;
     unmarshalledValues.push_back(new CustomString());
