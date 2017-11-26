@@ -30,7 +30,7 @@ std::vector<std::string> authserver::getIPAddress(const std::string& senderAddre
 
 std::string authserver::getUsername(std::string IPAddress)
 {
-    return getUserNamefromIP(IPAddress);
+    return getIPfromUser(IPAddress);
 }
 
 

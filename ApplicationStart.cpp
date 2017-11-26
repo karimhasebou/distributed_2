@@ -22,9 +22,6 @@ int main(int argc, char *argv[])
     addRequestHandler(5, getImage);
     addRequestHandler(6, updateCount);
     
-
-    
-    
     initRequestHandler(64000);
 
     QApplication application(argc, argv);

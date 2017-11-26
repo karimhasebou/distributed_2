@@ -16,6 +16,7 @@ std::string authServerIP = "10.40.37.203";
 const unsigned short authServerPort = 63000;
 const unsigned short serverPort = 64000;
 
+
 LoginStatus client::login(std::string username, std::string password) {
     
     CustomString * usernameString = new CustomString(username);
@@ -191,7 +192,7 @@ bool client::updateCount(std::string imgName, std::string username, int count)
     
     marshal(dbRpcMessage, parametersDB);
         
-    dbRpcMessage.setRpcOperation(9);
+    dbRpcMessage.setRpcOperation(8);
     dbRpcMessage.setRpcRequestID(7); // ?
     dbRpcMessage.setMessageType(Request);
     
@@ -237,38 +238,38 @@ bool client::updateCount(std::string imgName, std::string username, int count)
 }
 
 
-std::vector<std::string> client::splitString(std::string sentence)
-{
-  std::stringstream ss;
-  ss<<sentence;
+// std::vector<std::string> splitString(std::string sentence)
+// {
+//   std::stringstream ss;
+//   ss<<sentence;
   
-  std::string to;
-  std::vector<std::string> files;
+//   std::string to;
+//   std::vector<std::string> files;
 
-    while(std::getline(ss,to,'\n')){
-        files.push_back(to);
-    }
+//     while(std::getline(ss,to,'\n')){
+//         files.push_back(to);
+//     }
     
-    return files;
-}
+//     return files;
+// }
 
-std::vector<std::string> client::listFilesInDir()
-{
-    using namespace std;
-    FILE  *file = popen("ls MyImages", "r");
+// std::vector<std::string> listFilesInDir()
+// {
+//     using namespace std;
+//     FILE  *file = popen("ls MyImages", "r");
     
-    int ch;
-    string result;
+//     int ch;
+//     string result;
     
-    do{
-        ch = fgetc(file);
+//     do{
+//         ch = fgetc(file);
         
-        if(ch == EOF) break;
+//         if(ch == EOF) break;
         
-        result += ch;
-    }while(1);
+//         result += ch;
+//     }while(1);
 
-    pclose(file);
+//     pclose(file);
 
-    return splitString(result);
-}
+//     return splitString(result);
+// }

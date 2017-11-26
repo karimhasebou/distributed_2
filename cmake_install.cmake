@@ -40,9 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-<<<<<<< HEAD
 file(WRITE "/home/hasebou/Downloads/disthopeFinal/distributed_2/${CMAKE_INSTALL_MANIFEST}"
-=======
-file(WRITE "/home/nawawy/Nawawy/farida/distributed_2/${CMAKE_INSTALL_MANIFEST}"
->>>>>>> 5598188787c2ba5da2c430d7a6454127d8411401
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

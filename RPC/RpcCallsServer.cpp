@@ -13,7 +13,7 @@ using namespace std;
 
 vector<string> listImages();
 set<string> getAuthorizedUsers(const string&);
-map<string, int> getAuthorizedUsersCount();
+map<string, int> getAuthorizedUsersCount(const string);
 void updateCountInMap(map<string, int>, std::string);
 void stegUserList(const string&);
 void unstegUserList(const string&);
@@ -148,7 +148,7 @@ bool server::updateCount(string imgName, string username, int count)
     std::string txtPath = imgName + ".txt";
     unstegUserList(downDir + imgName);
 
-    map<string, int> countList = getAuthorizedUsersCount();
+    map<string, int> countList = getAuthorizedUsersCount(txtPath);
     countList[username] = count;
 
     updateCountInMap(countList, txtPath);
@@ -156,29 +156,29 @@ bool server::updateCount(string imgName, string username, int count)
     return true;
 }
 
-map<string, int> getAuthorizedUsersCount(std::string imageName)
+map<string, int> getAuthorizedUsersCount(std::string path)
 {
     map<string, int> list;
 
-    // ifstream imageListFile(IMG_LIST_FILE, ios::in);
+    ifstream imageListFile(path, ios::in);
 
-    // while(imageListFile.is_open()) {
+    while(imageListFile.is_open()) {
         
-    //     string username;
-    //     int viewCount;
+        string username;
+        int viewCount;
         
-    //     imageListFile>>username;
-    //     imageListFile>>viewCount;
+        imageListFile>>username;
+        imageListFile>>viewCount;
 
-    //     if(!imageListFile.eof()) {
+        if(!imageListFile.eof()) {
             
-    //         list[username] = viewCount;
-    //     }
-    //     else {
+            list[username] = viewCount;
+        }
+        else {
             
-    //         imageListFile.close();
-    //     }
-    // }
+            imageListFile.close();
+        }
+    }
 
     return list;
 }
@@ -196,11 +196,11 @@ void updateCountInMap(map<string, int> list, std::string path)
 
         long pos = imageListFile.tellp();
         
-        if(pos > 0){
+        // if(pos > 0){
             
-            imageListFile.seekp(pos - 1);
-            imageListFile.put(EOF);
-        }
+        //     imageListFile.seekp(pos - 1);
+        //     imageListFile.put(EOF);
+        // }
 
         imageListFile.close();
     }

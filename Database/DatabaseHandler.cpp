@@ -19,7 +19,7 @@ void readDatabase()
 {
     std::string username, password, ipAddress;
     
-    std::string databasePath = "/home/nawawy/Nawawy/farida/distributed_2/Database/database.txt";
+    std::string databasePath = "Database/database.txt";
     std::ifstream databaseFile;
     
     databaseFile.open(databasePath.c_str());
@@ -64,6 +64,7 @@ int checkInDatabase(std::string username, std::string password)
 
 std::vector<std::string>& getOnlinePeers()
 {
+    onlinePeers.clear();
     std::set<std::string>::iterator it = tmp_set.begin();
     std::set<std::string>::iterator end = tmp_set.end();    
 
@@ -86,7 +87,7 @@ std::string getUserNamefromIP(std::string IPAddress)
             username = it->first;
             break;
         }
-    
+    // printf("found username %d")
     return username;
 }
 
@@ -96,7 +97,7 @@ std::string getIPfromUser(std::string username)
     UserInfo userInfo = database[username];
     std::string ip = userInfo.ipAddress;
 
-    printf("In Database %s : " , ip.c_str() );
+    printf("In Database %s : \n" , ip.c_str() );
     return database[username].ipAddress;
 }
 
