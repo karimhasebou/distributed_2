@@ -52,7 +52,8 @@ void HomePage::on_requestImageButton_clicked()
 
     std::string imageFilePath = "../DownloadedImages/" + imageName;
 
-    std::ostream outfile(imageFilePath , std::ofstream::binary);
+    std::ofstream outfile(imageFilePath , std::ofstream::binary);
+    
     outfile.write(img.content, img.length);
 
     
@@ -82,8 +83,7 @@ void HomePage::on_viewImageButton_clicked()
         ui->imageStatusLabel->setText("No Image Requested");
         
         ui->Image_holder->setPixmap(img_default);
-        
-        
+
     }
 }
 

@@ -67,7 +67,7 @@ int MySocket::reply(const Message& sentMessage) {
             Message acknowledgementMessage;  
             status = replySocket.recievePacket(acknowledgementMessage);
             
-            printf("Received acknowledgement Packet\n\n");
+            printf("Server : Received acknowledgement Packet number %d\n", acknowledgementMessage.getPacketID());
             // doing the checks
         }
         
@@ -110,7 +110,9 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
         
         messages.push_back(receivedMessage);
         
-        printf("Sending Acknowledgement packet\n\n");
+        ackMessage.setPacketID(receivedMessage.getPacketID());
+        
+        printf("Sending Acknowledgement Packet Number : %d\n", ackMessage.getPacketID());
         
         socket.sendPacket(ackMessage);
         
@@ -128,10 +130,9 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
         while(status == -1 && packetResend++ < MAX_RESEND_PACK) {
             
             status = socket.recievePacket(receivedMessage);
-            
-            // printf("Packet received %d", ++received);
-            
+                        
         }
+        
     }while(status != -1);
 
     
