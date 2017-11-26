@@ -11,7 +11,7 @@
 #include <errno.h>
 #include <unistd.h>
 
-std::string authServerIP = "192.168.1.4";
+std::string authServerIP = "127.0.0.1"; //192.168.1.4
 const unsigned short authServerPort = 63000;
 const unsigned short serverPort = 64000;
 
@@ -133,7 +133,7 @@ std::vector<std::string> client::getAccessibleImages(std::string username, std::
     return tmp;
 }
 
-Image getImage(std::string imageName, std::string ipAddress)
+Image client::getImage(std::string imageName, std::string ipAddress)
 {
     Message rpcCallMessage;
     MySocket rpcSocket;
@@ -166,10 +166,17 @@ Image getImage(std::string imageName, std::string ipAddress)
     Image img;
 
     img.length = imageString.length();
-    img.content = new char[img.length()];
+    img.content = new char[img.length];
 
-    for (int i = 0; i < img.length(); i++)
+    for (int i = 0; i < img.length; i++)
         img.content[i] = imageString[i];
+
+    std::string imageFilePath = "../DownloadedImages/" + imageName;
+        
+    std::ofstream outfile(imageFilePath , std::ofstream::binary);
+        
+    printf("length of image %s" , img.length);
+    outfile.write(img.content, img.length);
 
     return img;
 }

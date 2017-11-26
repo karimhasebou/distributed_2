@@ -5,13 +5,14 @@
 #include "../RPC/RpcStub.h"
 
 int views = 5; //global for 
-std::vector<imageEntry> imageEntries;
 
 
 struct imageEntry {
     std::string imageName;
     std::string ipAddress;
 };
+
+std::vector<imageEntry> imageEntries;
 
 
 HomePage::HomePage(QWidget *parent) :
@@ -47,16 +48,24 @@ void HomePage::on_requestImageButton_clicked()
     QString image_selected = model->stringList().at(index);
     
     std::string imageName = image_selected.toUtf8().constData();    
-    
+
     Image img = client::getImage(imageName, imageEntries[index].ipAddress);
 
-    std::string imageFilePath = "../DownloadedImages/" + imageName;
+    // std::cout << "Image name selected :" << imageName << std::endl; 
+    
 
-    std::ostream outfile(imageFilePath , std::ofstream::binary);
-    outfile.write(img.content, img.length);
+    // std::string imageFilePath = "../DownloadedImages/" + imageName;
+
+    // std::ofstream outfile(imageFilePath , std::ofstream::binary);
+
+    // printf("length of image %s" , img.length);
+    // outfile.write(img.content, img.length);
 
     
-    ui->imageStatusLabel->setText("Image Available");
+    // ui->imageStatusLabel->setText("Image Available");
+
+    // outfile.close();
+    
     
 }
 

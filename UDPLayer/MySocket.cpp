@@ -19,6 +19,8 @@ Message MySocket::callRPC(const Message & sentMessage) {
     UDPSocket rpcSocket;
     rpcSocket.bind(0);
 
+    rpcSocket.setTimeOut(4);
+
     int requestsCount = 0;
     Status receiveStatus = Pending;
         
@@ -27,7 +29,7 @@ Message MySocket::callRPC(const Message & sentMessage) {
     while(receiveStatus != Success &&
           receiveStatus != StreamFailure &&
           requestsCount++ < MAX_REQUESTS) {
-        
+        printf("try (%d) ", requestsCount);
         rpcSocket.sendPacket(sentMessage);
         
         receiveStatus = receive(rpcSocket, receivedMessage);
