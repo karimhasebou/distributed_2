@@ -22,6 +22,7 @@ Message MySocket::callRPC(const Message & sentMessage) {
     expectingPacketID = 1;
 
     rpcSocket.setTimeOut(2);
+    // rpcSocket.setTimeOut(4);
 
     int requestsCount = 0;
     Status receiveStatus = Pending;
@@ -35,7 +36,7 @@ Message MySocket::callRPC(const Message & sentMessage) {
         rpcSocket.sendPacket(sentMessage);
         
         receiveStatus = receive(rpcSocket, receivedMessage);
-        
+        printf("ya allah\n");
     }
     
     return receivedMessage;
@@ -128,7 +129,6 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
         Status packetStatus = Pending;
         int receiveCount = 1;
         
-
         while (packetStatus != Success &&receiveCount++ <= MAX_RESEND_PACK) {
             
             packetStatus = (Status)socket.recievePacket(receivedMessage);
@@ -162,6 +162,7 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
                     return Success;
                 }
             }
+
             
             if (packetStatus == Failure) {
                 
@@ -169,6 +170,5 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
             }
         }
     }
-    
     return Failure;
 }

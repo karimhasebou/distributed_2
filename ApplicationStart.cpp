@@ -20,6 +20,10 @@ int main(int argc, char *argv[])
     
     addRequestHandler(4, getAccessibleImages);
     addRequestHandler(5, getImage);
+    addRequestHandler(6, updateCount);
+    
+
+    
     
     initRequestHandler(64000);
 

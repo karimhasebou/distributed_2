@@ -227,8 +227,9 @@ void Message::combine(std::vector<Message> messages)
 {
     size_t packetsSize = 0;
     
-    for(int i = 0; i < messages.size(); ++i) {
+    for(int i = 0; i < (int)messages.size(); ++i) {
         packetsSize += messages[i].messageSize;
+        printf("p(%d) size %d\n", i, messages[i].messageSize);
     }
     
     message = new char[packetsSize];
@@ -240,8 +241,8 @@ void Message::combine(std::vector<Message> messages)
         memcpy(message + offset, messages[i].message, messages[i].messageSize);
         offset += messages[i].messageSize;
     }
-    
-    this->setRpcOperation(messages[0].rpcOperation);
-    this->setRpcRequestID(messages[0].rpcRequestID);
-    this->setMessageType(Reply);
+    printf("here\n");
+    // this->setRpcOperation(messages[0].rpcOperation);
+    // this->setRpcRequestID(messages[0].rpcRequestID);
+    // this->setMessageType(Reply);
 }

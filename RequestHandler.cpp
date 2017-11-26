@@ -45,7 +45,8 @@ void addRequestHandler(int operationID, Handler RPC) {
 void shutdown()
 {
     shouldShutdown = true;
-    // requestSocket.shutdown();
+    isRequestQueueEmpty.notify_all();
+    requestListener.join(); // wait for receivefrom to timeout
 }
 
 void handleRequests()
@@ -104,21 +105,24 @@ Message popFromQueue()
     Message receivedMessage;
     std::unique_lock<std::mutex> lck(requestQueueMtx);
 
-    while(requestsQueue.size() == 0)
+    while(requestsQueue.size() == 0 &&
+        !shouldShutdown)
         isRequestQueueEmpty.wait(lck);
 
-    receivedMessage = requestsQueue.front();
-    requestsQueue.pop_front();
+    if(!shouldShutdown){
+        receivedMessage = requestsQueue.front();
+        requestsQueue.pop_front();
+    }
 
     return receivedMessage;
 }
 
 void processRequest()
 {
-    while(!shouldShutdown){
-        
+    while(true){
         Message receivedMessage = popFromQueue();
-        int rpcOperation = receivedMessage.getRpcOperation();
+        if(!shouldShutdown){
+            int rpcOperation = receivedMessage.getRpcOperation();
         
         std::string msgKey = getMessageUniqueKey(receivedMessage);
         executingRPCMtx.lock();
@@ -133,6 +137,8 @@ void processRequest()
         executingRPCMtx.lock();
         executingRPC.erase(msgKey);
         executingRPCMtx.unlock();
+
+        }
     }
 }
 

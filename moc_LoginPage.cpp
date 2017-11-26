@@ -1,7 +1,11 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'LoginPage.h'
 **
+<<<<<<< HEAD
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.1)
+=======
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.5.1)
+>>>>>>> 08bd9282483f82086fb0c4e4a06752ee13901ccb
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +16,11 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'LoginPage.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
+<<<<<<< HEAD
 #error "This file was generated using the moc from 5.9.1. It"
+=======
+#error "This file was generated using the moc from 5.5.1. It"
+>>>>>>> 08bd9282483f82086fb0c4e4a06752ee13901ccb
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif

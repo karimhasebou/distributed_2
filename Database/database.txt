@@ -1,4 +1,4 @@
 omar_nawawy	nawnaw	192.168.1.6
 kareemfarid	frfr	192.168.1.8
-faridaeid	eid`	192.168.1.4
+faridaeid	eid	192.168.1.4
 karimhasebo	root	10.40.37.203
