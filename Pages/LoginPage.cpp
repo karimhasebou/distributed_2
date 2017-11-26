@@ -36,6 +36,7 @@ void LoginPage::on_signInButton_clicked()
         case loginSucess:
             hide();
             home = new HomePage(this);
+            home->setUsername(username);
             home->show();
             break;
             

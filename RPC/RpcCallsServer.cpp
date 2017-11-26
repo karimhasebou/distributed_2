@@ -21,7 +21,7 @@ void updateCountInImage(map<string, int>);
 void stegUserList(const string&);
 void unstegUserList(const string&);
 
-const string currentDir = "";
+const string currentDir = "/home/nawawy/Nawawy/dist_final/distributed_2/MyImages";
 
 Image server::getImage(string imageName)
 {
@@ -79,7 +79,7 @@ vector<string> listImages()
 void stegUserList(const string& imagename)
 {
     string exec_command = "/usr/bin/steghide embed -cf ";
-    exec_command += imagename +" -ef "+AUTHORIZED_USERS+" -p root";
+    exec_command += imagename +" -ef "+ imagename + AUTHORIZED_USERS + ".txt" + " -p root";
     system(exec_command.c_str());
 }
 
@@ -97,7 +97,8 @@ set<string> getAuthorizedUsers(const string& filePath)
     
     unstegUserList(filePath);
 
-    ifstream usernamesFile(AUTHORIZED_USERS, ios::in);
+    ifstream usernamesFile(string(filePath + AUTHORIZED_USERS + ".txt").c_str()
+        , ios::in);
 
     while(usernamesFile.is_open()){
         
@@ -127,7 +128,7 @@ vector<string> server::getAccessibleImages(const string& username)
 
     for(string& image : listImages()){
         
-        set<string> imageUsers = getAuthorizedUsers(username);
+        set<string> imageUsers = getAuthorizedUsers(image);
         
         if(imageUsers.count(username)) {
             

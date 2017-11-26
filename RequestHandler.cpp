@@ -26,6 +26,7 @@ thread requestListener;
 
 void initRequestHandler(const unsigned short& port)
 {
+    printf("SERVER ");
     mainSocket.bind(port);
 
     for(int i = 0; i < THREAD_COUNT; ++i){
@@ -53,9 +54,12 @@ void handleRequests()
         Message requestMessage;
         
         if(mainSocket.recvFrom(requestMessage) >= 0){
-            
+            printf("server got a message rpco %d\n", requestMessage.getRpcOperation());
             pushToQueue(requestMessage);
         
+        }
+        else {
+            printf("server got a bad message :(\n");
         }
 
     }
@@ -68,7 +72,6 @@ void pushToQueue(Message receivedMessage)
     executingRPCMtx.lock();
     discardMessage = executingRPC.count(receivedMessage.getRpcOperation()) > 0;
     executingRPCMtx.unlock();
-    
     requestQueueMtx.lock();
     discardMessage |= queueContains(receivedMessage);       // ques here
     

@@ -16,7 +16,7 @@ void readDatabase()
 {
     std::string username, password, ipAddress;
     
-    std::string databasePath = "./database.txt";
+    std::string databasePath = "/home/nawawy/Nawawy/dist_final/distributed_2/Database/database.txt";
     std::ifstream databaseFile;
     
     databaseFile.open(databasePath.c_str());
