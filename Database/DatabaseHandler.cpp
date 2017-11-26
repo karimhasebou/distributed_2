@@ -18,7 +18,7 @@ void readDatabase()
 {
     std::string username, password, ipAddress;
     
-    std::string databasePath = "/Users/faridaeid/Desktop/Desktop/Project Files/GitHub/distributed_2/Database/database.txt";
+    std::string databasePath = "/home/nawawy/Nawawy/farida/distributed_2/Database/database.txt";
     std::ifstream databaseFile;
     
     databaseFile.open(databasePath.c_str());

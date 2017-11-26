@@ -34,6 +34,11 @@ Message login(Message& messageParamters) {
     
     std::vector<CustomObject *> returnValues = {dynamic_cast<CustomObject*>(loginStatus)};
 
+    Message replyMessage;
+
+    replyMessage.setSocketAddress(messageParamters.getSocketAddress());
+
+    marshal(replyMessage, returnValues);
 
     return replyMessage;
     
