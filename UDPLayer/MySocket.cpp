@@ -21,7 +21,7 @@ Message MySocket::callRPC(const Message & sentMessage) {
     
     expectingPacketID = 1;
 
-    rpcSocket.setTimeOut(4);
+    rpcSocket.setTimeOut(2);
 
     int requestsCount = 0;
     Status receiveStatus = Pending;
@@ -52,7 +52,7 @@ Status MySocket::reply(const Message& sentMessage) {
     UDPSocket replySocket;
     replySocket.bind(0);
     
-    replySocket.setTimeOut(2);
+    replySocket.setTimeOut(1);
     
     std::vector<Message> dividedMessage = sentMessage.divide(CHUNK_SIZE);
     
@@ -112,7 +112,7 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
     
     int lastAcknowledgement = expectingPacketID - 1;
     
-    socket.setTimeOut(2);
+    socket.setTimeOut(1);
     
     vector<Message> messages;
     Message receivedMessage, ackMessage;

@@ -98,7 +98,7 @@ int UDPSocket::recievePacket(Message & receivedMessage)
     sockaddr_in senderAddress;
     socklen_t senderLen = sizeof(senderAddress);
     
-    size_t maxLength = 1016;
+    size_t maxLength = 5016;
     receivedMessage.createMessage(maxLength);
 
     sockaddr_in address;
