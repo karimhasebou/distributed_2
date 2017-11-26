@@ -19,6 +19,7 @@ int main() {
     addRequestHandler(1, login);
     addRequestHandler(2, getIPAddress);
     addRequestHandler(3, getUsername);
+    addRequestHandler(9, getUserNamefromIP);
     
     initRequestHandler(63000);
 

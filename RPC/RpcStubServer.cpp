@@ -148,10 +148,15 @@ Message getAccessibleImages(Message & messageParamters)
     string username = ((CustomString*) unmarshalledValues[0])->getValue();
     
     CustomVector *result = new CustomVector();
+
+    printf("Go into the stub\n");
     
     for(string& item : server::getAccessibleImages(username)){
         result->push_back(item);
     }
+
+    printf("finished server function\n");
+
     
     unmarshalledValues.clear();
     unmarshalledValues.push_back(result);
@@ -164,6 +169,31 @@ Message getAccessibleImages(Message & messageParamters)
     replyMessage.setMessageType(Reply);
     replyMessage.setRpcRequestID(messageParamters.getRpcRequestId());
     replyMessage.setRpcOperation(messageParamters.getRpcOperation());
+
+    printf("Returning Reply::getImages>>>>\n");
+    
+    return replyMessage;
+}
+
+Message getUserNamefromIP(Message& messageParamters)
+{
+    std::vector<CustomObject *> parameters = {new CustomString()};
+    
+    unmarshal(messageParamters, parameters);
+    
+    std::string username = (dynamic_cast<CustomString *>(parameters[0]))->getValue();
+
+    std::string ipAddress_val = aKuthserver::getUsername(username);
+    
+    CustomString * ipAddress = new CustomString((std::string)ipAddress_val);
+    
+    std::vector<CustomObject *> returnValues = {dynamic_cast<CustomObject*>(ipAddress)};
+    
+    Message replyMessage;
+    
+    replyMessage.setSocketAddress(messageParamters.getSocketAddress());
+    
+    marshal(replyMessage, returnValues);
     
     return replyMessage;
 }

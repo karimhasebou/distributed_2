@@ -6,6 +6,11 @@
 
 int views_num = 0;
 
+namespace homePage
+{
+    std::vector<std::string> splitString(std::string);
+    std::vector<std::string> listFilesInDir();
+};
 
 struct imageEntry {
     std::string imageName;
@@ -20,9 +25,9 @@ HomePage::HomePage(QWidget *parent) :
     ui(new Ui::HomePage)
 {
     ui->setupUi(this);
-    image_path = "/home/nawawy/Nawawy/dist_final/distributed_2/DownloadedImages/";
+    image_path = "DownloadedImages/";
     
-    img_default.load("/home/nawawy/Nawawy/dist_final/distributed_2/MyImages/default.jpg");
+    img_default.load("MyImages/default.jpg");
     
     ui->Image_holder->setPixmap(img_default);
     ui->Image_holder->setScaledContents(true);
@@ -53,7 +58,7 @@ void HomePage::on_requestImageButton_clicked()
     Image img = client::getImage(imageName, imageEntries[index].ipAddress);
     
 
-    std::string imageFilePath = "/home/nawawy/Nawawy/dist_final/distributed_2/DownloadedImages/" + imageName;
+    std::string imageFilePath = "DownloadedImages/" + imageName;
     
     std::ofstream outfile(imageFilePath , std::ios::out | std::ios::binary);
 
@@ -73,7 +78,7 @@ void HomePage::on_requestImageButton_clicked()
 
     std::string username; 
     
-    std::string path_to_list = "/home/nawawy/Nawawy/dist_final/distributed_2/" + image_name + ".txt";
+    std::string path_to_list = image_name + ".txt";
     
     ifstream file;
     file.open(path_to_list.c_str());
@@ -159,13 +164,17 @@ void HomePage::on_getImagesButton_clicked()
     
     
     //ls and get images in my directory
-    //hn3mlhom steghide we kda wla l2?
-    
+
+    std::vector<std::string> myImages = homePage::listFilesInDir();
+
     model_my_images = new QStringListModel(this);
     QStringList List2;
-    List2 << "nawawy.jpg" << "farida.jpg" << "karim.jpg";
+
+    for (int i = 0; i < (int)myImages.size(); i++)
+        List2 << myImages[i].c_str();
+        
     // Populate our model
-    model_my_images->setStringList(List);
+    model_my_images->setStringList(List2);
     // Glue model and view together
     ui->my_images->setModel(model_my_images);
     
@@ -207,9 +216,47 @@ void HomePage::setUsername(std::string username)
 
 void HomePage::extractViews(std::string imageName)
 {
-    std::string exec_command = "steghide extract -sf /home/nawawy/Nawawy/dist_final/distributed_2/DownloadedImages/" + imageName;
+    std::string exec_command = "steghide extract -sf DownloadedImages/" + imageName;
     exec_command += " -p root -f";
 
     system(exec_command.c_str());
 }
 
+std::vector<std::string> homePage::splitString(std::string sentence)
+{
+  std::stringstream ss;
+  ss<<sentence;
+  
+  std::string to;
+  std::vector<std::string> files;
+
+    while(std::getline(ss,to,'\n')){
+        files.push_back(to);
+    }
+    
+    return files;
+}
+
+std::vector<std::string> homePage::listFilesInDir()
+{
+    using namespace std;
+    FILE  *file = popen("ls MyImages", "r");
+    
+    int ch;
+    string result;
+    
+    do{
+        ch = fgetc(file);
+        
+        if(ch == EOF) break;
+        
+        result += ch;
+    }while(1);
+
+    pclose(file);
+
+    return homePage::splitString(result);
+}
+
+
+ 

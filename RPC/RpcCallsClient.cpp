@@ -119,8 +119,7 @@ std::vector<std::string> client::getAccessibleImages(std::string username, std::
     marshal(rpcCallMessage, parameters);
 
     rpcCallMessage.setMessageType(Request);
-    rpcCallMessage.setRpcOperation(4);
-        
+    rpcCallMessage.setRpcOperation(4);     
         
     Message rpcReplyMessage = rpcSocket.callRPC(rpcCallMessage);
 
@@ -178,9 +177,9 @@ Image client::getImage(std::string imageName, std::string ipAddress)
 
 bool client::updateCount(std::string imgName, std::string username, int count)
 {
-    std::map<std::string, std::string> UserIps = getMapUsers();
+    // std::map<std::string, std::string> UserIps = getMapUsers();
     
-    printf("HPHPHPHP %s\n" , UserIps["omar_nawawy"]);
+    // printf("HPHPHPHP %s\n" , UserIps["omar_nawawy"]);
 
     CustomString * imageNameString = new CustomString(imgName);
     CustomString * usernameString = new CustomString(username);
@@ -189,62 +188,26 @@ bool client::updateCount(std::string imgName, std::string username, int count)
     std::vector<CustomObject * > parameters = {dynamic_cast<CustomObject *>(imageNameString),
         dynamic_cast<CustomObject *>(usernameString), dynamic_cast<CustomObject *>(countInt)};
     
-    Message rpcCallMessage;
-    rpcCallMessage.setDestIPAddress(UserIps[username]);
-    rpcCallMessage.setDestPortNumber(serverPort);
+    // Message rpcCallMessage;
+    // rpcCallMessage.setDestIPAddress(UserIps[username]);
+    // rpcCallMessage.setDestPortNumber(serverPort);
     
-    marshal(rpcCallMessage, parameters);
+    // marshal(rpcCallMessage, parameters);
         
-    rpcCallMessage.setRpcOperation(6);
-    rpcCallMessage.setRpcRequestID(7); // ?
-    rpcCallMessage.setMessageType(Request);
+    // rpcCallMessage.setRpcOperation(6);
+    // rpcCallMessage.setRpcRequestID(7); // ?
+    // rpcCallMessage.setMessageType(Request);
     
-    MySocket rpcSocket;
+    // MySocket rpcSocket;
     
-    Message rpcReplyMessage =  rpcSocket.callRPC(rpcCallMessage);
+    // Message rpcReplyMessage =  rpcSocket.callRPC(rpcCallMessage);
 
-    std::vector<CustomObject *> returnValues = {new CustomBool()};
+    // std::vector<CustomObject *> returnValues = {new CustomBool()};
     
-    unmarshal(rpcReplyMessage, returnValues);
+    // unmarshal(rpcReplyMessage, returnValues);
     
-    CustomBool* returnVector = dynamic_cast<CustomBool *>(returnValues[0]);
+    // CustomBool* returnVector = dynamic_cast<CustomBool *>(returnValues[0]);
 
-    return returnVector->getValue();
+    // return returnVector->getValue();
 }
 
-
-std::vector<std::string> client::splitString(std::string sentence)
-{
-  std::stringstream ss;
-  ss<<sentence;
-  
-  std::string to;
-  std::vector<std::string> files;
-
-    while(std::getline(ss,to,'\n')){
-        files.push_back(to);
-    }
-    
-    return files;
-}
-
-std::vector<std::string> client::listFilesInDir()
-{
-    using namespace std;
-    FILE  *file = popen("ls", "r");
-    
-    int ch;
-    string result;
-    
-    do{
-        ch = fgetc(file);
-        
-        if(ch == EOF) break;
-        
-        result += ch;
-    }while(1);
-
-    pclose(file);
-
-    return splitString(result);
-}

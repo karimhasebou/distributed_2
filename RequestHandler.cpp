@@ -56,7 +56,7 @@ void handleRequests()
         Message requestMessage;
         
         if(mainSocket.recvFrom(requestMessage) >= 0){
-            printf("server got a message rpco %d\n", requestMessage.getRpcOperation());
+            printf("server got a message rpco %d ", requestMessage.getRpcOperation());
             pushToQueue(requestMessage);
         
         }
@@ -75,6 +75,7 @@ void pushToQueue(Message receivedMessage)
 //    discardMessage = executingRPC.count(receivedMessage.getIPAdrress() + std::to_string(receivedMessage.getRpcOperation())) > 0;
     std::string receivedMsgKey = getMessageUniqueKey(receivedMessage);
     discardMessage = executingRPC.count(receivedMsgKey) > 0;
+    printf("KEY %s\n", receivedMsgKey.c_str());
     executingRPCMtx.unlock();
     requestQueueMtx.lock();
     discardMessage |= queueContains(receivedMessage);       // ques here
@@ -133,7 +134,7 @@ void processRequest()
             Message replyMessage = requestsHandlers[rpcOperation](receivedMessage);
             mainSocket.reply(replyMessage);
         }
-        
+        printf("request handled\n");
         executingRPCMtx.lock();
         executingRPC.erase(msgKey);
         executingRPCMtx.unlock();
