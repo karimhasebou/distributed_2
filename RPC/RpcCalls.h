@@ -49,7 +49,7 @@ namespace client {
     
     LoginStatus login(std::string, std::string);
     std::vector<std::string> getIPAddress();
-    Image getImage(std::string);
+    Image getImage(std::string, std::string);
     std::vector<std::string> getAccessibleImages(std::string, std::string);
     bool updateCount(std::string, std::string, int);
     std::string getUsername(std::string);

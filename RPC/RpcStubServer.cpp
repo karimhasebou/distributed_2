@@ -13,7 +13,7 @@
 using namespace std;
 
 //returns username of currently logged-in user
-Message isOnline(Message messageParamters)
+Message isOnline(Message& messageParamters)
 {
     string currentlyLoggedIn = server::pingUser();
     
@@ -41,7 +41,7 @@ Message isOnline(Message messageParamters)
     //change 
 }
 
-Message canUpdateCount(Message messageParamters)
+Message canUpdateCount(Message& messageParamters)
 {
     vector<CustomObject*> marshallingVector;
     marshallingVector.push_back(new CustomString());
@@ -68,7 +68,7 @@ Message canUpdateCount(Message messageParamters)
     return replyMessage;
 }
 
-Message updateCount(Message messageParamters)
+Message updateCount(Message& messageParamters)
 {
     vector<CustomObject*> marshallingVector;
     marshallingVector.push_back(new CustomString());
@@ -96,7 +96,7 @@ Message updateCount(Message messageParamters)
     return replyMessage;
 }
 
-Message getImage(Message messageParamters)
+Message getImage(Message& messageParamters)
 {
     vector<CustomObject*> marshallingVector;
     marshallingVector.push_back(new CustomString());
