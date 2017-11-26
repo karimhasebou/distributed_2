@@ -186,7 +186,6 @@ std::vector<Message> Message::divide(const size_t & chunkSize) const {
     for (int order = 1; order <= packetsNumber; order++) {
         
         size_t packetSize = (order == packetsNumber) ? (messageSize - messageIndex) : chunkSize;
-        printf("packet %d size %d\n", order, (int)packetSize); 
         singleMessage.createMessage(packetSize);
         
         for(int i = 0; i < packetSize; i++) {

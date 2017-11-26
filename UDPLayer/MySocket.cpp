@@ -50,6 +50,8 @@ int MySocket::reply(const Message& sentMessage) {
     UDPSocket replySocket;
     replySocket.bind(0);
     
+    replySocket.setTimeOut(5);
+    
     std::vector<Message> dividedMessage = sentMessage.divide(60);
     
     bool stopProcess = false;
@@ -69,8 +71,15 @@ int MySocket::reply(const Message& sentMessage) {
             Message acknowledgementMessage;  
             status = replySocket.recievePacket(acknowledgementMessage);
             
+            while(status != -1 && acknowledgementMessage.getPacketID() != part + 1) {
+                
+                status = replySocket.recievePacket(acknowledgementMessage);
+
+            }
+            
             printf("Server : Received acknowledgement Packet number %d\n", acknowledgementMessage.getPacketID());
             // doing the checks
+            
         }
         
         if (status == -1) {
@@ -131,8 +140,11 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
         
         while(status == -1 && packetResend++ < MAX_RESEND_PACK) {
             
-            status = socket.recievePacket(receivedMessage);
-                        
+            do {
+                status = socket.recievePacket(receivedMessage);
+                
+            } while(status != -1 && receivedMessage.getPacketID() != messages.size() + 1);
+            
         }
         
     }while(status != -1);

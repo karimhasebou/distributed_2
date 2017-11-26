@@ -14,12 +14,7 @@ LoginPage::LoginPage(QWidget *parent) :
     MySocket socket;
     socket.bind(0);
     
-    std::string bigbig = "";
-    for (int i = 0; i < 100000; i++) {
-        bigbig += "HarryPotter" + std::to_string(i);
-    }
-    
-    CustomString * customString = new CustomString(bigbig);
+    CustomString * customString = new CustomString("hi");
     
     std::vector<CustomObject *> parameters = {customString};
     
@@ -30,15 +25,15 @@ LoginPage::LoginPage(QWidget *parent) :
     Message sentMessage(marshalledMessage);
     
     sentMessage.setMessageType(Request);
-    sentMessage.setRpcOperation(2);
+    sentMessage.setRpcOperation(1);
     sentMessage.setRpcRequestID(1);
     
     std::cout<<"Sending RPC argument"<<std::endl;
     
-    sentMessage.setDestIPAddress("10.211.55.4");
+    sentMessage.setDestIPAddress("127.0.0.1");
     sentMessage.setDestPortNumber(63000);
     
-    socket.reply(sentMessage);
+    socket.callRPC(sentMessage);
 
 }
 
