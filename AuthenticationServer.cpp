@@ -22,7 +22,7 @@ int main() {
     
     initRequestHandler(63000);
 
-    std::this_thread::sleep_for(std::chrono::seconds(300));
+    std::this_thread::sleep_for(std::chrono::seconds(1000));
     puts("server shutting down...\n");
     
     shutdown();
