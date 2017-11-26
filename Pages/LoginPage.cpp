@@ -32,11 +32,18 @@ LoginPage::LoginPage(QWidget *parent) :
 
     std::cout<<"Sending RPC argument"<<std::endl;
     
-    sentMessage.setDestIPAddress("127.0.0.1"); //192.168.1.8
+    sentMessage.setDestIPAddress("192.168.1.8"); //192.168.1.8
     sentMessage.setDestPortNumber(63000);
     
-    socket.callRPC(sentMessage);
+    Message reply = socket.callRPC(sentMessage);
+    
+    std::vector<CustomObject*> returnValues = {new CustomString()};
+    
+    std::string result = dynamic_cast<CustomString*>(returnValues[0])->getValue();
+    
+    std::cout<<result<<std::endl;
 //
+    
 //    QPixmap backgroundImage("/Users/faridaeid/Desktop/Desktop/Project Files/GitHub/distributed_2/Pages/LoginPageBackground.png");
 //    backgroundImage = backgroundImage.scaled(this->size(), Qt::IgnoreAspectRatio);
 //    QPalette palette;

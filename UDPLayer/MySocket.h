@@ -5,8 +5,9 @@
 #include "UDPSocket.h"
 #include <vector>
 #define CHUNK_SIZE 60   // adjust
-#define MAX_RESEND 40       // adjust
-#define MAX_RESEND_PACK 10  // adjust
+#define MAX_RESEND 4       // adjust
+#define MAX_RESEND_PACK 3  // adjust
+#define MAX_WAIT_PACK 3
 #define MAC_PACK_FAIL 20    // adjust
 #define MAX_REQUESTS 10     // adjust
 #define MAX_RECEIVE 12      // adjust
@@ -22,6 +23,7 @@ class MySocket{
     
 private:
     UDPSocket mainSocket;
+    int expectingPacketID;
     Status receive(UDPSocket&, Message&);
     Status send(UDPSocket&, const Message&);
 

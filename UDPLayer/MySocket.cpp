@@ -18,6 +18,8 @@ Message MySocket::callRPC(const Message & sentMessage) {
 
     UDPSocket rpcSocket;
     rpcSocket.bind(0);
+    
+    expectingPacketID = 1;
 
     rpcSocket.setTimeOut(4);
 
@@ -51,7 +53,7 @@ Status MySocket::reply(const Message& sentMessage) {
     
     int expectingAck = 1;
     
-    replySocket.setTimeOut(5);
+    replySocket.setTimeOut(2);
     
     std::vector<Message> dividedMessage = sentMessage.divide(CHUNK_SIZE);
     
@@ -69,15 +71,22 @@ Status MySocket::reply(const Message& sentMessage) {
         
         replySocket.sendPacket(dividedMessage[part]);
 
-        while(status == Failure && resendPacketCount++ <= MAX_RESEND_PACK) {
+        while(status == Failure && (resendPacketCount++ <= MAX_RESEND_PACK)) {
             
             Message acknowledgementMessage;
             
-            status = (Status)replySocket.recievePacket(acknowledgementMessage);
+            int wrongReceive = 1;
+            
+            do {
+            
+                status = (Status)replySocket.recievePacket(acknowledgementMessage);
+                
+            } while ((status == Failure || acknowledgementMessage.getPacketID()) != expectingAck &&
+                     wrongReceive <= MAX_WAIT_PACK);
             
             if (status == Failure && acknowledgementMessage.getPacketID() != expectingAck) {
                 
-                status = (Status)replySocket.sendPacket(dividedMessage[part]);
+                replySocket.sendPacket(dividedMessage[part]);
 
             }
         }
@@ -100,8 +109,7 @@ Status MySocket::reply(const Message& sentMessage) {
 
 Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
     
-    int expectingPacketID = 1;
-    int lastAcknowledgement = 0;
+    int lastAcknowledgement = expectingPacketID - 1;
     
     socket.setTimeOut(5);
     
@@ -110,18 +118,17 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
     
     ackMessage.createMessage(0);
     ackMessage.setMessageType(Acknowledgement);
-    ackMessage.setSocketAddress(receivedMessage.getSocketAddress());
     
     int packetFailure = 1;
     
-    while(packetFailure <= MAX_RESEND_PACK) {
+    while(packetFailure <= MAX_RESEND) {
         
         Message receivedMessage;
         Status packetStatus = Pending;
         int receiveCount = 1;
         
 
-        while (receiveCount++ <= MAX_RESEND_PACK) {
+        while (packetStatus != Success &&receiveCount++ <= MAX_RESEND_PACK) {
             
             packetStatus = (Status)socket.recievePacket(receivedMessage);
             
@@ -139,6 +146,7 @@ Status MySocket::receive(UDPSocket & socket, Message & fullMessage) {
                 }
                 
                 ackMessage.setPacketID(lastAcknowledgement);
+                ackMessage.setSocketAddress(receivedMessage.getSocketAddress());
                 
                 printf("Sending Acknowledgement Packet Number : %d\n", ackMessage.getPacketID());
 
