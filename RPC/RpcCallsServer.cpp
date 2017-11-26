@@ -106,12 +106,11 @@ set<string> getAuthorizedUsers(const string& filePath)
         
         string username;
         usernamesFile>>username;
-
+        usernamesFile>>userViewCount;   // skip user image count
         if(!usernamesFile.eof()) {
             
             usersList.insert(username);
-            usernamesFile>>username;
-            usernamesFile>>userViewCount;   // skip user image count
+           
             
         }
         else {

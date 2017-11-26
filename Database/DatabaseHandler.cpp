@@ -64,6 +64,7 @@ int checkInDatabase(std::string username, std::string password)
 
 std::vector<std::string>& getOnlinePeers()
 {
+    onlinePeers.clear();
     std::set<std::string>::iterator it = tmp_set.begin();
     std::set<std::string>::iterator end = tmp_set.end();    
 

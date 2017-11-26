@@ -69,12 +69,6 @@ void HomePage::on_requestImageButton_clicked()
     std:string image_name = image_selected.toUtf8().constData();  
     extractViews(image_name);
 
-  //  std::ofstream outfile(imageFilePath , std::ofstream::binary);
-    
-   // outfile.write(img.content, img.length);
-    // printf("length of image %s" , img.length);
-    // outfile.write(img.content, img.length);
-
     std::string username; 
     
     std::string path_to_list = image_name + ".txt";
