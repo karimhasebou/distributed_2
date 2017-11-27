@@ -19,7 +19,7 @@ std::vector<std::string> authserver::getIPAddress(const std::string& senderAddre
 {
     std::vector<std::string> onlineList = getOnlinePeers();
     
-    for (int i = 0; i < onlineList.size(); i++) {
+    for (int i = 0; i < (int)onlineList.size(); i++) {
         if (senderAddress == onlineList[i]) {
             onlineList.erase(onlineList.begin() + i);
         }

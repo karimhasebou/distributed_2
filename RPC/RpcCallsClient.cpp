@@ -169,7 +169,7 @@ Image client::getImage(std::string imageName, std::string ipAddress)
     
     img.content = new char[imageString.length()];
 
-    for (int i = 0; i < imageString.length(); i++)
+    for (int i = 0; i < (int)imageString.length(); i++)
         img.content[i] = imageString[i];
 
 
@@ -230,6 +230,10 @@ bool client::updateCount(std::string imgName, std::string username, int count)
     
         
     Message rpcReplyMessage =  rpcSocket.callRPC(rpcCallMessage);
+
+    bool success = true;
+    // success = if rpcReplyMessage is successful update at the server
+    return success;
 
     // std::vector<CustomObject *> returnValues = {new CustomBool()};
     

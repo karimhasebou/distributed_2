@@ -66,7 +66,7 @@ void HomePage::on_requestImageButton_clicked()
     outfile.close();
 
 
-    std:string image_name = image_selected.toUtf8().constData();  
+    std::string image_name = image_selected.toUtf8().constData();  
     extractViews(image_name);
 
     std::string username; 
@@ -77,7 +77,7 @@ void HomePage::on_requestImageButton_clicked()
     file.open(path_to_list.c_str());
     
     if(file.fail())
-        printf("Opening list of view failed: %s\n", image_name);
+        printf("Opening list of view failed: %s\n", image_name.c_str());
     else
     {
         while(!file.eof())
@@ -124,9 +124,9 @@ void HomePage::on_getImagesButton_clicked()
 {
     std::vector<std::string> IPAddresses =  client::getIPAddress();
 
-    printf("IP numbers %d", IPAddresses.size());
+    printf("IP numbers %d", (int)IPAddresses.size());
 
-    for ( int i =  0; i < (int) IPAddresses.size(); i++)
+    for ( int i =  0; i < (int) (int)IPAddresses.size(); i++)
     {
         printf("\nIP ADDRESSES : %s\n", IPAddresses[i].c_str());
     }
@@ -136,7 +136,7 @@ void HomePage::on_getImagesButton_clicked()
         std::vector<std::string> tmp;
         tmp = client::getAccessibleImages(MyUsername , IPAddresses[ip]);
 
-        for (int i = 0; i < (int) tmp.size(); i++)
+        for (int i = 0; i < (int)tmp.size(); i++)
         {
             imageEntry img;
             img.imageName = tmp[i]; 
@@ -196,7 +196,7 @@ void HomePage::on_update_views_clicked()
 
     std::string imageName = image_selected.toUtf8().constData(); 
     
-    
+    // WARNING unused variable
     bool updated = client::updateCount(imageName, usernameToUpdate, viewsToUpdate);
 
     //callRPC

@@ -17,7 +17,7 @@ Message isOnline(Message& messageParamters)
 {
     string currentlyLoggedIn = server::pingUser();
     
-    if(currentlyLoggedIn.size() > 0){
+    if((int)currentlyLoggedIn.size() > 0){
         vector<CustomObject*> marshallingVector;
         
         CustomString *customImage = new CustomString;

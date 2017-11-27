@@ -60,7 +60,7 @@ Status MySocket::reply(const Message& sentMessage) {
     
     bool stopProcess = false;
     
-    dividedMessage[dividedMessage.size() - 1].setMessageType(Last);
+    dividedMessage[(int)dividedMessage.size() - 1].setMessageType(Last);
     
     for (int part = 0; part < int(dividedMessage.size()) && !stopProcess; part++) {
         

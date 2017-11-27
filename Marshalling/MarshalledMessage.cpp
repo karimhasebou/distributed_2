@@ -61,7 +61,7 @@ void MarshalledMessage::fillMessage(char * message) {
 
 char& MarshalledMessage::operator[](int index) {
     
-    if (index >= messageSize) {
+    if (index >= (int)messageSize) {
         throw("Bad aceess");
     }
     
@@ -73,7 +73,7 @@ void MarshalledMessage::copyMessageArray(char * message, size_t messageSize) {
     this->messageSize = messageSize;
     this->message = new char[messageSize];
     
-    for (int i = 0; i < messageSize; i++) {
+    for (int i = 0; i < (int)messageSize; i++) {
         this->message[i] = message[i];
     }
 }

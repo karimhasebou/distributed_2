@@ -15,7 +15,7 @@ class MarshalledMessage {
     
 protected:
     char * message;
-    size_t messageSize;
+    size_t messageSize; // WARNING unsigned
     void copyMessageArray(char *, size_t);
     
 public:

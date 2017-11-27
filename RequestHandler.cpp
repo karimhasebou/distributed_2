@@ -106,7 +106,7 @@ Message popFromQueue()
     Message receivedMessage;
     std::unique_lock<std::mutex> lck(requestQueueMtx);
 
-    while(requestsQueue.size() == 0 &&
+    while((int)requestsQueue.size() == 0 &&
         !shouldShutdown)
         isRequestQueueEmpty.wait(lck);
 
