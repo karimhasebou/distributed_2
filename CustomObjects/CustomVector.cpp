@@ -12,7 +12,7 @@
 
 CustomVector::CustomVector(const std::vector<std::string>& other) {
     
-    for (int i = 0; i < other.size(); i++) {
+    for (int i = 0; i < (int)other.size(); i++) {
         
         this->value.push_back(other[i]);
     }
@@ -27,7 +27,7 @@ std::vector<std::string> CustomVector::getValue() {
 }
 
 std::string& CustomVector::operator[](int index) {
-    if (index < 0 || index >= value.size()) {
+    if (index < 0 || index >= ((int)value.size())) {
         throw ("Bad access");
     }
     

@@ -14,14 +14,14 @@ void marshal(MarshalledMessage & message,
     
     std::string bufferString = "";
     
-    for (int i = 0; i < parameters.size(); i++) {
+    for (int i = 0; i < (int)parameters.size(); i++) {
         
         bufferString += parameters[i]->marshal();
     }
     
     message.createMessage(size_t(bufferString.length()));
     
-    for (int i = 0; i < bufferString.length(); i++) {
+    for (int i = 0; i < (int)bufferString.length(); i++) {
         message[i] = bufferString[i];
     }
     
@@ -33,7 +33,7 @@ void unmarshal(MarshalledMessage& message,
     
     int bufferPointer = 0;
         
-    for (int i = 0; i < parameters.size(); i++) {
+    for (int i = 0; i < (int)parameters.size(); i++) {
         
         bufferPointer = parameters[i]->unmarshal(message, bufferPointer);
     }

@@ -172,7 +172,7 @@ void Message::extractHeaders() {
     this->message = new char[this->messageSize - getHeaderSize()];
     
     int index = 0;
-    for (int i = getHeaderSize(); i < messageSize; i++) {
+    for (int i = getHeaderSize(); i < (int)messageSize; i++) {
         
         this->message[index++] = messageWithHeaders[i];
         
@@ -210,7 +210,7 @@ std::vector<Message> Message::divide(const size_t & chunkSize) const {
         size_t packetSize = (order == packetsNumber) ? (messageSize - messageIndex) : chunkSize;
         singleMessage.createMessage(packetSize);
         
-        for(int i = 0; i < packetSize; i++) {
+        for(int i = 0; i < (int)packetSize; i++) {
             singleMessage[i] = message[messageIndex++];
         }
         
@@ -229,14 +229,14 @@ void Message::combine(std::vector<Message> messages)
     
     for(int i = 0; i < (int)messages.size(); ++i) {
         packetsSize += messages[i].messageSize;
-        printf("p(%d) size %d\n", i, messages[i].messageSize);
+        printf("p(%d) size %d\n", i, (int)messages[i].messageSize);
     }
     
     message = new char[packetsSize];
     messageSize = packetsSize;
 
     int offset = 0;
-    for (int i = 0; i < messages.size(); ++i) {
+    for (int i = 0; i < (int)messages.size(); ++i) {
         
         memcpy(message + offset, messages[i].message, messages[i].messageSize);
         offset += messages[i].messageSize;

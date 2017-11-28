@@ -6,6 +6,10 @@
 
 int views_num = 0;
 
+namespace homepage {
+std::vector<std::string> splitString(std::string sentence);
+std::vector<std::string> listFilesInDir();
+};
 
 struct imageEntry {
     std::string imageName;
@@ -20,9 +24,9 @@ HomePage::HomePage(QWidget *parent) :
     ui(new Ui::HomePage)
 {
     ui->setupUi(this);
-    image_path = "/home/nawawy/Nawawy/dist_final/distributed_2/DownloadedImages/";
+    image_path = "DownloadedImages/";
     
-    img_default.load("/home/nawawy/Nawawy/dist_final/distributed_2/MyImages/default.jpg");
+    img_default.load("MyImages/default.jpg");
     
     ui->Image_holder->setPixmap(img_default);
     ui->Image_holder->setScaledContents(true);
@@ -53,7 +57,7 @@ void HomePage::on_requestImageButton_clicked()
     Image img = client::getImage(imageName, imageEntries[index].ipAddress);
     
 
-    std::string imageFilePath = "/home/nawawy/Nawawy/dist_final/distributed_2/DownloadedImages/" + imageName;
+    std::string imageFilePath = "DownloadedImages/" + imageName;
     
     std::ofstream outfile(imageFilePath , std::ios::out | std::ios::binary);
 
@@ -62,24 +66,18 @@ void HomePage::on_requestImageButton_clicked()
     outfile.close();
 
 
-    std:string image_name = image_selected.toUtf8().constData();  
+    std::string image_name = image_selected.toUtf8().constData();  
     extractViews(image_name);
-
-  //  std::ofstream outfile(imageFilePath , std::ofstream::binary);
-    
-   // outfile.write(img.content, img.length);
-    // printf("length of image %s" , img.length);
-    // outfile.write(img.content, img.length);
 
     std::string username; 
     
-    std::string path_to_list = "/home/nawawy/Nawawy/dist_final/distributed_2/" + image_name + ".txt";
+    std::string path_to_list = image_name + ".txt";
     
     ifstream file;
     file.open(path_to_list.c_str());
     
     if(file.fail())
-        printf("Opening list of view failed: %s\n", image_name);
+        printf("Opening list of view failed: %s\n", image_name.c_str());
     else
     {
         while(!file.eof())
@@ -126,14 +124,19 @@ void HomePage::on_getImagesButton_clicked()
 {
     std::vector<std::string> IPAddresses =  client::getIPAddress();
 
-    printf("IP numbers %d", IPAddresses.size());
+    printf("IP numbers %d", (int)IPAddresses.size());
+
+    for ( int i =  0; i < (int) (int)IPAddresses.size(); i++)
+    {
+        printf("\nIP ADDRESSES : %s\n", IPAddresses[i].c_str());
+    }
 
     for (int ip = 0; ip < (int)IPAddresses.size(); ++ip) {
         
         std::vector<std::string> tmp;
         tmp = client::getAccessibleImages(MyUsername , IPAddresses[ip]);
 
-        for (int i = 0; i < (int) tmp.size(); i++)
+        for (int i = 0; i < (int)tmp.size(); i++)
         {
             imageEntry img;
             img.imageName = tmp[i]; 
@@ -159,13 +162,17 @@ void HomePage::on_getImagesButton_clicked()
     
     
     //ls and get images in my directory
-    //hn3mlhom steghide we kda wla l2?
-    
+
+    std::vector<std::string> myImages = homepage::listFilesInDir();
+
     model_my_images = new QStringListModel(this);
     QStringList List2;
-    List2 << "nawawy.jpg" << "farida.jpg" << "karim.jpg";
+
+    for (int i = 0; i < (int)myImages.size(); i++)
+        List2 << myImages[i].c_str();
+        
     // Populate our model
-    model_my_images->setStringList(List);
+    model_my_images->setStringList(List2);
     // Glue model and view together
     ui->my_images->setModel(model_my_images);
     
@@ -189,10 +196,8 @@ void HomePage::on_update_views_clicked()
 
     std::string imageName = image_selected.toUtf8().constData(); 
     
-    
+    // WARNING unused variable
     bool updated = client::updateCount(imageName, usernameToUpdate, viewsToUpdate);
-    
-    
 
     //callRPC
     
@@ -207,9 +212,44 @@ void HomePage::setUsername(std::string username)
 
 void HomePage::extractViews(std::string imageName)
 {
-    std::string exec_command = "steghide extract -sf /home/nawawy/Nawawy/dist_final/distributed_2/DownloadedImages/" + imageName;
+    std::string exec_command = "steghide extract -sf DownloadedImages/" + imageName;
     exec_command += " -p root -f";
 
     system(exec_command.c_str());
 }
 
+std::vector<std::string> homepage::splitString(std::string sentence)
+{
+  std::stringstream ss;
+  ss<<sentence;
+  
+  std::string to;
+  std::vector<std::string> files;
+
+    while(std::getline(ss,to,'\n')){
+        files.push_back(to);
+    }
+    
+    return files;
+}
+
+std::vector<std::string> homepage::listFilesInDir()
+{
+    using namespace std;
+    FILE  *file = popen("ls MyImages/", "r");
+    
+    int ch;
+    string result;
+    
+    do{
+        ch = fgetc(file);
+        
+        if(ch == EOF) break;
+        
+        result += ch;
+    }while(1);
+
+    pclose(file);
+
+    return homepage::splitString(result);
+}

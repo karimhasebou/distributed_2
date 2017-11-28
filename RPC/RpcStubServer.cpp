@@ -17,7 +17,7 @@ Message isOnline(Message& messageParamters)
 {
     string currentlyLoggedIn = server::pingUser();
     
-    if(currentlyLoggedIn.size() > 0){
+    if((int)currentlyLoggedIn.size() > 0){
         vector<CustomObject*> marshallingVector;
         
         CustomString *customImage = new CustomString;
@@ -74,6 +74,8 @@ Message updateCount(Message& messageParamters)
 {
     vector<CustomObject*> marshallingVector;
     marshallingVector.push_back(new CustomString());
+    marshallingVector.push_back(new CustomString());
+    marshallingVector.push_back(new CustomInt());
     unmarshal(messageParamters, marshallingVector);
     
     string imagename = ((CustomString*) marshallingVector[0])->getValue();
@@ -148,10 +150,15 @@ Message getAccessibleImages(Message & messageParamters)
     string username = ((CustomString*) unmarshalledValues[0])->getValue();
     
     CustomVector *result = new CustomVector();
+
+    printf("Go into the stub\n");
     
     for(string& item : server::getAccessibleImages(username)){
         result->push_back(item);
     }
+
+    printf("finished server function\n");
+
     
     unmarshalledValues.clear();
     unmarshalledValues.push_back(result);
@@ -164,6 +171,8 @@ Message getAccessibleImages(Message & messageParamters)
     replyMessage.setMessageType(Reply);
     replyMessage.setRpcRequestID(messageParamters.getRpcRequestId());
     replyMessage.setRpcOperation(messageParamters.getRpcOperation());
+
+    printf("Returning Reply::getImages>>>>\n");
     
     return replyMessage;
 }

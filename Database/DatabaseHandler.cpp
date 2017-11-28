@@ -13,12 +13,13 @@ struct UserInfo {
 std::map<std::string, UserInfo> database;
 std::map<std::string, std::string> UsersIps;
 std::vector<std::string> onlinePeers;
+std::set<std::string> tmp_set;
 
 void readDatabase()
 {
     std::string username, password, ipAddress;
     
-    std::string databasePath = "/Users/faridaeid/Desktop/Desktop/Project Files/GitHub/distributed_2/Database/database.txt";
+    std::string databasePath = "Database/database.txt";
     std::ifstream databaseFile;
     
     databaseFile.open(databasePath.c_str());
@@ -50,7 +51,7 @@ int checkInDatabase(std::string username, std::string password)
     {
         if(database[username].password == password) {
             
-            onlinePeers.push_back(database[username].ipAddress);
+            tmp_set.insert(database[username].ipAddress);
             
             return 1;       //logged in
         }
@@ -63,6 +64,15 @@ int checkInDatabase(std::string username, std::string password)
 
 std::vector<std::string>& getOnlinePeers()
 {
+    onlinePeers.clear();
+    std::set<std::string>::iterator it = tmp_set.begin();
+    std::set<std::string>::iterator end = tmp_set.end();    
+
+    while(it != end)
+    {
+        onlinePeers.push_back(*it);
+        it++;
+    }
     return onlinePeers;
 }
 
@@ -77,12 +87,17 @@ std::string getUserNamefromIP(std::string IPAddress)
             username = it->first;
             break;
         }
-    
+    // printf("found username %d")
     return username;
 }
 
-std::map<std::string, std::string> getMapUsers()
+std::string getIPfromUser(std::string username)
 {
-    return UsersIps;
+    printf("Username found :: %s" , username.c_str());
+    UserInfo userInfo = database[username];
+    std::string ip = userInfo.ipAddress;
+
+    printf("In Database %s : \n" , ip.c_str() );
+    return database[username].ipAddress;
 }
 

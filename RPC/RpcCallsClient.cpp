@@ -12,9 +12,10 @@
 #include <unistd.h>
 #include "../Database/DatabaseHandler.h"
 
-std::string authServerIP = "127.0.0.1";
+std::string authServerIP = "10.40.37.203";
 const unsigned short authServerPort = 63000;
 const unsigned short serverPort = 64000;
+
 
 LoginStatus client::login(std::string username, std::string password) {
     
@@ -119,8 +120,7 @@ std::vector<std::string> client::getAccessibleImages(std::string username, std::
     marshal(rpcCallMessage, parameters);
 
     rpcCallMessage.setMessageType(Request);
-    rpcCallMessage.setRpcOperation(4);
-        
+    rpcCallMessage.setRpcOperation(4);     
         
     Message rpcReplyMessage = rpcSocket.callRPC(rpcCallMessage);
 
@@ -169,7 +169,7 @@ Image client::getImage(std::string imageName, std::string ipAddress)
     
     img.content = new char[imageString.length()];
 
-    for (int i = 0; i < imageString.length(); i++)
+    for (int i = 0; i < (int)imageString.length(); i++)
         img.content[i] = imageString[i];
 
 
@@ -178,73 +178,105 @@ Image client::getImage(std::string imageName, std::string ipAddress)
 
 bool client::updateCount(std::string imgName, std::string username, int count)
 {
-    std::map<std::string, std::string> UserIps = getMapUsers();
-    
-    printf("HPHPHPHP %s\n" , UserIps["omar_nawawy"]);
 
     CustomString * imageNameString = new CustomString(imgName);
     CustomString * usernameString = new CustomString(username);
     CustomInt * countInt = new CustomInt(count);
+
+    std::vector<CustomObject * > parametersDB = {dynamic_cast<CustomObject *>(usernameString)};
     
+    Message dbRpcMessage;
+    dbRpcMessage.setDestIPAddress(authServerIP);
+    dbRpcMessage.setDestPortNumber(authServerPort);
+    
+        
+    dbRpcMessage.setRpcOperation(8);
+    dbRpcMessage.setRpcRequestID(7); // ?
+    dbRpcMessage.setMessageType(Request);
+    
+    marshal(dbRpcMessage, parametersDB);
+
+    
+    MySocket dbSocket;
+    
+    Message dbReply =  dbSocket.callRPC(dbRpcMessage);
+
+
+    std::vector<CustomObject *> returnValuesDB = {new CustomString()};
+    
+    unmarshal(dbReply, returnValuesDB);
+    
+    CustomString* returnString = dynamic_cast<CustomString *>(returnValuesDB[0]);
+
+    std::string ipAdd = returnString->getValue();
+
+
+
+    MySocket rpcSocket;
+    
+
     std::vector<CustomObject * > parameters = {dynamic_cast<CustomObject *>(imageNameString),
         dynamic_cast<CustomObject *>(usernameString), dynamic_cast<CustomObject *>(countInt)};
     
     Message rpcCallMessage;
-    rpcCallMessage.setDestIPAddress(UserIps[username]);
+    rpcCallMessage.setDestIPAddress(ipAdd);
     rpcCallMessage.setDestPortNumber(serverPort);
-    
-    marshal(rpcCallMessage, parameters);
-        
+            
     rpcCallMessage.setRpcOperation(6);
     rpcCallMessage.setRpcRequestID(7); // ?
     rpcCallMessage.setMessageType(Request);
+
+    marshal(rpcCallMessage, parameters);
     
-    MySocket rpcSocket;
-    
+        
     Message rpcReplyMessage =  rpcSocket.callRPC(rpcCallMessage);
 
-    std::vector<CustomObject *> returnValues = {new CustomBool()};
-    
-    unmarshal(rpcReplyMessage, returnValues);
-    
-    CustomBool* returnVector = dynamic_cast<CustomBool *>(returnValues[0]);
+    bool success = true;
+    // success = if rpcReplyMessage is successful update at the server
+    return success;
 
-    return returnVector->getValue();
+    // std::vector<CustomObject *> returnValues = {new CustomBool()};
+    
+    // unmarshal(rpcReplyMessage, returnValues);
+    
+    // CustomBool* returnVector = dynamic_cast<CustomBool *>(returnValues[0]);
+
+    // return returnVector->getValue();
 }
 
 
-std::vector<std::string> client::splitString(std::string sentence)
-{
-  std::stringstream ss;
-  ss<<sentence;
+// std::vector<std::string> splitString(std::string sentence)
+// {
+//   std::stringstream ss;
+//   ss<<sentence;
   
-  std::string to;
-  std::vector<std::string> files;
+//   std::string to;
+//   std::vector<std::string> files;
 
-    while(std::getline(ss,to,'\n')){
-        files.push_back(to);
-    }
+//     while(std::getline(ss,to,'\n')){
+//         files.push_back(to);
+//     }
     
-    return files;
-}
+//     return files;
+// }
 
-std::vector<std::string> client::listFilesInDir()
-{
-    using namespace std;
-    FILE  *file = popen("ls", "r");
+// std::vector<std::string> listFilesInDir()
+// {
+//     using namespace std;
+//     FILE  *file = popen("ls MyImages", "r");
     
-    int ch;
-    string result;
+//     int ch;
+//     string result;
     
-    do{
-        ch = fgetc(file);
+//     do{
+//         ch = fgetc(file);
         
-        if(ch == EOF) break;
+//         if(ch == EOF) break;
         
-        result += ch;
-    }while(1);
+//         result += ch;
+//     }while(1);
 
-    pclose(file);
+//     pclose(file);
 
-    return splitString(result);
-}
+//     return splitString(result);
+// }

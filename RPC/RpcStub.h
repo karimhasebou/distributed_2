@@ -11,6 +11,6 @@ Message updateCount(Message&);
 Message login(Message&);
 Message getIPAddress(Message&);
 Message getUsername(Message&);
-
+Message getUserNamefromIP(Message&);
 
 #endif
