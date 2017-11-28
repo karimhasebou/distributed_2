@@ -7,7 +7,7 @@
 #include "vector"
 
 void readDatabase();
-std::vector<std::string>& getOnlinePeers();
+std::map<std::string, std::string> getOnlinePeers();
 int checkInDatabase(std::string, std::string);
 std::string getUserNamefromIP(std::string);
 std::string getIPfromUser(std::string);

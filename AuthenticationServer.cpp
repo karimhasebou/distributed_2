@@ -17,9 +17,9 @@ int main() {
     readDatabase();
 
     addRequestHandler(1, login);
-    addRequestHandler(2, getIPAddress);
+    addRequestHandler(2, getUsersIPAddress);
     addRequestHandler(3, getUsername);
-    addRequestHandler(8, getUserNamefromIP);
+//    addRequestHandler(8, getUserNamefromIP);
     
     
     initRequestHandler(63000);

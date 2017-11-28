@@ -41,8 +41,9 @@ public:
     QLabel *label_3;
     QLineEdit *passwordInputEdit;
     QSpacerItem *verticalSpacer_3;
-    QPushButton *signInButton;
     QSpacerItem *verticalSpacer_4;
+    QPushButton *signInButton;
+    QPushButton *pushButton;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -51,12 +52,12 @@ public:
     {
         if (LoginPage->objectName().isEmpty())
             LoginPage->setObjectName(QStringLiteral("LoginPage"));
-        LoginPage->resize(847, 624);
+        LoginPage->resize(393, 429);
         centralWidget = new QWidget(LoginPage);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayoutWidget = new QWidget(centralWidget);
         gridLayoutWidget->setObjectName(QStringLiteral("gridLayoutWidget"));
-        gridLayoutWidget->setGeometry(QRect(40, 10, 321, 531));
+        gridLayoutWidget->setGeometry(QRect(10, 10, 371, 358));
         formLayout = new QFormLayout(gridLayoutWidget);
         formLayout->setSpacing(6);
         formLayout->setContentsMargins(11, 11, 11, 11);
@@ -104,19 +105,24 @@ public:
 
         formLayout->setItem(9, QFormLayout::SpanningRole, verticalSpacer_3);
 
+        verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        formLayout->setItem(0, QFormLayout::SpanningRole, verticalSpacer_4);
+
         signInButton = new QPushButton(gridLayoutWidget);
         signInButton->setObjectName(QStringLiteral("signInButton"));
 
         formLayout->setWidget(10, QFormLayout::SpanningRole, signInButton);
 
-        verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        pushButton = new QPushButton(gridLayoutWidget);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
 
-        formLayout->setItem(0, QFormLayout::SpanningRole, verticalSpacer_4);
+        formLayout->setWidget(11, QFormLayout::SpanningRole, pushButton);
 
         LoginPage->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(LoginPage);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 847, 22));
+        menuBar->setGeometry(QRect(0, 0, 393, 22));
         LoginPage->setMenuBar(menuBar);
         mainToolBar = new QToolBar(LoginPage);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -133,11 +139,12 @@ public:
     void retranslateUi(QMainWindow *LoginPage)
     {
         LoginPage->setWindowTitle(QApplication::translate("LoginPage", "LoginPage", Q_NULLPTR));
-        label->setText(QApplication::translate("LoginPage", "Welcome", Q_NULLPTR));
+        label->setText(QApplication::translate("LoginPage", "R ^ 2", Q_NULLPTR));
         label_2->setText(QApplication::translate("LoginPage", "Username :", Q_NULLPTR));
         label_3->setText(QApplication::translate("LoginPage", "Password : ", Q_NULLPTR));
         passwordInputEdit->setText(QString());
         signInButton->setText(QApplication::translate("LoginPage", "Sign In", Q_NULLPTR));
+        pushButton->setText(QApplication::translate("LoginPage", "Sign Up", Q_NULLPTR));
     } // retranslateUi
 
 };

@@ -15,16 +15,12 @@ LoginStatus authserver::login(std::string username, std::string password) {
 
 }
 
-std::vector<std::string> authserver::getIPAddress(const std::string& senderAddress)
+std::map<std::string, std::string> authserver::getUsersIpAddress(const std::string & senderAddress)
 {
-    std::vector<std::string> onlineList = getOnlinePeers();
-    
-    for (int i = 0; i < (int)onlineList.size(); i++) {
-        if (senderAddress == onlineList[i]) {
-            onlineList.erase(onlineList.begin() + i);
-        }
-    }
-    
+    std::map<std::string, std::string> onlineList = getOnlinePeers();
+
+    onlineList.erase(onlineList.find(senderAddress));
+
     return onlineList;
 }
 

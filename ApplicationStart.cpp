@@ -18,9 +18,9 @@ int main(int argc, char *argv[])
 {
     using namespace std::chrono;
     
-    addRequestHandler(4, getAccessibleImages);
-    addRequestHandler(5, getImage);
-    addRequestHandler(6, updateCount);
+    addRequestHandler(1, getAccessibleImages);
+    addRequestHandler(2, getImage);
+    addRequestHandler(3, updateCount);
     
     initRequestHandler(64000);
 

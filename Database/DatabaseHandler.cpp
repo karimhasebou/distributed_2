@@ -12,8 +12,7 @@ struct UserInfo {
 
 std::map<std::string, UserInfo> database;
 std::map<std::string, std::string> UsersIps;
-std::vector<std::string> onlinePeers;
-std::set<std::string> tmp_set;
+std::set<std::string> onlineUsers;
 
 void readDatabase()
 {
@@ -51,7 +50,7 @@ int checkInDatabase(std::string username, std::string password)
     {
         if(database[username].password == password) {
             
-            tmp_set.insert(database[username].ipAddress);
+            onlineUsers.insert(username);
             
             return 1;       //logged in
         }
@@ -62,18 +61,16 @@ int checkInDatabase(std::string username, std::string password)
         return 3;           //wrong username
 }
 
-std::vector<std::string>& getOnlinePeers()
+std::map<std::string, std::string> getOnlinePeers()
 {
-    onlinePeers.clear();
-    std::set<std::string>::iterator it = tmp_set.begin();
-    std::set<std::string>::iterator end = tmp_set.end();    
+    std::set<std::string>::iterator it;
+    std::map<std::string, std::string> usersIPAddress;
 
-    while(it != end)
-    {
-        onlinePeers.push_back(*it);
-        it++;
+    for(it = onlineUsers.begin(); it != onlineUsers.end(); it++) {
+
+        usersIPAddress[*it] = database[*it].ipAddress;
     }
-    return onlinePeers;
+    return usersIPAddress;
 }
 
 std::string getUserNamefromIP(std::string IPAddress)
@@ -87,7 +84,7 @@ std::string getUserNamefromIP(std::string IPAddress)
             username = it->first;
             break;
         }
-    // printf("found username %d")
+
     return username;
 }
 

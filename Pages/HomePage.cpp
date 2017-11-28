@@ -31,8 +31,6 @@ HomePage::HomePage(QWidget *parent) :
 //    ui->Image_holder->setPixmap(img_default);
 //    ui->Image_holder->setScaledContents(true);
 //
-//
-
 }
 
 HomePage::~HomePage()
@@ -75,7 +73,8 @@ void HomePage::on_requestImageButton_clicked()
 //
 //    ifstream file;
 //    file.open(path_to_list.c_str());
-//
+///
+>>>>>>> 5cdeb0ff3f70eef5b2130d4a33b2e81be92d934d
 //    if(file.fail())
 //        printf("Opening list of view failed: %s\n", image_name.c_str());
 //    else
@@ -89,7 +88,6 @@ void HomePage::on_requestImageButton_clicked()
 //        }
 //    }
 //
-//    ui->imageStatusLabel->setText("Image Available");
 
 }
 
@@ -97,9 +95,11 @@ void HomePage::on_viewImageButton_clicked()
 {
 //    int index = ui->imagesList->currentIndex().row();
 //    QString image_selected = model->stringList().at(index);
+//
+//
 //    QString path = image_path + image_selected;
-//
-//
+//        
+//   
 //    if(views_num!=0)
 //    {
 //        QPixmap img;
@@ -114,6 +114,7 @@ void HomePage::on_viewImageButton_clicked()
 //    {
 //        ui->viewsNumLabel->setText("No. of Views reached 0!!");
 //        ui->imageStatusLabel->setText("No Image Requested");
+//
 //
 //
 //        ui->Image_holder->setPixmap(img_default);
@@ -133,6 +134,7 @@ void HomePage::on_getImagesButton_clicked()
 //
 //    for (int ip = 0; ip < (int)IPAddresses.size(); ++ip) {
 //
+//
 //        std::vector<std::string> tmp;
 //        tmp = client::getAccessibleImages(MyUsername , IPAddresses[ip]);
 //
@@ -140,19 +142,23 @@ void HomePage::on_getImagesButton_clicked()
 //        {
 //            imageEntry img;
 //            img.imageName = tmp[i];
+
 //            img.ipAddress = IPAddresses[ip];
 //
 //            imageEntries.push_back(img);
 //        }
 //    }
 //
+
 //
 //    model = new QStringListModel(this);
-//
+//    
+>>>>>>> 5cdeb0ff3f70eef5b2130d4a33b2e81be92d934d
 //    QStringList List;
 //    // printf("got %d images\n", (int)imageEntries.size());
 //    for(int i = 0; i < (int)imageEntries.size(); i++)
 //        List << imageEntries[i].imageName.c_str();
+//
 //
 //
 //    // Populate our model
@@ -161,6 +167,8 @@ void HomePage::on_getImagesButton_clicked()
 //    ui->imagesList->setModel(model);
 
 
+
+    
 //    //ls and get images in my directory
 //
 //    std::vector<std::string> myImages = homepage::listFilesInDir();
@@ -171,10 +179,12 @@ void HomePage::on_getImagesButton_clicked()
 //    for (int i = 0; i < (int)myImages.size(); i++)
 //        List2 << myImages[i].c_str();
 //
+//
 //    // Populate our model
 //    model_my_images->setStringList(List2);
 //    // Glue model and view together
 //    ui->my_images->setModel(model_my_images);
+//
 //
 
 }
@@ -185,7 +195,7 @@ void HomePage::on_update_views_clicked()
 //    QString username_to_update = ui->usernameToUpdateEdit->text();
 //    QString views_to_update = ui->viewsToUpdateEdit->text();
 //
-//    int index = ui->my_images->currentIndex().row();
+////    int index = ui->my_images->currentIndex().row();
 //    QString image_selected = model_my_images->stringList().at(index);
 //    QString path = image_path + image_selected;
 //
@@ -194,15 +204,18 @@ void HomePage::on_update_views_clicked()
 //
 //    int viewsToUpdate = atoi(viewsString.c_str());
 //
-//    std::string imageName = image_selected.toUtf8().constData();
 //
+//    std::string imageName = image_selected.toUtf8().constData();
+//    
 //    // WARNING unused variable
 //    bool updated = client::updateCount(imageName, usernameToUpdate, viewsToUpdate);
 //
 //    //callRPC
 //
 //
-
+//
+//    
+    
 }
 
 void HomePage::setUsername(std::string username)
@@ -223,12 +236,14 @@ std::vector<std::string> homepage::splitString(std::string sentence)
 //  std::stringstream ss;
 //  ss<<sentence;
 //
+//
 //  std::string to;
 //  std::vector<std::string> files;
 //
 //    while(std::getline(ss,to,'\n')){
 //        files.push_back(to);
 //    }
+//
 //
 //    return files;
 }
@@ -237,15 +252,16 @@ std::vector<std::string> homepage::listFilesInDir()
 {
 //    using namespace std;
 //    FILE  *file = popen("ls MyImages/", "r");
-//
+
+//    
 //    int ch;
 //    string result;
-//
+//    
 //    do{
 //        ch = fgetc(file);
-//
+//        
 //        if(ch == EOF) break;
-//
+//        
 //        result += ch;
 //    }while(1);
 //

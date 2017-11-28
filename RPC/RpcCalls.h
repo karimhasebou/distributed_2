@@ -22,6 +22,7 @@
 #include "../CustomObjects/CustomString.h"
 #include "../CustomObjects/CustomVector.h"
 #include "../CustomObjects/CustomBool.h"
+#include "../CustomObjects/CustomMap.h"
 #include "../Marshalling/MarshalledMessage.h"
 #include "../Marshalling/MarshallingManager.h"
 #include "../UDPLayer/Message.h"
@@ -49,7 +50,7 @@ namespace server{
 namespace client {
     
     LoginStatus login(std::string, std::string);
-    std::vector<std::string> getIPAddress();
+    std::map<std::string, std::string> getUsersIpAddress();
     Image getImage(std::string, std::string);
     std::vector<std::string> getAccessibleImages(std::string, std::string);
     bool updateCount(std::string, std::string, int);
@@ -59,7 +60,7 @@ namespace client {
 
 namespace authserver {
     LoginStatus login(std::string, std::string);
-    std::vector<std::string> getIPAddress(const std::string&);
+    std::map<std::string, std::string> getUsersIpAddress(const std::string&);
     std::string getUsername(std::string);
 }
 

@@ -9,7 +9,7 @@ Message canUpdateCount(Message&);
 Message updateCount(Message&);
 
 Message login(Message&);
-Message getIPAddress(Message&);
+Message getUsersIPAddress(Message&);
 Message getUsername(Message&);
 Message getUserNamefromIP(Message&);
 

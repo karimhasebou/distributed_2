@@ -10,9 +10,8 @@
 #include "../UDPLayer/MySocket.h"
 #include <errno.h>
 #include <unistd.h>
-#include "../Database/DatabaseHandler.h"
 
-std::string authServerIP = "10.40.37.203";
+std::string authServerIP = "127.0.0.1";
 const unsigned short authServerPort = 63000;
 const unsigned short serverPort = 64000;
 
@@ -50,7 +49,7 @@ LoginStatus client::login(std::string username, std::string password) {
     
 }
 
-std::vector<std::string> client::getIPAddress()
+std::map<std::string, std::string> client::getUsersIpAddress()
 {
     Message rpcCallMessage;
     rpcCallMessage.setDestIPAddress(authServerIP);
@@ -68,9 +67,9 @@ std::vector<std::string> client::getIPAddress()
     
     unmarshal(rpcReplyMessage, returnValues);
     
-    CustomVector * ipList = dynamic_cast<CustomVector *>(returnValues[0]);
+    CustomMap * usersIpList = dynamic_cast<CustomMap *>(returnValues[0]);
     
-    return ipList->getValue();
+    return usersIpList->getValue();
 }
 
 
@@ -120,7 +119,7 @@ std::vector<std::string> client::getAccessibleImages(std::string username, std::
     marshal(rpcCallMessage, parameters);
 
     rpcCallMessage.setMessageType(Request);
-    rpcCallMessage.setRpcOperation(4);     
+    rpcCallMessage.setRpcOperation(1);
         
     Message rpcReplyMessage = rpcSocket.callRPC(rpcCallMessage);
 
@@ -150,7 +149,7 @@ Image client::getImage(std::string imageName, std::string ipAddress)
     marshal(rpcCallMessage, parameters);
 
     rpcCallMessage.setMessageType(Request);
-    rpcCallMessage.setRpcOperation(5);
+    rpcCallMessage.setRpcOperation(2);
         
         
     Message rpcReplyMessage = rpcSocket.callRPC(rpcCallMessage);
@@ -222,7 +221,7 @@ bool client::updateCount(std::string imgName, std::string username, int count)
     rpcCallMessage.setDestIPAddress(ipAdd);
     rpcCallMessage.setDestPortNumber(serverPort);
             
-    rpcCallMessage.setRpcOperation(6);
+    rpcCallMessage.setRpcOperation(3);
     rpcCallMessage.setRpcRequestID(7); // ?
     rpcCallMessage.setMessageType(Request);
 

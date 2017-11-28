@@ -21,48 +21,44 @@
 Message login(Message& messageParamters) {
     
     std::vector<CustomObject *> parameters = {new CustomString(), new CustomString()};
-    
     unmarshal(messageParamters, parameters);
     
     std::string username = (dynamic_cast<CustomString *>(parameters[0]))->getValue();
-    
     std::string password = (dynamic_cast<CustomString *>(parameters[1]))->getValue();
 
     LoginStatus status = authserver::login(username, password);
 
     CustomInt * loginStatus = new CustomInt((int)status);
-    
     std::vector<CustomObject *> returnValues = {dynamic_cast<CustomObject*>(loginStatus)};
 
     Message replyMessage;
-    
     replyMessage.setSocketAddress(messageParamters.getSocketAddress());
-    
     marshal(replyMessage, returnValues);
+
+    delete parameters[0];
+    delete parameters[1];
+    delete returnValues[0];
 
     return replyMessage;
     
 }
 
-Message getIPAddress(Message& messageParamters) {
+Message getUsersIPAddress(Message& messageParamters) {
     
     struct in_addr senderIPAddress = messageParamters.getSocketAddress().sin_addr;
-    
     char senderAddressChar[15];
-    
     inet_ntop(AF_INET, &senderIPAddress, senderAddressChar , 15);
-    
     std::string senderAddressString(senderAddressChar);
     
-    CustomVector * ipAddresses = new CustomVector(authserver::getIPAddress(senderAddressString));
+    CustomMap * usersIpAddress = new CustomMap(authserver::getUsersIpAddress(senderAddressString));
     
-    std::vector<CustomObject*> returnValues = {dynamic_cast<CustomObject*>(ipAddresses)};
+    std::vector<CustomObject*> returnValues = {dynamic_cast<CustomObject*>(usersIpAddress)};
     
     Message replyMessage;
-    
     replyMessage.setSocketAddress(messageParamters.getSocketAddress());
-        
     marshal(replyMessage, returnValues);
+
+    delete returnValues[0];
     
     return replyMessage;
 }
