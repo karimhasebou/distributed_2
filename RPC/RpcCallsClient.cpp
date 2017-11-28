@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include "../Database/DatabaseHandler.h"
 
-std::string authServerIP = "10.40.37.203";
+std::string authServerIP = "127.0.0.1";
 const unsigned short authServerPort = 63000;
 const unsigned short serverPort = 64000;
 

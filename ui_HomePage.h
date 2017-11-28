@@ -37,7 +37,7 @@ public:
     QHBoxLayout *horizontalLayout;
     QPushButton *allImagesButton;
     QPushButton *myImagesButton;
-    QPushButton *ediImageButton;
+    QPushButton *editImageButton;
     QPushButton *requestImageButton;
     QHBoxLayout *horizontalLayout_2;
     QLabel *imageView;
@@ -83,12 +83,12 @@ public:
 
         horizontalLayout->addWidget(myImagesButton);
 
-        ediImageButton = new QPushButton(verticalLayoutWidget);
-        ediImageButton->setObjectName(QStringLiteral("ediImageButton"));
-        sizePolicy.setHeightForWidth(ediImageButton->sizePolicy().hasHeightForWidth());
-        ediImageButton->setSizePolicy(sizePolicy);
+        editImageButton = new QPushButton(verticalLayoutWidget);
+        editImageButton->setObjectName(QStringLiteral("editImageButton"));
+        sizePolicy.setHeightForWidth(editImageButton->sizePolicy().hasHeightForWidth());
+        editImageButton->setSizePolicy(sizePolicy);
 
-        horizontalLayout->addWidget(ediImageButton);
+        horizontalLayout->addWidget(editImageButton);
 
         requestImageButton = new QPushButton(verticalLayoutWidget);
         requestImageButton->setObjectName(QStringLiteral("requestImageButton"));
@@ -176,9 +176,9 @@ public:
         HomePage->setWindowTitle(QApplication::translate("HomePage", "HomePage", Q_NULLPTR));
         allImagesButton->setText(QApplication::translate("HomePage", "All Images", Q_NULLPTR));
         myImagesButton->setText(QApplication::translate("HomePage", "My Images", Q_NULLPTR));
-        ediImageButton->setText(QApplication::translate("HomePage", "Edit Image", Q_NULLPTR));
+        editImageButton->setText(QApplication::translate("HomePage", "Edit Image", Q_NULLPTR));
         requestImageButton->setText(QApplication::translate("HomePage", "Request Image", Q_NULLPTR));
-        imageView->setText(QApplication::translate("HomePage", "TextLabel", Q_NULLPTR));
+        imageView->setText(QString());
         label_3->setText(QApplication::translate("HomePage", "Views Count", Q_NULLPTR));
         label_2->setText(QApplication::translate("HomePage", "Add username", Q_NULLPTR));
         updateEditsButton->setText(QApplication::translate("HomePage", "Update", Q_NULLPTR));
