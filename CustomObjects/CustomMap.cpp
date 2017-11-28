@@ -1,74 +1,64 @@
-// #include <iterator>
-// #include "CustomMap.h"
-// #include "CustomInt.h"
-// #include "CustomString.h"
+#include "CustomMap.h"
+#include "CustomVector.h"
 
-// CustomMap::CustomMap(std::map<std::string, int> table)
-// {
-// 	this->table = table;
-// }
+CustomMap::CustomMap(const std::map<std::string, std::string> & other) {
 
-// CustomMap::~CustomMap()
-// {
-// }
+    value = other;
+}
 
-// int CustomMap::getValueAt(int idx)
-// {
-// 	CustomMap::Table::iterator it = table.begin();
-// 	std::advance(it, idx);
-// 	//it = it + idx;
-// 	return it->second;
-// }
+std::map<std::string, std::string> CustomMap::getValue() {
 
-// std::string CustomMap::getKeyAt(int idx)
-// {
-// 	CustomMap::Table::iterator it = table.begin();
-// 	std::advance(it, idx);
-// 	//it = it + idx;
-// 	return it->first;
-// }
+    return this->value;
 
-// std::string CustomMap::marshal()
-// {
-// 	int len = table.size();
-// 	CustomInt map_length(len);
-// 	CustomInt counts[len];
-// 	CustomString strings[len];
+}
 
-// 	map_length.setValue(len);
-// 	for (int i = 0; i < len; ++i) {
-// 		std::string key = getKeyAt(i);
-// 		int val = getValueAt(i);
-// 		strings[i].setValue(key);	
-// 		counts[i].setValue(val);
-// 	}
+std::string& CustomMap::operator[](const std::string key) {
 
-// 	std::string marshalledMap = map_length.marshal();
-// 	for (int i = 0; i < len; ++i) {
-// 		marshalledMap += strings[i].marshal();
-// 		marshalledMap += counts[i].marshal();
-// 	}
+    return value[key];
 
-// 	return marshalledMap;
-// }
+}
 
-// int CustomMap::unmarshal(char* buffer, const int& startPosition)
-// {
-// 	CustomInt header;
-// 	int next = header.unmarshal(buffer, 0);	
-// 	int len = header.getValue();
+std::string CustomMap::marshal() {
 
-// 	for (int i = 0; i < len; ++i) {
-// 		CustomString key;
-// 		CustomInt val;
-// 		next = key.unmarshal(buffer, next);
-// 		next = val.unmarshal(buffer, next);
-// 		this->table[key.getValue()] = val.getValue();
-// 	}
-// 	return next;
-// }
+    CustomVector keys;
+    CustomVector values;
 
-// CustomMap::Table CustomMap::getValue()
-// {
-// 	return this->table;
-// }
+    std::map<std::string, std:string>::iterator it;
+
+    for (it = value.begin(); it != value.end(); it++) {
+
+        keys.push_back(it->first);
+        keys.push_back(it->second);
+    }
+
+    std::string marshalledMap = "";
+
+    marshalledMap += keys.marshal();
+    marshalledMap += values.marshal();
+
+    return marshalledMap;
+
+}
+
+int CustomMap::unmarshal(MarshalledMessage & message,
+                         const int & startPosition) {
+
+    int bufferPosition = startPosition;
+
+    CustomVector keys;
+    CustomVector values;
+
+    this->value.clear();
+
+    bufferPosition = keys.unmarshal(message, bufferPosition);
+
+    bufferPosition = values.unmarshal(message, bufferPosition);
+
+    for (int i = 0; i < keys.getValue().size(); i++) {
+
+        this->value[keys[i]] = values[i];
+    }
+
+    return bufferPosition;
+
+}

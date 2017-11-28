@@ -28,12 +28,9 @@ public:
     
     
 private slots:
-    void on_getImagesButton_clicked();
-    
+    void on_getImagesButton_clicked()
     void on_requestImageButton_clicked();
-    
     void on_viewImageButton_clicked();
-
     void on_update_views_clicked();
 
 private:
@@ -44,6 +41,7 @@ private:
     QPixmap img_default;
     QString image_path;
     std::vector<std::string> ip_addresses;
+
     
 
 };

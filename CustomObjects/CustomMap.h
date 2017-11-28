@@ -1,24 +1,21 @@
-// #ifndef CustomMap_h
-// #define CustomMap_h
+#ifndef CUSTOMMAP_HPP
+#define CUSTOMMAP_HPP
 
-// #include <map>
-// #include <string>
-// #include "CustomObject.h"
-// class CustomMap : public CustomObject {
-// private:
-// 	using Table = std::map<std::string, int>;
-// 	//std::map<std::string, int> table;
-// 	int getValueAt(int);
-// 	std::string getKeyAt(int);
-// 	Table table;
-// public:
-// 	CustomMap(){};
-// 	CustomMap(Table);
-// 	//CustomMap(std::map<std::string, int>);
-// 	~CustomMap();
-// 	virtual std::string marshal();
-// 	virtual int unmarshal(char*, const int&);
-// 	Table getValue();
-// };
+#include "CustomObject.h"
+#include <map>
 
-// #endif
+class CustomMap : CustomObject {
+
+private:
+    std::map<std::string, std::string> value;
+
+public:
+    CustomMap(){};
+    CustomMap(const std::map<std::string, std::string>&);
+    std::string& operator[](const std::string);
+    std::map<std::string, std::string> getValue();
+    virtual std::string marshal();
+    virtual int unmarshal(MarshalledMessage &, const int&);
+};
+
+#endif
