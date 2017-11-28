@@ -36,6 +36,47 @@ HomePage::~HomePage()
     delete ui;
 }
 
+void HomePage::getAllImages() {
+
+    usersIpAddress = client::getUsersIpAddress();
+
+    std::map<std::string, std::string>::iterator it;
+
+    availableImages.clear();
+    availableImages.resize(0);
+
+    for (it = usersIpAddress.begin(); it != usersIpAddress.end(); i++) {
+
+        std::vector<std::string> imageNames = client::getAccessibleImages(myUsername, it->second);
+
+        for (int i = 0;i < imageNames.size(); i++) {
+
+            ImageEntry imageEntry;
+            imageEntry.imageName = imageNames[i];
+            imageEntry.username = it->first;
+            availableImages.push_back(imageEntry);
+        }
+    }
+
+    showImagesInList(ui->availableImagesList, availableImages);
+}
+
+void HomePage::getMyImages() {
+
+
+
+}
+
+void HomePage::editImageSettings() {
+
+
+}
+
+void HomePage::requestImage() {
+
+
+}
+
 void HomePage::on_requestImageButton_clicked()
 {
 //    int index = ui->imagesList->currentIndex().row();
@@ -209,7 +250,7 @@ void HomePage::on_update_views_clicked()
 
 void HomePage::setUsername(std::string username)
 {
-//    this->MyUsername = username;
+    this->myUsername = username;
 }
 
 void HomePage::extractViews(std::string imageName)
@@ -222,49 +263,67 @@ void HomePage::extractViews(std::string imageName)
 
 std::vector<std::string> homepage::splitString(std::string sentence)
 {
-//  std::stringstream ss;
-//  ss<<sentence;
-//
-//
-//  std::string to;
-//  std::vector<std::string> files;
-//
-//    while(std::getline(ss,to,'\n')){
-//        files.push_back(to);
-//    }
-//
-//
-//    return files;
+  std::stringstream ss;
+  ss<<sentence;
+
+  std::string to;
+  std::vector<std::string> files;
+
+    while(std::getline(ss,to,'\n')){
+        files.push_back(to);
+    }
+
+
+    return files;
 }
 
-std::vector<std::string> homepage::listFilesInDir()
+std::vector<std::string> homepage::listFilesInDir(const std:string& folderName)
 {
-//    using namespace std;
-//    FILE  *file = popen("ls MyImages/", "r");
+    using namespace std;
+    std::string command = "ls " + foder
+    FILE  *file = popen("ls MyImages/", "r");
 
-//    
-//    int ch;
-//    string result;
-//    
-//    do{
-//        ch = fgetc(file);
-//        
-//        if(ch == EOF) break;
-//        e
-//        result += ch;
-//    }while(1);
-//
-//    pclose(file);
-//
-//    return homepage::splitString(result);
+    int ch;
+    string result;
+
+    do{
+        ch = fgetc(file);
+
+        if(ch == EOF) {
+            break;
+        }
+
+        result += ch;
+
+    }while(1);
+
+    pclose(file);
+
+    return homepage::splitString(result);
 }
 
 void HomePage::setEditEntriesVisible(const bool & visible) {
 
-    ui->usernameLabel->setVisible(visible);
+    ui->usernameEdit->setVisible(visible);
     ui->updateEditsButton->setVisible(visible);
+    ui->viewCountEdit->setVisible(visible);
     ui->viewCountLabel->setVisible(visible);
-    ui->label_2->setVisible(visible);
-    ui->label_3->setVisible(visible);
+    ui->addUsernameLabel->setVisible(visible);
 
+}
+
+void HomePage::showImagesInList(QListView * listView, const std::vector<ImageEntry> & images) {
+
+    QStandardItemModel * model = new QStandardItemModel(images.size(), 1, this);
+
+    for (int i = 0; i < images.size(); i++) {
+
+        QString imageName = QString::fromStdString(images[i].imageName);
+
+        QStandardItem * standardItem = new QStandardItem(imageName);
+
+        model->setItem(i, 0, standardItem);
+    }
+
+    listView->setModel(model);
 }

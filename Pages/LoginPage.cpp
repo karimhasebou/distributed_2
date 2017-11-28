@@ -13,11 +13,13 @@ LoginPage::LoginPage(QWidget *parent) :
     ui->setupUi(this);
     //    connect(ui->signInButton, &QPushButton::clicked, this, &LoginPage::on_signInButton_clicked);
     
-    QPixmap backgroundImage("Pages/background.jpg");
-    backgroundImage = backgroundImage.scaled(this->size(), Qt::IgnoreAspectRatio);
-    QPalette palette;
-    palette.setBrush(QPalette::Background, backgroundImage);
-    this->setPalette(palette);
+//    QPixmap backgroundImage("Pages/background.jpg");
+//    backgroundImage = backgroundImage.scaled(this->size(), Qt::IgnoreAspectRatio);
+//    QPalette palette;
+//    palette.setBrush(QPalette::Background, backgroundImage);
+//    this->setPalette(palette);
+
+    this->setStyleSheet("QMainWindow {backround-color: #000000;}");
     
     ui->label->setStyleSheet("QLabel {color: #ffffff;}");
     ui->label_2->setStyleSheet("QLabel {color: #ffffff;}");

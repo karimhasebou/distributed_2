@@ -8,10 +8,13 @@
 #include <QAbstractItemView>
 #include <vector>
 #include <string>
+#include <QtWidgets/QListView>
+#include <QStandardItemModel>
+#include <QStandardItem>
 
 struct ImageEntry {
     std::string imageName;
-    std::string ipAddress;
+    std::string username;
 };
 
 namespace Ui {
@@ -29,25 +32,15 @@ public:
     void set_ips(const std::vector<std::string> &);
     void setUsername(std::string);
     void extractViews(std::string);
-    
-    
-private slots:
-    void on_getImagesButton_clicked()
-    void on_requestImageButton_clicked();
-    void on_viewImageButton_clicked();
-    void on_update_views_clicked();
 
 private:
     Ui::HomePage *ui;
-    QStringListModel *model;
-    QStringListModel *model_my_images;
-    std::string MyUsername;
+    std::string myUsername;
     QPixmap imagePreview;
     QString image_path;
-    std::vector<std::string> ip_addresses;
 
     std::map<std::string, std::string> usersIpAddress;
-    std::vector<ImageEntry> downloadedImages;
+    std::vector<ImageEntry> availableImages;
     const std::string myImagesPath = "DownloadedImages/";
     const std::string otherImagesPath;
 
@@ -56,6 +49,9 @@ private:
     void getMyImages();
     void editImageSettings();
     void requestImage();
+
+    void showImagesInList(QListView * , const std::vector<ImageEntry>&);
+
 
 };
 
