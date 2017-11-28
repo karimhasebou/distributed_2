@@ -4,8 +4,8 @@
 #include "../RequestHandler.h"
 
 namespace homepage {
-    std::vector<std::string> splitString(std::string sentence);
-    std::vector<std::string> listFilesInDir();
+    std::vector<std::string> splitString(std::string);
+    std::vector<std::string> listFilesInDir(const std::string&);
 };
 
 
@@ -16,11 +16,15 @@ HomePage::HomePage(QWidget *parent) :
     ui->setupUi(this);
 
     imagePreview.load("MyImages/default.jpg");
-    ui->imageView->setPixmap(imagePreview);
-    ui->imageView->setScaledContents(true);
+    ui->imagePreview->setPixmap(imagePreview);
+    ui->imagePreview->setScaledContents(true);
 
     ui->editImageButton->setEnabled(false);
     ui->requestImageButton->setEnabled(false);
+    
+    ui->myImagesList->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->availableImagesList->setSelectionMode(QAbstractItemView::SingleSelection);
+
 
     setEditEntriesVisible(false);
 
@@ -28,6 +32,13 @@ HomePage::HomePage(QWidget *parent) :
     connect(ui->myImagesButton, &QPushButton::clicked, this, &HomePage::getMyImages);
     connect(ui->editImageButton, &QPushButton::clicked, this, &HomePage::editImageSettings);
     connect(ui->requestImageButton, &QPushButton::clicked, this, &HomePage::requestImage);
+    connect(ui->updateEditsButton, &QPushButton::clicked, this, &HomePage::updateViews);
+    
+    connect(ui->myImagesList, SIGNAL(itemClicked(QListWidgetItem*)),
+            this, SLOT(handleMyImagesClick(QListWidgetItem*)));
+    
+    connect(ui->availableImagesList, SIGNAL(itemClicked(QListWidgetItem*)),
+            this, SLOT(handleAvailableImagesClick(QListWidgetItem*)));
 
 }
 
@@ -45,7 +56,7 @@ void HomePage::getAllImages() {
     availableImages.clear();
     availableImages.resize(0);
 
-    for (it = usersIpAddress.begin(); it != usersIpAddress.end(); i++) {
+    for (it = usersIpAddress.begin(); it != usersIpAddress.end(); it++) {
 
         std::vector<std::string> imageNames = client::getAccessibleImages(myUsername, it->second);
 
@@ -54,6 +65,7 @@ void HomePage::getAllImages() {
             ImageEntry imageEntry;
             imageEntry.imageName = imageNames[i];
             imageEntry.username = it->first;
+            imageEntry.myImage = false;
             availableImages.push_back(imageEntry);
         }
     }
@@ -62,207 +74,173 @@ void HomePage::getAllImages() {
 }
 
 void HomePage::getMyImages() {
-
-
-
-}
-
-void HomePage::editImageSettings() {
-
-
+    
+    std::vector<std::string> myImagesNames = homepage::listFilesInDir(myImagesPath);
+    
+    allMyImages.clear();
+    allMyImages.resize(0);
+    
+    for (int i = 0; i < myImagesNames.size(); i++) {
+        
+        ImageEntry imageEntry;
+        imageEntry.imageName = myImagesNames[i];
+        imageEntry.myImage = true;
+        
+        allMyImages.push_back(imageEntry);
+        
+    }
+    
+    for (int i = 0; i < downloadedImages.size(); i++) {
+        
+        allMyImages.push_back(downloadedImages[i]);
+        
+    }
+    
+    showImagesInList(ui->myImagesList, allMyImages);
+    
 }
 
 void HomePage::requestImage() {
-
-
-}
-
-void HomePage::on_requestImageButton_clicked()
-{
-//    int index = ui->imagesList->currentIndex().row();
-//    QString image_selected = model->stringList().at(index);
-//
-//    std::string imageName = image_selected.toUtf8().constData();
-//
-//    Image img = client::getImage(imageName, imageEntries[index].ipAddress);
-//
-//
-//    std::string imageFilePath = "DownloadedImages/" + imageName;
-//
-//    std::ofstream outfile(imageFilePath , std::ios::out | std::ios::binary);
-//
-//    outfile.write(img.content, img.length);
-//
-//    outfile.close();
-//
-//
-//    std::string image_name = image_selected.toUtf8().constData();
-//    extractViews(image_name);
-//
-//    std::string username;
-//
-//    std::string path_to_list = image_name + ".txt";
-//
-//    ifstream file;
-//    file.open(path_to_list.c_str());
-///
-//    if(file.fail())
-//        printf("Opening list of view failed: %s\n", image_name.c_str());
-//    else
-//    {
-//        while(!file.eof())
-//        {
-//            file >> username >> views_num;
-//
-//            if (username == MyUsername)
-//                break;
-//        }
-//    }
-//
-
-}
-
-void HomePage::on_viewImageButton_clicked()
-{
-//    int index = ui->imagesList->currentIndex().row();
-//    QString image_selected = model->stringList().at(index);
-//
-//
-//    QString path = image_path + image_selected;
-//        
-//   
-//    if(views_num!=0)
-//    {
-//        QPixmap img;
-//        img.load(path);
-//
-//        ui->Image_holder->setPixmap(img);
-//        ui->Image_holder->setScaledContents(true);
-//        ui->viewsNumLabel->setText("No. of Views " + QString::number(views_num));
-//        views_num--;
-//    }
-//    else
-//    {
-//        ui->viewsNumLabel->setText("No. of Views reached 0!!");
-//        ui->imageStatusLabel->setText("No Image Requested");
-//
-//
-//
-//        ui->Image_holder->setPixmap(img_default);
-//    }
-}
-
-void HomePage::on_getImagesButton_clicked()
-{
-//    std::vector<std::string> IPAddresses =  client::getIPAddress();
-//
-//    printf("IP numbers %d", (int)IPAddresses.size());
-//
-//    for ( int i =  0; i < (int) (int)IPAddresses.size(); i++)
-//    {
-//        printf("\nIP ADDRESSES : %s\n", IPAddresses[i].c_str());
-//    }
-//
-//    for (int ip = 0; ip < (int)IPAddresses.size(); ++ip) {
-//
-//
-//        std::vector<std::string> tmp;
-//        tmp = client::getAccessibleImages(MyUsername , IPAddresses[ip]);
-//
-//        for (int i = 0; i < (int)tmp.size(); i++)
-//        {
-//            imageEntry img;
-//            img.imageName = tmp[i];
-
-//            img.ipAddress = IPAddresses[ip];
-//
-//            imageEntries.push_back(img);
-//        }
-//    }
-//
-
-//
-//    model = new QStringListModel(this);
-//    
-//    QStringList List;
-//    // printf("got %d images\n", (int)imageEntries.size());
-//    for(int i = 0; i < (int)imageEntries.size(); i++)
-//        List << imageEntries[i].imageName.c_str();
-//
-//
-//
-//    // Populate our model
-//    model->setStringList(List);
-//    // Glue model and view together
-//    ui->imagesList->setModel(model);
-
-
-
     
-//    //ls and get images in my directory
-//
-//    std::vector<std::string> myImages = homepage::listFilesInDir();
-//
-//    model_my_images = new QStringListModel(this);
-//    QStringList List2;
-//
-//    for (int i = 0; i < (int)myImages.size(); i++)
-//        List2 << myImages[i].c_str();
-//
-//
-//    // Populate our model
-//    model_my_images->setStringList(List2);
-//    // Glue model and view together
-//    ui->my_images->setModel(model_my_images);
-//
-//
+    int index = ui->availableImagesList->currentIndex().row();
+    std::string imageName = availableImages[index].imageName;
+    
+    Image requestedImage = client::getImage(imageName, usersIpAddress[availableImages[index].username]);
 
+    std::string imageFilePath = myDownloadsPath + imageName;
+    
+    std::ofstream outfile(imageFilePath , std::ios::out | std::ios::binary);
+    outfile.write(requestedImage.content, requestedImage.length);
+    outfile.close();
+    
+    bool alreadyDownloaded = false;
+    
+    for (int i = 0; i < downloadedImages.size() && !alreadyDownloaded; i++) {
+        
+        if(downloadedImages[i] == availableImages[index]) {
+            alreadyDownloaded = true;
+        }
+    }
+    
+    if (!alreadyDownloaded) {
+        
+        downloadedImages.push_back(availableImages[index]);
+    }
+    
+    getMyImages();
 }
 
-
-void HomePage::on_update_views_clicked()
-{
-//    QString username_to_update = ui->usernameToUpdateEdit->text();
-//    QString views_to_update = ui->viewsToUpdateEdit->text();
-//
-////    int index = ui->my_images->currentIndex().row();
-//    QString image_selected = model_my_images->stringList().at(index);
-//    QString path = image_path + image_selected;
-//
-//    std::string usernameToUpdate = username_to_update.toUtf8().constData();
-//    std::string viewsString = views_to_update.toUtf8().constData();
-//
-//    int viewsToUpdate = atoi(viewsString.c_str());
-//
-//
-//    std::string imageName = image_selected.toUtf8().constData();
-//    
-//    // WARNING unused variable
-//    bool updated = client::updateCount(imageName, usernameToUpdate, viewsToUpdate);
-//
-//    //callRPC
-//
-//
-//
-//    
+void HomePage::editImageSettings() {
+    
+    setEditEntriesVisible(true);
     
 }
 
-void HomePage::setUsername(std::string username)
-{
+void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
+    
+    ui->requestImageButton->setEnabled(false);
+    
+    int index = getSelectedIndex(ui->myImagesList);
+    
+    if (allMyImages[index].myImage) {
+        
+        ui->editImageButton->setEnabled(true);
+        
+    } else {
+        
+        ui->editImageButton->setEnabled(false);
+    }
+    
+    std::string imageName = allMyImages[index].imageName;
+    
+    viewImage(myImagesPath + imageName);
+    
+}
+
+void HomePage::handleAvailableImagesClick(QListWidgetItem * listItem) {
+    
+    ui->requestImageButton->setEnabled(true);
+    
+}
+
+void HomePage::updateViews() {
+    
+    QString usernameToUpdate = ui->usernameEdit->text();
+    QString viewsToUpdate = ui->viewCountEdit->text();
+    
+    int imageSelected = getSelectedIndex(ui->availableImagesList);
+    
+    std::string imageName = allMyImages[imageSelected].imageName;
+    
+    std::string viewsString = viewsToUpdate.toUtf8().constData();
+    std::string usernameString = usernameToUpdate.toUtf8().constData();
+    
+    int views = atoi(viewsString.c_str());
+    
+    bool updated = client::updateCount(imageName, usernameString, views);
+    
+    //callRPC
+    
+    
+}
+
+void HomePage::viewImage(const std::string& filePath) {
+    
+    QPixmap image;
+    image.load(QString::fromStdString(filePath));
+    
+    ui->imagePreview->setPixmap(image);
+    ui->imagePreview->setScaledContents(true);
+}
+
+
+void HomePage::setUsername(std::string username) {
+    
     this->myUsername = username;
 }
 
-void HomePage::extractViews(std::string imageName)
-{
-//    std::string exec_command = "steghide extract -sf DownloadedImages/" + imageName;
-//    exec_command += " -p root -f";
-//
-//    system(exec_command.c_str());
+
+int HomePage::getMyImageCount(const std::string& imageName) {
+    
+    extractViews( myDownloadsPath + imageName);
+    
+    std::string unStaggedListPath = imageName + ".txt";
+    
+    std::ifstream imageContentFile;
+    imageContentFile.open(unStaggedListPath.c_str());
+    
+    std::string username;
+    int viewsCount;
+    
+    if(imageContentFile.fail()) {
+        
+        printf("Opening list of view failed: %s\n", imageName.c_str());
+        
+    } else {
+        
+        while(!imageContentFile.eof())
+        {
+            imageContentFile >> username >> viewsCount;
+            
+            if (username == myUsername)
+                return viewsCount;
+        }
+    }
+    
+    return -1;
 }
 
-std::vector<std::string> homepage::splitString(std::string sentence)
-{
+
+void HomePage::extractViews(std::string imagePath) {
+    
+    std::string exec_command = "steghide extract -sf " + imagePath;
+    exec_command += " -p root -f";
+
+    system(exec_command.c_str());
+}
+
+std::vector<std::string> homepage::splitString(std::string sentence) {
+    
   std::stringstream ss;
   ss<<sentence;
 
@@ -277,11 +255,11 @@ std::vector<std::string> homepage::splitString(std::string sentence)
     return files;
 }
 
-std::vector<std::string> homepage::listFilesInDir(const std:string& folderName)
+std::vector<std::string> homepage::listFilesInDir(const std::string& folderName)
 {
     using namespace std;
-    std::string command = "ls " + foder
-    FILE  *file = popen("ls MyImages/", "r");
+    string command = "ls " + folderName;
+    FILE  *file = popen(command.c_str(), "r");
 
     int ch;
     string result;
@@ -295,7 +273,7 @@ std::vector<std::string> homepage::listFilesInDir(const std:string& folderName)
 
         result += ch;
 
-    }while(1);
+    } while(1);
 
     pclose(file);
 
@@ -312,18 +290,20 @@ void HomePage::setEditEntriesVisible(const bool & visible) {
 
 }
 
-void HomePage::showImagesInList(QListView * listView, const std::vector<ImageEntry> & images) {
-
-    QStandardItemModel * model = new QStandardItemModel(images.size(), 1, this);
+void HomePage::showImagesInList(QListWidget * listWidget, const std::vector<ImageEntry> & images) {
 
     for (int i = 0; i < images.size(); i++) {
-
-        QString imageName = QString::fromStdString(images[i].imageName);
-
-        QStandardItem * standardItem = new QStandardItem(imageName);
-
-        model->setItem(i, 0, standardItem);
+        
+        QListWidgetItem *newItem = new QListWidgetItem();
+        newItem->setText(QString::fromStdString(images[i].imageName));
+        listWidget->insertItem(i, newItem);
     }
+}
 
-    listView->setModel(model);
+int HomePage::getSelectedIndex(QListWidget* list) {
+    
+    QList<QListWidgetItem*> selection = list->selectedItems();
+    int index = list->row(selection[0]);
+    return index;
+
 }

@@ -18,7 +18,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListView>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -40,10 +40,12 @@ public:
     QPushButton *editImageButton;
     QPushButton *requestImageButton;
     QHBoxLayout *horizontalLayout_2;
-    QLabel *imageView;
+    QVBoxLayout *verticalLayout_3;
+    QLabel *imagePreview;
+    QLabel *countRemaining;
     QVBoxLayout *verticalLayout_2;
-    QListView *myImagesList;
-    QListView *availableImagesList;
+    QListWidget *myImagesList;
+    QListWidget *availableImagesList;
     QPushButton *refreshButton;
     QGridLayout *editImageEntries;
     QLineEdit *usernameEdit;
@@ -103,25 +105,47 @@ public:
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        imageView = new QLabel(verticalLayoutWidget);
-        imageView->setObjectName(QStringLiteral("imageView"));
-        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        verticalLayout_3 = new QVBoxLayout();
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        imagePreview = new QLabel(verticalLayoutWidget);
+        imagePreview->setObjectName(QStringLiteral("imagePreview"));
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Expanding);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(imageView->sizePolicy().hasHeightForWidth());
-        imageView->setSizePolicy(sizePolicy1);
+        sizePolicy1.setHeightForWidth(imagePreview->sizePolicy().hasHeightForWidth());
+        imagePreview->setSizePolicy(sizePolicy1);
 
-        horizontalLayout_2->addWidget(imageView);
+        verticalLayout_3->addWidget(imagePreview);
+
+        countRemaining = new QLabel(verticalLayoutWidget);
+        countRemaining->setObjectName(QStringLiteral("countRemaining"));
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Minimum);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(countRemaining->sizePolicy().hasHeightForWidth());
+        countRemaining->setSizePolicy(sizePolicy2);
+
+        verticalLayout_3->addWidget(countRemaining);
+
+
+        horizontalLayout_2->addLayout(verticalLayout_3);
 
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        myImagesList = new QListView(verticalLayoutWidget);
+        myImagesList = new QListWidget(verticalLayoutWidget);
         myImagesList->setObjectName(QStringLiteral("myImagesList"));
+        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(myImagesList->sizePolicy().hasHeightForWidth());
+        myImagesList->setSizePolicy(sizePolicy3);
 
         verticalLayout_2->addWidget(myImagesList);
 
-        availableImagesList = new QListView(verticalLayoutWidget);
+        availableImagesList = new QListWidget(verticalLayoutWidget);
         availableImagesList->setObjectName(QStringLiteral("availableImagesList"));
+        sizePolicy3.setHeightForWidth(availableImagesList->sizePolicy().hasHeightForWidth());
+        availableImagesList->setSizePolicy(sizePolicy3);
 
         verticalLayout_2->addWidget(availableImagesList);
 
@@ -137,11 +161,11 @@ public:
         editImageEntries->setObjectName(QStringLiteral("editImageEntries"));
         usernameEdit = new QLineEdit(verticalLayoutWidget);
         usernameEdit->setObjectName(QStringLiteral("usernameEdit"));
-        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(usernameEdit->sizePolicy().hasHeightForWidth());
-        usernameEdit->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy4(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(usernameEdit->sizePolicy().hasHeightForWidth());
+        usernameEdit->setSizePolicy(sizePolicy4);
 
         editImageEntries->addWidget(usernameEdit, 0, 1, 1, 1);
 
@@ -157,8 +181,8 @@ public:
 
         viewCountEdit = new QLineEdit(verticalLayoutWidget);
         viewCountEdit->setObjectName(QStringLiteral("viewCountEdit"));
-        sizePolicy2.setHeightForWidth(viewCountEdit->sizePolicy().hasHeightForWidth());
-        viewCountEdit->setSizePolicy(sizePolicy2);
+        sizePolicy4.setHeightForWidth(viewCountEdit->sizePolicy().hasHeightForWidth());
+        viewCountEdit->setSizePolicy(sizePolicy4);
 
         editImageEntries->addWidget(viewCountEdit, 1, 1, 1, 1);
 
@@ -194,7 +218,8 @@ public:
         myImagesButton->setText(QApplication::translate("HomePage", "My Images", Q_NULLPTR));
         editImageButton->setText(QApplication::translate("HomePage", "Edit Image", Q_NULLPTR));
         requestImageButton->setText(QApplication::translate("HomePage", "Request Image", Q_NULLPTR));
-        imageView->setText(QString());
+        imagePreview->setText(QApplication::translate("HomePage", "TextLabel", Q_NULLPTR));
+        countRemaining->setText(QString());
         refreshButton->setText(QApplication::translate("HomePage", "Refresh", Q_NULLPTR));
         viewCountLabel->setText(QApplication::translate("HomePage", "Views Count", Q_NULLPTR));
         addUsernameLabel->setText(QApplication::translate("HomePage", "Add username", Q_NULLPTR));

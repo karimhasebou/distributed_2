@@ -8,13 +8,18 @@
 #include <QAbstractItemView>
 #include <vector>
 #include <string>
-#include <QtWidgets/QListView>
-#include <QStandardItemModel>
-#include <QStandardItem>
+#include <stdio.h>
+#include <QListWidget>
+#include <QListWidgetItem>
 
 struct ImageEntry {
     std::string imageName;
     std::string username;
+    bool myImage;
+    
+    bool operator==(const ImageEntry& other) {
+        return (imageName == other.imageName) && (username == other.username);
+    }
 };
 
 namespace Ui {
@@ -37,21 +42,28 @@ private:
     Ui::HomePage *ui;
     std::string myUsername;
     QPixmap imagePreview;
-    QString image_path;
 
     std::map<std::string, std::string> usersIpAddress;
     std::vector<ImageEntry> availableImages;
-    const std::string myImagesPath = "DownloadedImages/";
-    const std::string otherImagesPath;
+    std::vector<ImageEntry> downloadedImages;
+    std::vector<ImageEntry> allMyImages;
+    const std::string myImagesPath = "MyImages/";
+    const std::string myDownloadsPath = "DownloadedImages/";
 
     void setEditEntriesVisible(const bool&);
     void getAllImages();
     void getMyImages();
     void editImageSettings();
     void requestImage();
+    void updateViews();
+    void handleMyImagesClick(QListWidgetItem *);
+    void handleAvailableImagesClick(QListWidgetItem *);
 
-    void showImagesInList(QListView * , const std::vector<ImageEntry>&);
-
+    void showImagesInList(QListWidget * , const std::vector<ImageEntry>&);
+    void showImagePreview();
+    int getMyImageCount(const std::string&);
+    void viewImage(const std::string&);
+    int getSelectedIndex(QListWidget*);
 
 };
 

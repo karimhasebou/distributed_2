@@ -36,7 +36,8 @@ set(CUST_SRC
 CustomObjects/CustomInt.cpp 
 CustomObjects/CustomBool.cpp 
 CustomObjects/CustomString.cpp
-CustomObjects/CustomVector.cpp)
+CustomObjects/CustomVector.cpp
+CustomObjects/CustomMap.cpp)
 
 set(DB_SRC Database/DatabaseHandler.cpp)
 
@@ -61,7 +62,8 @@ set(CUST_HDR
 CustomObjects/CustomInt.h 
 CustomObjects/CustomBool.h 
 CustomObjects/CustomString.h
-CustomObjects/CustomVector.h)
+CustomObjects/CustomVector.h
+CustomObjects/CustomMap.h)
 
 set(DB_HDR Database/DatabaseHandler.h)
 
