@@ -2,21 +2,11 @@
 #include "../ui_HomePage.h"
 #include "../RPC/RpcCalls.h"
 #include "../RequestHandler.h"
-#include "../RPC/RpcStub.h"
-
-int views_num = 0;
 
 namespace homepage {
     std::vector<std::string> splitString(std::string sentence);
     std::vector<std::string> listFilesInDir();
 };
-
-struct imageEntry {
-    std::string imageName;
-    std::string ipAddress;
-};
-
-std::vector<imageEntry> imageEntries;
 
 
 HomePage::HomePage(QWidget *parent) :
@@ -24,26 +14,27 @@ HomePage::HomePage(QWidget *parent) :
         ui(new Ui::HomePage)
 {
     ui->setupUi(this);
-//    image_path = "DownloadedImages/";
-//
-//    img_default.load("MyImages/default.jpg");
-//
-//    ui->Image_holder->setPixmap(img_default);
-//    ui->Image_holder->setScaledContents(true);
-//
+
+    imagePreview.load("MyImages/default.jpg");
+    ui->imageView->setPixmap(imagePreview);
+    ui->imageView->setScaledContents(true);
+
+    ui->editImageButton->setEnabled(false);
+    ui->requestImageButton->setEnabled(false);
+
+    setEditEntriesVisible(false);
+
+    connect(ui->allImagesButton, &QPushButton::clicked, this, &HomePage::getAllImages);
+    connect(ui->myImagesButton, &QPushButton::clicked, this, &HomePage::getMyImages);
+    connect(ui->editImageButton, &QPushButton::clicked, this, &HomePage::editImageSettings);
+    connect(ui->requestImageButton, &QPushButton::clicked, this, &HomePage::requestImage);
+
 }
 
 HomePage::~HomePage()
 {
     delete ui;
 }
-
-//remove this
-void HomePage::set_ips(const std::vector<std::string> & ips)
-{
-//    ip_addresses = ips;
-}
-
 
 void HomePage::on_requestImageButton_clicked()
 {
@@ -74,7 +65,6 @@ void HomePage::on_requestImageButton_clicked()
 //    ifstream file;
 //    file.open(path_to_list.c_str());
 ///
->>>>>>> 5cdeb0ff3f70eef5b2130d4a33b2e81be92d934d
 //    if(file.fail())
 //        printf("Opening list of view failed: %s\n", image_name.c_str());
 //    else
@@ -153,7 +143,6 @@ void HomePage::on_getImagesButton_clicked()
 //
 //    model = new QStringListModel(this);
 //    
->>>>>>> 5cdeb0ff3f70eef5b2130d4a33b2e81be92d934d
 //    QStringList List;
 //    // printf("got %d images\n", (int)imageEntries.size());
 //    for(int i = 0; i < (int)imageEntries.size(); i++)
@@ -261,11 +250,21 @@ std::vector<std::string> homepage::listFilesInDir()
 //        ch = fgetc(file);
 //        
 //        if(ch == EOF) break;
-//        
+//        e
 //        result += ch;
 //    }while(1);
 //
 //    pclose(file);
 //
 //    return homepage::splitString(result);
+}
+
+void HomePage::setEditEntriesVisible(const bool & visible) {
+
+    ui->usernameLabel->setVisible(visible);
+    ui->updateEditsButton->setVisible(visible);
+    ui->viewCountLabel->setVisible(visible);
+    ui->label_2->setVisible(visible);
+    ui->label_3->setVisible(visible);
+
 }

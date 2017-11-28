@@ -9,6 +9,10 @@
 #include <vector>
 #include <string>
 
+struct ImageEntry {
+    std::string imageName;
+    std::string ipAddress;
+};
 
 namespace Ui {
 class HomePage;
@@ -38,11 +42,20 @@ private:
     QStringListModel *model;
     QStringListModel *model_my_images;
     std::string MyUsername;
-    QPixmap img_default;
+    QPixmap imagePreview;
     QString image_path;
     std::vector<std::string> ip_addresses;
 
-    
+    std::map<std::string, std::string> usersIpAddress;
+    std::vector<ImageEntry> downloadedImages;
+    const std::string myImagesPath = "DownloadedImages/";
+    const std::string otherImagesPath;
+
+    void setEditEntriesVisible(const bool&);
+    void getAllImages();
+    void getMyImages();
+    void editImageSettings();
+    void requestImage();
 
 };
 
