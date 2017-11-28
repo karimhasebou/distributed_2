@@ -42,13 +42,14 @@ public:
     QHBoxLayout *horizontalLayout_2;
     QLabel *imageView;
     QVBoxLayout *verticalLayout_2;
+    QListView *myImagesList;
+    QListView *availableImagesList;
     QPushButton *refreshButton;
-    QListView *imageList;
     QGridLayout *editImageEntries;
-    QLineEdit *usernameLabel;
-    QLabel *label_3;
-    QLabel *label_2;
-    QLineEdit *viewCountLabel;
+    QLineEdit *usernameEdit;
+    QLabel *viewCountLabel;
+    QLabel *addUsernameLabel;
+    QLineEdit *viewCountEdit;
     QPushButton *updateEditsButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -114,47 +115,52 @@ public:
 
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        myImagesList = new QListView(verticalLayoutWidget);
+        myImagesList->setObjectName(QStringLiteral("myImagesList"));
+
+        verticalLayout_2->addWidget(myImagesList);
+
+        availableImagesList = new QListView(verticalLayoutWidget);
+        availableImagesList->setObjectName(QStringLiteral("availableImagesList"));
+
+        verticalLayout_2->addWidget(availableImagesList);
+
         refreshButton = new QPushButton(verticalLayoutWidget);
         refreshButton->setObjectName(QStringLiteral("refreshButton"));
 
         verticalLayout_2->addWidget(refreshButton);
-
-        imageList = new QListView(verticalLayoutWidget);
-        imageList->setObjectName(QStringLiteral("imageList"));
-
-        verticalLayout_2->addWidget(imageList);
 
 
         horizontalLayout_2->addLayout(verticalLayout_2);
 
         editImageEntries = new QGridLayout();
         editImageEntries->setObjectName(QStringLiteral("editImageEntries"));
-        usernameLabel = new QLineEdit(verticalLayoutWidget);
-        usernameLabel->setObjectName(QStringLiteral("usernameLabel"));
+        usernameEdit = new QLineEdit(verticalLayoutWidget);
+        usernameEdit->setObjectName(QStringLiteral("usernameEdit"));
         QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Fixed);
         sizePolicy2.setHorizontalStretch(0);
         sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(usernameLabel->sizePolicy().hasHeightForWidth());
-        usernameLabel->setSizePolicy(sizePolicy2);
+        sizePolicy2.setHeightForWidth(usernameEdit->sizePolicy().hasHeightForWidth());
+        usernameEdit->setSizePolicy(sizePolicy2);
 
-        editImageEntries->addWidget(usernameLabel, 0, 1, 1, 1);
+        editImageEntries->addWidget(usernameEdit, 0, 1, 1, 1);
 
-        label_3 = new QLabel(verticalLayoutWidget);
-        label_3->setObjectName(QStringLiteral("label_3"));
-
-        editImageEntries->addWidget(label_3, 1, 0, 1, 1);
-
-        label_2 = new QLabel(verticalLayoutWidget);
-        label_2->setObjectName(QStringLiteral("label_2"));
-
-        editImageEntries->addWidget(label_2, 0, 0, 1, 1);
-
-        viewCountLabel = new QLineEdit(verticalLayoutWidget);
+        viewCountLabel = new QLabel(verticalLayoutWidget);
         viewCountLabel->setObjectName(QStringLiteral("viewCountLabel"));
-        sizePolicy2.setHeightForWidth(viewCountLabel->sizePolicy().hasHeightForWidth());
-        viewCountLabel->setSizePolicy(sizePolicy2);
 
-        editImageEntries->addWidget(viewCountLabel, 1, 1, 1, 1);
+        editImageEntries->addWidget(viewCountLabel, 1, 0, 1, 1);
+
+        addUsernameLabel = new QLabel(verticalLayoutWidget);
+        addUsernameLabel->setObjectName(QStringLiteral("addUsernameLabel"));
+
+        editImageEntries->addWidget(addUsernameLabel, 0, 0, 1, 1);
+
+        viewCountEdit = new QLineEdit(verticalLayoutWidget);
+        viewCountEdit->setObjectName(QStringLiteral("viewCountEdit"));
+        sizePolicy2.setHeightForWidth(viewCountEdit->sizePolicy().hasHeightForWidth());
+        viewCountEdit->setSizePolicy(sizePolicy2);
+
+        editImageEntries->addWidget(viewCountEdit, 1, 1, 1, 1);
 
         updateEditsButton = new QPushButton(verticalLayoutWidget);
         updateEditsButton->setObjectName(QStringLiteral("updateEditsButton"));
@@ -190,8 +196,8 @@ public:
         requestImageButton->setText(QApplication::translate("HomePage", "Request Image", Q_NULLPTR));
         imageView->setText(QString());
         refreshButton->setText(QApplication::translate("HomePage", "Refresh", Q_NULLPTR));
-        label_3->setText(QApplication::translate("HomePage", "Views Count", Q_NULLPTR));
-        label_2->setText(QApplication::translate("HomePage", "Add username", Q_NULLPTR));
+        viewCountLabel->setText(QApplication::translate("HomePage", "Views Count", Q_NULLPTR));
+        addUsernameLabel->setText(QApplication::translate("HomePage", "Add username", Q_NULLPTR));
         updateEditsButton->setText(QApplication::translate("HomePage", "Update", Q_NULLPTR));
     } // retranslateUi
 
