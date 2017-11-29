@@ -1,4 +1,5 @@
 #include "StegManager.h"
+#include <stdlib.h>
 using namespace std;
 
 
@@ -14,6 +15,7 @@ namespace stego_utils {
     std::map<std::string, int> getAllCount(const std::string&);
     void updateCountInFile(map<string, int> list, std::string path);
 }
+
 
 std::map<std::string, int> stego::getAuthorizedUsersCount(std::string path)
 {
@@ -134,15 +136,36 @@ void stego::updateCountInMap(map<std::string, int> list, std::string path)
             
             imageListFile<<entry.first<<" "<<entry.second<<endl;
         }
-
-        //long pos = imageListFile.tellp();
-        
-        // if(pos > 0){
-            
-        //     imageListFile.seekp(pos - 1);
-        //     imageListFile.put(EOF);
-        // }
-
-        imageListFile.close();
+	imageListFile.close();
     }
+}
+
+std::map<std::string, int> stego::infraSteg(const string& img)
+{
+	string myImagesPath = "MyImages/";
+	stego::unstegPicture(myImagesPath + stego_utils::DEFAULT + img);
+	stego::unstegPicture(img);
+
+	string mvCmd = "mv " + img + " " +  myImagesPath;
+	system(mvCmd.c_str());
+
+	map<string, int> userMap = stego::getAuthorizedUsersCount(img + ".txt");
+	return userMap;
+
+}
+
+void stego::clean(string file)
+{
+	string path = "rm " + file;
+	system(path.c_str());
+}
+
+void stego::ultraSteg(map<string, int> count, const string& img)
+{
+	string myImagesPath = "MyImages/";
+	stego_utils::updateCountInFile(count, img + ".txt");
+	stego::stegPicture(myImagesPath + img, img + ".txt");
+
+	stego::stegPicture(stego_utils::DEFAULT + img, myImagesPath + img);
+	stego::clean(img + ".txt");
 }
