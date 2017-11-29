@@ -26,20 +26,15 @@ HomePage::HomePage(QWidget *parent) :
     ui->myImagesList->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->availableImagesList->setSelectionMode(QAbstractItemView::SingleSelection);
 
-
     setEditEntriesVisible(false);
 
     connect(ui->allImagesButton, &QPushButton::clicked, this, &HomePage::getAllImages);
     connect(ui->myImagesButton, &QPushButton::clicked, this, &HomePage::getMyImages);
     connect(ui->editImageButton, &QPushButton::clicked, this, &HomePage::editImageSettings);
     connect(ui->requestImageButton, &QPushButton::clicked, this, &HomePage::requestImage);
-<<<<<<< HEAD
     connect(ui->updatePictureButton, &QPushButton::clicked, this, &HomePage::updateViews);
     connect(ui->addUserButton, &QPushButton::clicked, this, &HomePage::addUser);
     connect(ui->uploadImage, &QPushButton::clicked, this, &HomePage::uploadImage);
-=======
-    // connect(ui->updateEditsButton, &QPushButton::clicked, this, &HomePage::updateViews);
->>>>>>> 6c9afc071188f09ea8365cbb3590444e79ce8e50
 
     connect(ui->myImagesList,
             &QListWidget::itemClicked, this,
@@ -61,7 +56,7 @@ HomePage::HomePage(QWidget *parent) :
     ui->myImagesList->setStyleSheet(listStyleSheet);
     ui->availableImagesList->setStyleSheet(listStyleSheet);
 
-    QString pushButtonStyleSheet = "QPushButton {color: #000000; "
+    QString pushButtonStyleSheet = "QPushButton {color: #ffffff; "
             "background-color:#000000;"
             "border-color: #e65c00;"
             "border-radius: 10px;"
@@ -73,7 +68,9 @@ HomePage::HomePage(QWidget *parent) :
     ui->myImagesButton->setStyleSheet(pushButtonStyleSheet);
     ui->editImageButton->setStyleSheet(pushButtonStyleSheet);
     ui->requestImageButton->setStyleSheet(pushButtonStyleSheet);
-    //ui->updateEditsButton->setStyleSheet(pushButtonStyleSheet);
+    ui->uploadImage->setStyleSheet(pushButtonStyleSheet);
+    ui->updatePictureButton->setStyleSheet(pushButtonStyleSheet);
+    ui->addUserButton->setStyleSheet(pushButtonStyleSheet);
 
     ui->addUsernameLabel->setStyleSheet("QLabel {color: #ffffff;}");
     ui->viewCountLabel->setStyleSheet("QLabel {color: #ffffff;}");
@@ -196,6 +193,10 @@ void HomePage::uploadImage() {
     }
 
     std::string commandMove = "cp " + defaultImagePath  + " " + myImagesPath + fileName;
+}
+
+void HomePage::addUser() {
+
 }
 
 void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
@@ -340,7 +341,10 @@ std::vector<std::string> homepage::listFilesInDir(const std::string& folderName)
 void HomePage::setEditEntriesVisible(const bool & visible) {
 
     ui->usernameEdit->setVisible(visible);
-    // ui->updateEditsButton->setVisible(visible);
+    ui->updatePictureButton->setVisible(visible);
+    ui->addUserButton->setVisible(visible);
+    ui->tableWidget->setVisible(visible);
+    ui->label->setVisible(visible);
     ui->viewCountEdit->setVisible(visible);
     ui->viewCountLabel->setVisible(visible);
     ui->addUsernameLabel->setVisible(visible);

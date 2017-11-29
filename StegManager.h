@@ -7,10 +7,11 @@
 
 #include <string>
 #include <map>
+#include <fstream>
 
-void stegUserList(const std::string&, const std::string&);
+void stegPicture(const std::string&, const std::string&);
 
-void unstegUserList(const std::string&);
+void unstegPicture(const std::string&);
 
 std::map<std::string, int> getUsersCount(const std::string&, const std::string&);
 
