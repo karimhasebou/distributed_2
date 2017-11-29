@@ -192,7 +192,8 @@ void HomePage::uploadImage() {
         tempFilePath = tempFilePath.substr(pos + 1);
     }
 
-    std::string commandMove = "cp " + defaultImagePath  + " " + myImagesPath + fileName;
+    std::string commandCopy = "cp " + filePath  + " " + myImagesPath + fileName;
+    system(commandCopy.c_str());
 }
 
 void HomePage::addUser() {

@@ -15,7 +15,7 @@ LoginStatus authserver::login(std::string username, std::string password) {
 
 }
 
-std::map<std::string, std::string>& authserver::getUsersIpAddress(const std::string & senderAddress)
+std::map<std::string, std::string> authserver::getUsersIpAddress(const std::string & senderAddress)
 {
     std::map<std::string, std::string> onlineList = getOnlinePeers();
 

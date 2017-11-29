@@ -49,8 +49,8 @@ private:
     std::vector<ImageEntry> availableImages;
     std::vector<ImageEntry> downloadedImages;
     std::vector<ImageEntry> allMyImages;
-    const std::string myImagesPath = MyImages/";
-    const std::string myDownloadsPath = DownloadedImages/";
+    const std::string myImagesPath = "MyImages/";
+    const std::string myDownloadsPath = "DownloadedImages/";
     const std::string defaultImagePath = "../defaultImage.png";
 
     void setEditEntriesVisible(const bool&);

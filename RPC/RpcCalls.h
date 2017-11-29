@@ -61,7 +61,7 @@ namespace client {
 
 namespace authserver {
     LoginStatus login(std::string, std::string);
-    std::map<std::string, std::string>& getUsersIpAddress(const std::string&);
+    std::map<std::string, std::string> getUsersIpAddress(const std::string&);
     std::string getUsername(std::string);
 }
 

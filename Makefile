@@ -675,6 +675,33 @@ RequestHandler.cpp.s:
 	$(MAKE) -f CMakeFiles/centralserver.dir/build.make CMakeFiles/centralserver.dir/RequestHandler.cpp.s
 .PHONY : RequestHandler.cpp.s
 
+StegManager.o: StegManager.cpp.o
+
+.PHONY : StegManager.o
+
+# target to build an object file
+StegManager.cpp.o:
+	$(MAKE) -f CMakeFiles/application.dir/build.make CMakeFiles/application.dir/StegManager.cpp.o
+.PHONY : StegManager.cpp.o
+
+StegManager.i: StegManager.cpp.i
+
+.PHONY : StegManager.i
+
+# target to preprocess a source file
+StegManager.cpp.i:
+	$(MAKE) -f CMakeFiles/application.dir/build.make CMakeFiles/application.dir/StegManager.cpp.i
+.PHONY : StegManager.cpp.i
+
+StegManager.s: StegManager.cpp.s
+
+.PHONY : StegManager.s
+
+# target to generate assembly for a file
+StegManager.cpp.s:
+	$(MAKE) -f CMakeFiles/application.dir/build.make CMakeFiles/application.dir/StegManager.cpp.s
+.PHONY : StegManager.cpp.s
+
 UDPLayer/Message.o: UDPLayer/Message.cpp.o
 
 .PHONY : UDPLayer/Message.o
@@ -885,6 +912,9 @@ help:
 	@echo "... RequestHandler.o"
 	@echo "... RequestHandler.i"
 	@echo "... RequestHandler.s"
+	@echo "... StegManager.o"
+	@echo "... StegManager.i"
+	@echo "... StegManager.s"
 	@echo "... UDPLayer/Message.o"
 	@echo "... UDPLayer/Message.i"
 	@echo "... UDPLayer/Message.s"
