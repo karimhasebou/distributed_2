@@ -13,11 +13,8 @@
 namespace stego {
 
 void unstegPicture(const std::string&);
-
 int getUserCount(const std::string&, const std::string&);
-
 void updateUserCount(const std::string&, const std::string&, const int&);
-
 void stegPicture(const std::string&, const std::string&);
 
 };
