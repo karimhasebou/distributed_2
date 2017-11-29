@@ -24,6 +24,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -38,10 +39,12 @@ public:
     QHBoxLayout *horizontalLayout;
     QPushButton *allImagesButton;
     QPushButton *myImagesButton;
+    QPushButton *uploadImage;
     QPushButton *editImageButton;
     QPushButton *requestImageButton;
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout_2;
+    QSpacerItem *horizontalSpacer_3;
     QVBoxLayout *verticalLayout_3;
     QLabel *imagePreview;
     QLabel *countRemaining;
@@ -56,7 +59,10 @@ public:
     QLabel *viewCountLabel;
     QLabel *addUsernameLabel;
     QLineEdit *viewCountEdit;
-    QPushButton *updateEditsButton;
+    QPushButton *updatePictureButton;
+    QTableWidget *tableWidget;
+    QPushButton *addUserButton;
+    QLabel *label;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -92,6 +98,11 @@ public:
 
         horizontalLayout->addWidget(myImagesButton);
 
+        uploadImage = new QPushButton(verticalLayoutWidget);
+        uploadImage->setObjectName(QStringLiteral("uploadImage"));
+
+        horizontalLayout->addWidget(uploadImage);
+
         editImageButton = new QPushButton(verticalLayoutWidget);
         editImageButton->setObjectName(QStringLiteral("editImageButton"));
         sizePolicy.setHeightForWidth(editImageButton->sizePolicy().hasHeightForWidth());
@@ -107,12 +118,16 @@ public:
 
         verticalLayout->addLayout(horizontalLayout);
 
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        verticalSpacer = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
 
         verticalLayout->addItem(verticalSpacer);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        horizontalSpacer_3 = new QSpacerItem(10, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_3);
+
         verticalLayout_3 = new QVBoxLayout();
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         imagePreview = new QLabel(verticalLayoutWidget);
@@ -138,7 +153,7 @@ public:
 
         horizontalLayout_2->addLayout(verticalLayout_3);
 
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        horizontalSpacer_2 = new QSpacerItem(10, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
 
         horizontalLayout_2->addItem(horizontalSpacer_2);
 
@@ -169,7 +184,7 @@ public:
 
         horizontalLayout_2->addLayout(verticalLayout_2);
 
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        horizontalSpacer = new QSpacerItem(10, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
 
         horizontalLayout_2->addItem(horizontalSpacer);
 
@@ -183,31 +198,46 @@ public:
         sizePolicy4.setHeightForWidth(usernameEdit->sizePolicy().hasHeightForWidth());
         usernameEdit->setSizePolicy(sizePolicy4);
 
-        editImageEntries->addWidget(usernameEdit, 0, 1, 1, 1);
+        editImageEntries->addWidget(usernameEdit, 2, 1, 1, 1);
 
         viewCountLabel = new QLabel(verticalLayoutWidget);
         viewCountLabel->setObjectName(QStringLiteral("viewCountLabel"));
 
-        editImageEntries->addWidget(viewCountLabel, 1, 0, 1, 1);
+        editImageEntries->addWidget(viewCountLabel, 5, 0, 1, 1);
 
         addUsernameLabel = new QLabel(verticalLayoutWidget);
         addUsernameLabel->setObjectName(QStringLiteral("addUsernameLabel"));
 
-        editImageEntries->addWidget(addUsernameLabel, 0, 0, 1, 1);
+        editImageEntries->addWidget(addUsernameLabel, 2, 0, 1, 1);
 
         viewCountEdit = new QLineEdit(verticalLayoutWidget);
         viewCountEdit->setObjectName(QStringLiteral("viewCountEdit"));
         sizePolicy4.setHeightForWidth(viewCountEdit->sizePolicy().hasHeightForWidth());
         viewCountEdit->setSizePolicy(sizePolicy4);
 
-        editImageEntries->addWidget(viewCountEdit, 1, 1, 1, 1);
+        editImageEntries->addWidget(viewCountEdit, 5, 1, 1, 1);
 
-        updateEditsButton = new QPushButton(verticalLayoutWidget);
-        updateEditsButton->setObjectName(QStringLiteral("updateEditsButton"));
-        sizePolicy4.setHeightForWidth(updateEditsButton->sizePolicy().hasHeightForWidth());
-        updateEditsButton->setSizePolicy(sizePolicy4);
+        updatePictureButton = new QPushButton(verticalLayoutWidget);
+        updatePictureButton->setObjectName(QStringLiteral("updatePictureButton"));
+        sizePolicy4.setHeightForWidth(updatePictureButton->sizePolicy().hasHeightForWidth());
+        updatePictureButton->setSizePolicy(sizePolicy4);
 
-        editImageEntries->addWidget(updateEditsButton, 2, 0, 1, 2);
+        editImageEntries->addWidget(updatePictureButton, 7, 0, 1, 2);
+
+        tableWidget = new QTableWidget(verticalLayoutWidget);
+        tableWidget->setObjectName(QStringLiteral("tableWidget"));
+
+        editImageEntries->addWidget(tableWidget, 1, 0, 1, 2);
+
+        addUserButton = new QPushButton(verticalLayoutWidget);
+        addUserButton->setObjectName(QStringLiteral("addUserButton"));
+
+        editImageEntries->addWidget(addUserButton, 6, 1, 1, 1);
+
+        label = new QLabel(verticalLayoutWidget);
+        label->setObjectName(QStringLiteral("label"));
+
+        editImageEntries->addWidget(label, 0, 0, 1, 1);
 
 
         horizontalLayout_2->addLayout(editImageEntries);
@@ -234,6 +264,7 @@ public:
         HomePage->setWindowTitle(QApplication::translate("HomePage", "HomePage", Q_NULLPTR));
         allImagesButton->setText(QApplication::translate("HomePage", "All Images", Q_NULLPTR));
         myImagesButton->setText(QApplication::translate("HomePage", "My Images", Q_NULLPTR));
+        uploadImage->setText(QApplication::translate("HomePage", "Upload Image", Q_NULLPTR));
         editImageButton->setText(QApplication::translate("HomePage", "Edit Image", Q_NULLPTR));
         requestImageButton->setText(QApplication::translate("HomePage", "Request Image", Q_NULLPTR));
         imagePreview->setText(QApplication::translate("HomePage", "TextLabel", Q_NULLPTR));
@@ -241,7 +272,9 @@ public:
         refreshButton->setText(QApplication::translate("HomePage", "Refresh", Q_NULLPTR));
         viewCountLabel->setText(QApplication::translate("HomePage", "Views Count", Q_NULLPTR));
         addUsernameLabel->setText(QApplication::translate("HomePage", "Add username", Q_NULLPTR));
-        updateEditsButton->setText(QApplication::translate("HomePage", "Update", Q_NULLPTR));
+        updatePictureButton->setText(QApplication::translate("HomePage", "Update", Q_NULLPTR));
+        addUserButton->setText(QApplication::translate("HomePage", "Add User", Q_NULLPTR));
+        label->setText(QApplication::translate("HomePage", "Image Info:", Q_NULLPTR));
     } // retranslateUi
 
 };
