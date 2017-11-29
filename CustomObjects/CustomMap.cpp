@@ -9,6 +9,9 @@
 #include "CustomVector.h"
 #include "CustomMap.h"
 
+CustomMap::CustomMap() {}
+
+
 CustomMap::CustomMap(std::map<std::string, std::string> & other) {
 
     std::map<std::string, std::string>::iterator it;

@@ -46,7 +46,7 @@ Message getUsersIPAddress(Message& messageParamters) {
     char senderAddressChar[15];
     inet_ntop(AF_INET, &senderIPAddress, senderAddressChar , 15);
     std::string senderAddressString(senderAddressChar);
-//    std::map <std::string, std::string> bs = authserver::getUsersIpAddress(senderAddressString);
+    std::map <std::string, std::string> bs = authserver::getUsersIpAddress(senderAddressString);
 //    CustomMap * usersIpAddress;
     CustomMap * usersIpAddress = new CustomMap(authserver::getUsersIpAddress(senderAddressString));
     
@@ -55,11 +55,6 @@ Message getUsersIPAddress(Message& messageParamters) {
     Message replyMessage;
     replyMessage.setSocketAddress(messageParamters.getSocketAddress());
     marshal(replyMessage, returnValues);
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> b3f620bcda23b0172cfb9fa9ebb2f05c6f6fdb05
     return replyMessage;
 }
 
