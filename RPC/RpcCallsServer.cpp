@@ -80,26 +80,15 @@ vector<string> listImages()
     return imageList;
 }
 
-void stegUserList(const string& imagePath, const string coverPath)
-{
-    string exec_command = "/usr/bin/steghide embed -cf ";
-    exec_command += imagePath + " -ef "+ coverPath + " -p root";
-    system(exec_command.c_str());
-}
 
-void unstegUserList(const string& filePath)
-{
-    string exec_command = "/usr/bin/steghide extract -sf ";
-    exec_command +=  filePath + " -p root -f";
-    system(exec_command.c_str());
-}
 
 set<string> getAuthorizedUsers(const string& filePath)
 {
     set<string> usersList;
     int userViewCount;
     
-    unstegUserList(currentDir + filePath);
+    // unstegUserList(currentDir + filePath);
+    stego::unstegPicture(currentDir + filePath);
 
     ifstream usernamesFile(string(filePath + ".txt").c_str()
         , ios::in);
@@ -148,13 +137,16 @@ bool server::canUpdateCount(string imgName, string username)
 bool server::updateCount(string imgName, string username, int count)
 {
     std::string txtPath = imgName + ".txt";
-    unstegUserList(downDir + imgName);
+    // unstegUserList(downDir + imgName);
+    stego::unstegPicture(downDir + imgName);
+
 
     map<string, int> countList = getAuthorizedUsersCount(txtPath);
     countList[username] = count;
 
     updateCountInMap(countList, txtPath);
-    stegUserList(downDir + imgName, txtPath);
+    // stegUserList(downDir + imgName, txtPath);
+    stego::stegPicture(downDir + imgName, txtPath);
     return true;
 }
 

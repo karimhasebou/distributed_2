@@ -63,6 +63,7 @@ private:
     void uploadImage();
     void handleMyImagesClick(QListWidgetItem *);
     void handleAvailableImagesClick(QListWidgetItem *);
+    void updateImgCount(std::string, int);
 
     void showImagesInList(QListWidget * , const std::vector<ImageEntry>&);
     int getMyImageCount(const std::string&);

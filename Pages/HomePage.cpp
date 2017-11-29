@@ -98,6 +98,7 @@ void HomePage::getAllImages() {
 
     for (it = usersIpAddress.begin(); it != usersIpAddress.end(); it++) {
 
+        printf("ip %d %s\n", 1, it->second.c_str());
         std::vector<std::string> imageNames = client::getAccessibleImages(myUsername, it->second);
 
         for (int i = 0;i < imageNames.size(); i++) {
@@ -183,6 +184,7 @@ void HomePage::uploadImage() {
                                                    "",
                                                    tr("Image Files (*.png *.jpg *.bmp)")).toStdString();
 
+
     std::string fileName = "";
     std::string tempFilePath = filePath;
     int pos;
@@ -194,10 +196,19 @@ void HomePage::uploadImage() {
 
     std::string commandCopy = "cp " + filePath  + " " + myImagesPath + fileName;
     system(commandCopy.c_str());
+
+
+
+
 }
 
 void HomePage::addUser() {
 
+}
+
+void HomePage::updateImgCount(std::string img, int count)
+{
+    
 }
 
 void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
@@ -214,11 +225,16 @@ void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
         ui->editImageButton->setEnabled(true);
     } else {
         ui->editImageButton->setEnabled(false);
+        count = getMyImageCount(selectedImgPath);
     }
     
     std::string imageName = allMyImages[index].imageName;
-    viewImage(selectedImgPath + imageName);
-    
+    if (count)
+    {
+        viewImage(selectedImgPath + imageName);
+    }
+    if (isMine)
+        updateImgCount(selectedImgPath, count - 1);
 }
 
 void HomePage::handleAvailableImagesClick(QListWidgetItem * listItem) {

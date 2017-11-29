@@ -8,15 +8,18 @@
 #include <string>
 #include <map>
 #include <fstream>
+#include <mutex>
 
-void stegPicture(const std::string&, const std::string&);
+namespace stego {
 
 void unstegPicture(const std::string&);
 
-std::map<std::string, int> getUsersCount(const std::string&, const std::string&);
+int getUserCount(const std::string&, const std::string&);
 
-void updateUserCount(const std::string&, const int&);
+void updateUserCount(const std::string&, const std::string&, const int&);
 
+void stegPicture(const std::string&, const std::string&);
 
+};
 
 #endif //DISTRIBUTED_2_STEGMANAGER_H
