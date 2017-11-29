@@ -1,7 +1,8 @@
+# these are all arguments to be passed to base
 defaultImg=$1 #cover image path
 imageToHide=$2 #image to embed
 destFolder=$3 # destination folder
-secretFile=$4 # text file to embed
+secretFile=$4 # text file to embed, note this is an optional argument
 
 secretFileName=$(basename $secretFile)
 imageToHideName=$(basename $imageToHide)

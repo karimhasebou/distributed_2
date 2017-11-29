@@ -51,7 +51,7 @@ private:
     std::vector<ImageEntry> allMyImages;
     const std::string myImagesPath = "MyImages/";
     const std::string myDownloadsPath = "DownloadedImages/";
-    const std::string defaultImagePath = "../defaultImage.png";
+    const std::string defaultImagePath = "defaultImage.png";
 
     void setEditEntriesVisible(const bool&);
     void getAllImages();
@@ -67,7 +67,7 @@ private:
 
     void showImagesInList(QListWidget * , const std::vector<ImageEntry>&);
     int getMyImageCount(const std::string&);
-    void viewImage(const std::string&);
+    void viewImage(const std::string& dir, const std::string& filename);
     int getSelectedIndex(QListWidget*);
 
 };

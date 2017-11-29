@@ -1,5 +1,6 @@
 #include "StegManager.h"
 #include <stdlib.h>
+#include <QPixmap>
 using namespace std;
 
 
@@ -7,6 +8,7 @@ using namespace std;
 namespace stego_utils {
     std::mutex imgProtect;
     std::string DEFAULT = "DEFAULT.jpg";
+    std::string TEMP_FOLDER = "TEMP/";
 
 
     string stegHideCmd(string cover, string hide);
@@ -168,4 +170,23 @@ void stego::ultraSteg(map<string, int> count, const string& img)
 
 	stego::stegPicture(stego_utils::DEFAULT + img, myImagesPath + img);
 	stego::clean(img + ".txt");
+}
+
+
+
+struct STEGO_IMAGE stego::getImgAndCreds(const std::string& directory, 
+		const std::string& filename)
+{
+    struct STEGO_IMAGE result;
+
+    string unstegCMD = "./unsteg.sh "+directory + filename;
+    system(unstegCMD.c_str());
+
+    result.users =  stego::getAuthorizedUsersCount(
+        stego_utils::TEMP_FOLDER + filename+".txt");
+    result.img.load(QString::fromStdString(stego_utils::TEMP_FOLDER + filename));
+
+    system("./clean.sh");
+
+    return result;
 }

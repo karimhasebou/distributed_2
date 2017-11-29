@@ -185,22 +185,9 @@ void HomePage::uploadImage() {
                                                    "",
                                                    tr("Image Files (*.png *.jpg *.bmp)")).toStdString();
 
-
-    std::string fileName = "";
-    std::string tempFilePath = filePath;
-    size_t pos;
-    while ((pos = tempFilePath.find("/")) != string::npos) {
-
-        fileName = tempFilePath.substr(pos);
-        tempFilePath = tempFilePath.substr(pos + 1);
-    }
-
-    std::string commandCopy = "cp " + filePath  + " " + myImagesPath + fileName;
-    system(commandCopy.c_str());
-
-
-
-
+    std::string stegNCopy = "./steg_img.sh " + defaultImagePath +
+         " " + filePath + " " + myImagesPath;
+    system(stegNCopy.c_str());
 }
 
 void HomePage::addUser() {
@@ -232,7 +219,7 @@ void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
     std::string imageName = allMyImages[index].imageName;
     if (count)
     {
-        viewImage(selectedImgPath + imageName);
+        viewImage(selectedImgPath, imageName);
     }
     if (isMine)
         updateImgCount(selectedImgPath, count - 1);
@@ -241,7 +228,6 @@ void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
 void HomePage::handleAvailableImagesClick(QListWidgetItem * listItem) {
     
     ui->requestImageButton->setEnabled(true);
-    
 }
 
 void HomePage::updateViews() {
@@ -258,18 +244,23 @@ void HomePage::updateViews() {
     
     int views = atoi(viewsString.c_str());
     
-    bool updated = client::updateCount(imageName, usernameString, views);
+    //bool updated = client::updateCount(imageName, usernameString, views);
     
 
 }
 
-void HomePage::viewImage(const std::string& filePath) {
+void HomePage::viewImage(const std::string& dir, const std::string& filename){
+
+    string unstegCMD = "./unsteg.sh "+dir + filename;
+    system(unstegCMD.c_str());
 
     QPixmap image;
-    image.load(QString::fromStdString(filePath));
+    image.load(QString::fromStdString("Temp/"+filename));
     
     ui->imagePreview->setPixmap(image);
     ui->imagePreview->setScaledContents(true);
+
+    system("./clean.sh"); // clears all temp files created during steg/ unsteg
 }
 
 void HomePage::setUsername(std::string username) {
