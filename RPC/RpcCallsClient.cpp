@@ -63,7 +63,7 @@ std::map<std::string, std::string> client::getUsersIpAddress()
     
     Message rpcReplyMessage = rpcSocket.callRPC(rpcCallMessage);
     
-    std::vector<CustomObject* > returnValues = {new CustomVector()};
+    std::vector<CustomObject* > returnValues = {new CustomMap()};
     
     unmarshal(rpcReplyMessage, returnValues);
     

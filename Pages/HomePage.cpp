@@ -15,7 +15,7 @@ HomePage::HomePage(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    imagePreview.load("MyImages/default.jpg");
+    imagePreview.load("../defaultImage.png");
     ui->imagePreview->setPixmap(imagePreview);
     ui->imagePreview->setScaledContents(true);
 
@@ -33,17 +33,53 @@ HomePage::HomePage(QWidget *parent) :
     connect(ui->editImageButton, &QPushButton::clicked, this, &HomePage::editImageSettings);
     connect(ui->requestImageButton, &QPushButton::clicked, this, &HomePage::requestImage);
     connect(ui->updateEditsButton, &QPushButton::clicked, this, &HomePage::updateViews);
-    
-    connect(ui->myImagesList, SIGNAL(itemClicked(QListWidgetItem*)),
-            this, SLOT(HomePage::handleMyImagesClick(QListWidgetItem*)));
-    
-    connect(ui->availableImagesList, SIGNAL(itemClicked(QListWidgetItem*)),
-            this, SLOT(HomePage::handleAvailableImagesClick(QListWidgetItem*)));
+
+    connect(ui->myImagesList,
+            &QListWidget::itemClicked, this,
+            &HomePage::handleMyImagesClick);
+
+    connect(ui->availableImagesList,
+            &QListWidget::itemClicked, this,
+            &HomePage::handleAvailableImagesClick);
+
+    QString listStyleSheet = "QListWidget {background-color:#000000;"
+                                "color: #ffffff;"
+                                "font-size: 14px;"
+                                "padding: 5px;"
+                                "border-style: outset;"
+                                "border-radius: 10px;"
+                                "border-color: #ffffff;"
+                                "border-width: 1px;}";
+
+    ui->myImagesList->setStyleSheet(listStyleSheet);
+    ui->availableImagesList->setStyleSheet(listStyleSheet);
+
+    QString pushButtonStyleSheet = "QPushButton {color: #00b300; "
+            "background-color:#000000;"
+            "border-color: #ffffff;"
+            "border-radius: 10px;"
+            "border-width: 1px;"
+            "border-style: outset;"
+            "padding: 5px;}";
+
+    ui->allImagesButton->setStyleSheet(pushButtonStyleSheet);
+    ui->myImagesButton->setStyleSheet(pushButtonStyleSheet);
+    ui->editImageButton->setStyleSheet(pushButtonStyleSheet);
+    ui->requestImageButton->setStyleSheet(pushButtonStyleSheet);
+    ui->updateEditsButton->setStyleSheet(pushButtonStyleSheet);
+
+    ui->addUsernameLabel->setStyleSheet("QLabel {color: #ffffff;}");
+    ui->viewCountLabel->setStyleSheet("QLabel {color: #ffffff;}");
+
+    ui->imagePreview->setStyleSheet("QLabel {border-color: #ffffff;"
+                                            "border-radius: 10px;"
+                                            "border-width: 1px;"
+                                            "border-style:outset;}");
 
 }
 
-HomePage::~HomePage()
-{
+HomePage::~HomePage() {
+
     delete ui;
 }
 

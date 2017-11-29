@@ -43,7 +43,7 @@ public:
     QSpacerItem *verticalSpacer_3;
     QSpacerItem *verticalSpacer_4;
     QPushButton *signInButton;
-    QPushButton *pushButton;
+    QPushButton *signUpButton;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -114,10 +114,10 @@ public:
 
         formLayout->setWidget(10, QFormLayout::SpanningRole, signInButton);
 
-        pushButton = new QPushButton(gridLayoutWidget);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
+        signUpButton = new QPushButton(gridLayoutWidget);
+        signUpButton->setObjectName(QStringLiteral("signUpButton"));
 
-        formLayout->setWidget(11, QFormLayout::SpanningRole, pushButton);
+        formLayout->setWidget(11, QFormLayout::SpanningRole, signUpButton);
 
         LoginPage->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(LoginPage);
@@ -144,7 +144,7 @@ public:
         label_3->setText(QApplication::translate("LoginPage", "Password : ", Q_NULLPTR));
         passwordInputEdit->setText(QString());
         signInButton->setText(QApplication::translate("LoginPage", "Sign In", Q_NULLPTR));
-        pushButton->setText(QApplication::translate("LoginPage", "Sign Up", Q_NULLPTR));
+        signUpButton->setText(QApplication::translate("LoginPage", "Sign Up", Q_NULLPTR));
     } // retranslateUi
 
 };

@@ -19,7 +19,18 @@ LoginPage::LoginPage(QWidget *parent) :
 //    palette.setBrush(QPalette::Background, backgroundImage);
 //    this->setPalette(palette);
 
-    this->setStyleSheet("QMainWindow {backround-color: #000000;}");
+    this->setStyleSheet("QMainWindow {background-color: #000000;}");
+
+    QString pushButtonStyleSheet = "QPushButton {color: #ffffff; "
+            "background-color:#000000;"
+            "border-color: #ffffff;"
+            "border-radius: 10px;"
+            "border-width: 1px;"
+            "border-style: outset;"
+            "padding: 5px;}";
+
+    ui->signInButton->setStyleSheet(pushButtonStyleSheet);
+    ui->signUpButton->setStyleSheet(pushButtonStyleSheet);
     
     ui->label->setStyleSheet("QLabel {color: #ffffff;}");
     ui->label_2->setStyleSheet("QLabel {color: #ffffff;}");
