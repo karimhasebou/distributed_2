@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QFileDialog>
+#include "../StegManager.h"
 
 struct ImageEntry {
     std::string imageName;
@@ -47,8 +49,9 @@ private:
     std::vector<ImageEntry> availableImages;
     std::vector<ImageEntry> downloadedImages;
     std::vector<ImageEntry> allMyImages;
-    const std::string myImagesPath = "MyImages/";
-    const std::string myDownloadsPath = "DownloadedImages/";
+    const std::string myImagesPath = MyImages/";
+    const std::string myDownloadsPath = DownloadedImages/";
+    const std::string defaultImagePath = "../defaultImage.png";
 
     void setEditEntriesVisible(const bool&);
     void getAllImages();
@@ -56,11 +59,12 @@ private:
     void editImageSettings();
     void requestImage();
     void updateViews();
+    void addUser();
+    void uploadImage();
     void handleMyImagesClick(QListWidgetItem *);
     void handleAvailableImagesClick(QListWidgetItem *);
 
     void showImagesInList(QListWidget * , const std::vector<ImageEntry>&);
-    void showImagePreview();
     int getMyImageCount(const std::string&);
     void viewImage(const std::string&);
     int getSelectedIndex(QListWidget*);

@@ -23,15 +23,15 @@ LoginPage::LoginPage(QWidget *parent) :
 
     QString pushButtonStyleSheet = "QPushButton {color: #ffffff; "
             "background-color:#000000;"
-            "border-color: #ffffff;"
+            "border-color: #e65c00;"
             "border-radius: 10px;"
             "border-width: 1px;"
             "border-style: outset;"
             "padding: 5px;}";
 
     ui->signInButton->setStyleSheet(pushButtonStyleSheet);
-    //ui->signUpButton->setStyleSheet(pushButtonStyleSheet);
-    
+    ui->pushButton->setStyleSheet(pushButtonStyleSheet);
+
     ui->label->setStyleSheet("QLabel {color: #ffffff;}");
     ui->label_2->setStyleSheet("QLabel {color: #ffffff;}");
     ui->label_3->setStyleSheet("QLabel {color: #ffffff;}");

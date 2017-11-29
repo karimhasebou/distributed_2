@@ -76,11 +76,13 @@ qt5_wrap_ui(UI_HEADRES Pages/HomePage.ui Pages/LoginPage.ui)
 add_executable(application 
 ApplicationStart.cpp
 RequestHandler.cpp
+StegManager.cpp
 ${ALL_SRC}
 ${PAG_SRC} 
 RPC/RpcStubServer.cpp
 ${RPC_SRV_SRC}
 RequestHandler.h
+StegManager.h
 ${ALL_HDR} 
 ${PAG_HDR} 
 ${DB_HDR}
