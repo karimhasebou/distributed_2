@@ -22,6 +22,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -39,14 +40,17 @@ public:
     QPushButton *myImagesButton;
     QPushButton *editImageButton;
     QPushButton *requestImageButton;
+    QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout_2;
     QVBoxLayout *verticalLayout_3;
     QLabel *imagePreview;
     QLabel *countRemaining;
+    QSpacerItem *horizontalSpacer_2;
     QVBoxLayout *verticalLayout_2;
     QListWidget *myImagesList;
     QListWidget *availableImagesList;
     QPushButton *refreshButton;
+    QSpacerItem *horizontalSpacer;
     QGridLayout *editImageEntries;
     QLineEdit *usernameEdit;
     QLabel *viewCountLabel;
@@ -60,12 +64,12 @@ public:
     {
         if (HomePage->objectName().isEmpty())
             HomePage->setObjectName(QStringLiteral("HomePage"));
-        HomePage->resize(800, 600);
+        HomePage->resize(950, 603);
         centralwidget = new QWidget(HomePage);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         verticalLayoutWidget = new QWidget(centralwidget);
         verticalLayoutWidget->setObjectName(QStringLiteral("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(10, 10, 781, 541));
+        verticalLayoutWidget->setGeometry(QRect(10, 10, 931, 541));
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
@@ -103,13 +107,17 @@ public:
 
         verticalLayout->addLayout(horizontalLayout);
 
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+        verticalLayout->addItem(verticalSpacer);
+
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         verticalLayout_3 = new QVBoxLayout();
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         imagePreview = new QLabel(verticalLayoutWidget);
         imagePreview->setObjectName(QStringLiteral("imagePreview"));
-        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(imagePreview->sizePolicy().hasHeightForWidth());
@@ -130,20 +138,24 @@ public:
 
         horizontalLayout_2->addLayout(verticalLayout_3);
 
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_2);
+
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         myImagesList = new QListWidget(verticalLayoutWidget);
         myImagesList->setObjectName(QStringLiteral("myImagesList"));
-        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(myImagesList->sizePolicy().hasHeightForWidth());
-        myImagesList->setSizePolicy(sizePolicy3);
+        sizePolicy1.setHeightForWidth(myImagesList->sizePolicy().hasHeightForWidth());
+        myImagesList->setSizePolicy(sizePolicy1);
 
         verticalLayout_2->addWidget(myImagesList);
 
         availableImagesList = new QListWidget(verticalLayoutWidget);
         availableImagesList->setObjectName(QStringLiteral("availableImagesList"));
+        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(availableImagesList->sizePolicy().hasHeightForWidth());
         availableImagesList->setSizePolicy(sizePolicy3);
 
@@ -156,6 +168,10 @@ public:
 
 
         horizontalLayout_2->addLayout(verticalLayout_2);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer);
 
         editImageEntries = new QGridLayout();
         editImageEntries->setObjectName(QStringLiteral("editImageEntries"));
@@ -188,6 +204,8 @@ public:
 
         updateEditsButton = new QPushButton(verticalLayoutWidget);
         updateEditsButton->setObjectName(QStringLiteral("updateEditsButton"));
+        sizePolicy4.setHeightForWidth(updateEditsButton->sizePolicy().hasHeightForWidth());
+        updateEditsButton->setSizePolicy(sizePolicy4);
 
         editImageEntries->addWidget(updateEditsButton, 2, 0, 1, 2);
 
@@ -200,7 +218,7 @@ public:
         HomePage->setCentralWidget(centralwidget);
         menubar = new QMenuBar(HomePage);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 22));
+        menubar->setGeometry(QRect(0, 0, 950, 22));
         HomePage->setMenuBar(menubar);
         statusbar = new QStatusBar(HomePage);
         statusbar->setObjectName(QStringLiteral("statusbar"));

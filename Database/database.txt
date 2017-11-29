@@ -2,3 +2,4 @@ omar_nawawy	nawnaw	10.40.42.108
 kareemfarid	frfr	192.168.1.8
 faridaeid	eid	192.168.1.4
 karimhasebo	root	10.40.37.203
+lenovo		len	

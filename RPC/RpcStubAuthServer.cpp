@@ -16,6 +16,7 @@
 #include "../CustomObjects/CustomObject.h"
 #include "../CustomObjects/CustomVector.h"
 #include "../CustomObjects/CustomBool.h"
+#include "../CustomObjects/CustomMap.h"
 #include "../UDPLayer/MySocket.h"
 
 Message login(Message& messageParamters) {
@@ -35,10 +36,6 @@ Message login(Message& messageParamters) {
     replyMessage.setSocketAddress(messageParamters.getSocketAddress());
     marshal(replyMessage, returnValues);
 
-    delete parameters[0];
-    delete parameters[1];
-    delete returnValues[0];
-
     return replyMessage;
     
 }
@@ -49,7 +46,8 @@ Message getUsersIPAddress(Message& messageParamters) {
     char senderAddressChar[15];
     inet_ntop(AF_INET, &senderIPAddress, senderAddressChar , 15);
     std::string senderAddressString(senderAddressChar);
-    
+//    std::map <std::string, std::string> bs = authserver::getUsersIpAddress(senderAddressString);
+//    CustomMap * usersIpAddress;
     CustomMap * usersIpAddress = new CustomMap(authserver::getUsersIpAddress(senderAddressString));
     
     std::vector<CustomObject*> returnValues = {dynamic_cast<CustomObject*>(usersIpAddress)};
@@ -57,8 +55,6 @@ Message getUsersIPAddress(Message& messageParamters) {
     Message replyMessage;
     replyMessage.setSocketAddress(messageParamters.getSocketAddress());
     marshal(replyMessage, returnValues);
-
-    delete returnValues[0];
     
     return replyMessage;
 }

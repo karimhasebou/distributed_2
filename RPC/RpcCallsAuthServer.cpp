@@ -19,7 +19,18 @@ std::map<std::string, std::string> authserver::getUsersIpAddress(const std::stri
 {
     std::map<std::string, std::string> onlineList = getOnlinePeers();
 
-    onlineList.erase(onlineList.find(senderAddress));
+    std::map<std::string, std::string>::iterator it, temp;
+    
+    for (it = onlineList.begin(); it != onlineList.end(); it++) {
+        
+        if (it->second == senderAddress) {
+            
+            temp = it;
+            onlineList.erase(temp);
+            
+        }
+        
+    }
 
     return onlineList;
 }
