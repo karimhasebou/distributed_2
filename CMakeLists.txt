@@ -85,7 +85,7 @@ ${ALL_HDR}
 ${PAG_HDR} 
 ${DB_HDR}
 ${DB_SRC}
-${UI_HEAADERS})
+${UI_HEAADERS} StegManager.h StegMa.cpp)
 
 target_link_libraries(application Qt5::Core Qt5::Gui Qt5::Widgets)
 

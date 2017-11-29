@@ -1,3 +1,4 @@
+#include <QtWidgets/QFileDialog>
 #include "HomePage.h"
 #include "../ui_HomePage.h"
 #include "../RPC/RpcCalls.h"
@@ -15,7 +16,7 @@ HomePage::HomePage(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    imagePreview.load("../defaultImage.png");
+    imagePreview.load("../defaultImage.jpg");
     ui->imagePreview->setPixmap(imagePreview);
     ui->imagePreview->setScaledContents(true);
 
@@ -32,7 +33,9 @@ HomePage::HomePage(QWidget *parent) :
     connect(ui->myImagesButton, &QPushButton::clicked, this, &HomePage::getMyImages);
     connect(ui->editImageButton, &QPushButton::clicked, this, &HomePage::editImageSettings);
     connect(ui->requestImageButton, &QPushButton::clicked, this, &HomePage::requestImage);
-    connect(ui->updateEditsButton, &QPushButton::clicked, this, &HomePage::updateViews);
+    connect(ui->updatePictureButton, &QPushButton::clicked, this, &HomePage::updateViews);
+    connect(ui->addUserButton, &QPushButton::clicked, this, &HomePage::addUser);
+    connect(ui->uploadImage, &QPushButton::clicked, this, &HomePage::uploadImage);
 
     connect(ui->myImagesList,
             &QListWidget::itemClicked, this,
@@ -54,9 +57,9 @@ HomePage::HomePage(QWidget *parent) :
     ui->myImagesList->setStyleSheet(listStyleSheet);
     ui->availableImagesList->setStyleSheet(listStyleSheet);
 
-    QString pushButtonStyleSheet = "QPushButton {color: #00b300; "
+    QString pushButtonStyleSheet = "QPushButton {color: #000000; "
             "background-color:#000000;"
-            "border-color: #ffffff;"
+            "border-color: #e65c00;"
             "border-radius: 10px;"
             "border-width: 1px;"
             "border-style: outset;"
@@ -172,6 +175,25 @@ void HomePage::editImageSettings() {
     
 }
 
+void HomePage::uploadImage() {
+
+    std::string filePath = QFileDialog::getOpenFileName(this,
+                                                   tr("Choose Image"),
+                                                   "",
+                                                   tr("Image Files (*.png *.jpg *.bmp)")).toStdString();
+
+    std::string fileName = "";
+    std::string tempFilePath = filePath;
+    int pos;
+    while ((pos = tempFilePath.find("/")) != string::npos) {
+
+        fileName = tempFilePath.substr(pos);
+        tempFilePath = tempFilePath.substr(pos + 1);
+    }
+
+    std::string commandMove = "cp " + defaultImagePath  + " " + myImagesPath + fileName;
+}
+
 void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
     
     ui->requestImageButton->setEnabled(false);
@@ -204,7 +226,7 @@ void HomePage::updateViews() {
     QString usernameToUpdate = ui->usernameEdit->text();
     QString viewsToUpdate = ui->viewCountEdit->text();
     
-    int imageSelected = getSelectedIndex(ui->availableImagesList);
+    int imageSelected = getSelectedIndex(ui->myImagesList);
     
     std::string imageName = allMyImages[imageSelected].imageName;
     
@@ -215,13 +237,11 @@ void HomePage::updateViews() {
     
     bool updated = client::updateCount(imageName, usernameString, views);
     
-    //callRPC
-    
-    
+
 }
 
 void HomePage::viewImage(const std::string& filePath) {
-    
+
     QPixmap image;
     image.load(QString::fromStdString(filePath));
     
@@ -229,12 +249,10 @@ void HomePage::viewImage(const std::string& filePath) {
     ui->imagePreview->setScaledContents(true);
 }
 
-
 void HomePage::setUsername(std::string username) {
     
     this->myUsername = username;
 }
-
 
 int HomePage::getMyImageCount(const std::string& imageName) {
     
@@ -265,7 +283,6 @@ int HomePage::getMyImageCount(const std::string& imageName) {
     
     return -1;
 }
-
 
 void HomePage::extractViews(std::string imagePath) {
     

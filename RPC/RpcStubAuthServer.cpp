@@ -55,11 +55,7 @@ Message getUsersIPAddress(Message& messageParamters) {
     Message replyMessage;
     replyMessage.setSocketAddress(messageParamters.getSocketAddress());
     marshal(replyMessage, returnValues);
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> b3f620bcda23b0172cfb9fa9ebb2f05c6f6fdb05
     return replyMessage;
 }
 
