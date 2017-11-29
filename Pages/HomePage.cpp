@@ -177,19 +177,20 @@ void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
     ui->requestImageButton->setEnabled(false);
     
     int index = getSelectedIndex(ui->myImagesList);
-    
+    std::string selectedImgPath;
     if (allMyImages[index].myImage) {
         
         ui->editImageButton->setEnabled(true);
-        
+        selectedImgPath = myImagesPath;
     } else {
         
         ui->editImageButton->setEnabled(false);
+        selectedImgPath = myDownloadsPath;
     }
     
     std::string imageName = allMyImages[index].imageName;
     
-    viewImage(myImagesPath + imageName);
+    viewImage(selectedImgPath + imageName);
     
 }
 
