@@ -1,9 +1,14 @@
 #include "CustomMap.h"
 #include "CustomVector.h"
 
-CustomMap::CustomMap(const std::map<std::string, std::string> & other) {
+CustomMap::CustomMap(std::map<std::string, std::string> & other) {
 
-    value = other;
+    std::map<std::string, std::string>::iterator it;
+
+    for (it = other.begin(); it != other.end(); it++) {
+
+        value[it->first] = it->second;
+    }
 }
 
 std::map<std::string, std::string> CustomMap::getValue() {
@@ -23,7 +28,7 @@ std::string CustomMap::marshal() {
     CustomVector keys;
     CustomVector values;
 
-    std::map<std::string, std:string>::iterator it;
+    std::map<std::string, std::string>::iterator it;
 
     for (it = value.begin(); it != value.end(); it++) {
 

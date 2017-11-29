@@ -35,10 +35,6 @@ Message login(Message& messageParamters) {
     replyMessage.setSocketAddress(messageParamters.getSocketAddress());
     marshal(replyMessage, returnValues);
 
-    delete parameters[0];
-    delete parameters[1];
-    delete returnValues[0];
-
     return replyMessage;
     
 }
@@ -58,8 +54,6 @@ Message getUsersIPAddress(Message& messageParamters) {
     replyMessage.setSocketAddress(messageParamters.getSocketAddress());
     marshal(replyMessage, returnValues);
 
-    delete returnValues[0];
-    
     return replyMessage;
 }
 

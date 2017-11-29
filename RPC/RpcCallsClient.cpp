@@ -11,7 +11,7 @@
 #include <errno.h>
 #include <unistd.h>
 
-std::string authServerIP = "127.0.0.1";
+std::string authServerIP = "192.168.1.4";
 const unsigned short authServerPort = 63000;
 const unsigned short serverPort = 64000;
 

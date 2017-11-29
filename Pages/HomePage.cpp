@@ -35,10 +35,10 @@ HomePage::HomePage(QWidget *parent) :
     connect(ui->updateEditsButton, &QPushButton::clicked, this, &HomePage::updateViews);
     
     connect(ui->myImagesList, SIGNAL(itemClicked(QListWidgetItem*)),
-            this, SLOT(handleMyImagesClick(QListWidgetItem*)));
+            this, SLOT(HomePage::handleMyImagesClick(QListWidgetItem*)));
     
     connect(ui->availableImagesList, SIGNAL(itemClicked(QListWidgetItem*)),
-            this, SLOT(handleAvailableImagesClick(QListWidgetItem*)));
+            this, SLOT(HomePage::handleAvailableImagesClick(QListWidgetItem*)));
 
 }
 
