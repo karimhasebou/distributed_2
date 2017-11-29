@@ -48,18 +48,16 @@ Message getUsersIPAddress(Message& messageParamters) {
     std::string senderAddressString(senderAddressChar);
 //    std::map <std::string, std::string> bs = authserver::getUsersIpAddress(senderAddressString);
 //    CustomMap * usersIpAddress;
-    CustomMap * usersIpAddress = new CustomMap(authserver::getUsersIpAddress(senderAddressString));
+    std::map<std::string, std::string> usersMap = authserver::getUsersIpAddress(senderAddressString);
+    //CustomMap * usersIpAddress = new CustomMap(authserver::getUsersIpAddress(senderAddressString));
+    CustomMap * usersIpAddress = new CustomMap(usersMap);
     
     std::vector<CustomObject*> returnValues = {dynamic_cast<CustomObject*>(usersIpAddress)};
     
     Message replyMessage;
     replyMessage.setSocketAddress(messageParamters.getSocketAddress());
     marshal(replyMessage, returnValues);
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> b3f620bcda23b0172cfb9fa9ebb2f05c6f6fdb05
     return replyMessage;
 }
 
