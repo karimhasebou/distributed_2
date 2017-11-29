@@ -6,7 +6,7 @@ find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 
 set(CMAKE_INCLUDE_CURRECT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_PREFIX_FILE "/usr/local/Cellar/qt/5.9.1/lib/cmake/Qt5Widgets")
+#set(CMAKE_PREFIX_FILE "/usr/local/Cellar/qt/5.9.1/lib/cmake/Qt5Widgets")
 
 list(APPEND CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -pthread")
 
