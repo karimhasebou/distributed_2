@@ -7,7 +7,7 @@
 //
 
 #include "RpcCalls.h"
-
+#include "../StegManager.h"
 
 using namespace std;
 
@@ -141,10 +141,10 @@ bool server::updateCount(string imgName, string username, int count)
     stego::unstegPicture(downDir + imgName);
 
 
-    map<string, int> countList = getAuthorizedUsersCount(txtPath);
+    map<string, int> countList = stego::getAuthorizedUsersCount(txtPath);
     countList[username] = count;
 
-    updateCountInMap(countList, txtPath);
+    stego::updateCountInMap(countList, txtPath);
     // stegUserList(downDir + imgName, txtPath);
     stego::stegPicture(downDir + imgName, txtPath);
     return true;
@@ -187,14 +187,6 @@ void updateCountInMap(map<string, int> list, std::string path)
             
             imageListFile<<entry.first<<" "<<entry.second<<endl;
         }
-
-        long pos = imageListFile.tellp();
-        
-        // if(pos > 0){
-            
-        //     imageListFile.seekp(pos - 1);
-        //     imageListFile.put(EOF);
-        // }
 
         imageListFile.close();
     }

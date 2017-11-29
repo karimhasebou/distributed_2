@@ -3,6 +3,7 @@
 #include "../ui_HomePage.h"
 #include "../RPC/RpcCalls.h"
 #include "../RequestHandler.h"
+#include "../StegManager.h"
 
 namespace homepage {
     std::vector<std::string> splitString(std::string);
@@ -101,7 +102,7 @@ void HomePage::getAllImages() {
         printf("ip %d %s\n", 1, it->second.c_str());
         std::vector<std::string> imageNames = client::getAccessibleImages(myUsername, it->second);
 
-        for (int i = 0;i < imageNames.size(); i++) {
+        for (size_t i = 0;i < imageNames.size(); i++) {
 
             ImageEntry imageEntry;
             imageEntry.imageName = imageNames[i];
@@ -121,7 +122,7 @@ void HomePage::getMyImages() {
     allMyImages.clear();
     allMyImages.resize(0);
     
-    for (int i = 0; i < myImagesNames.size(); i++) {
+    for (size_t i = 0; i < myImagesNames.size(); i++) {
         
         ImageEntry imageEntry;
         imageEntry.imageName = myImagesNames[i];
@@ -131,7 +132,7 @@ void HomePage::getMyImages() {
         
     }
     
-    for (int i = 0; i < downloadedImages.size(); i++) {
+    for (size_t i = 0; i < downloadedImages.size(); i++) {
         
         allMyImages.push_back(downloadedImages[i]);
         
@@ -156,7 +157,7 @@ void HomePage::requestImage() {
     
     bool alreadyDownloaded = false;
     
-    for (int i = 0; i < downloadedImages.size() && !alreadyDownloaded; i++) {
+    for (size_t i = 0; i < downloadedImages.size() && !alreadyDownloaded; i++) {
         
         if(downloadedImages[i] == availableImages[index]) {
             alreadyDownloaded = true;
@@ -187,7 +188,7 @@ void HomePage::uploadImage() {
 
     std::string fileName = "";
     std::string tempFilePath = filePath;
-    int pos;
+    size_t pos;
     while ((pos = tempFilePath.find("/")) != string::npos) {
 
         fileName = tempFilePath.substr(pos);
@@ -370,7 +371,7 @@ void HomePage::setEditEntriesVisible(const bool & visible) {
 
 void HomePage::showImagesInList(QListWidget * listWidget, const std::vector<ImageEntry> & images) {
 
-    for (int i = 0; i < images.size(); i++) {
+    for (size_t i = 0; i < images.size(); i++) {
         
         QListWidgetItem *newItem = new QListWidgetItem();
         newItem->setText(QString::fromStdString(images[i].imageName));
