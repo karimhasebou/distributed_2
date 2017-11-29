@@ -46,9 +46,11 @@ Message getUsersIPAddress(Message& messageParamters) {
     char senderAddressChar[15];
     inet_ntop(AF_INET, &senderIPAddress, senderAddressChar , 15);
     std::string senderAddressString(senderAddressChar);
-//    std::map <std::string, std::string> bs = authserver::getUsersIpAddress(senderAddressString);
+    std::map <std::string, std::string> bs = authserver::getUsersIpAddress(senderAddressString);
 //    CustomMap * usersIpAddress;
-    CustomMap * usersIpAddress = new CustomMap(authserver::getUsersIpAddress(senderAddressString));
+    std::map<std::string, std::string> usersMap = authserver::getUsersIpAddress(senderAddressString);
+    //CustomMap * usersIpAddress = new CustomMap(authserver::getUsersIpAddress(senderAddressString));
+    CustomMap * usersIpAddress = new CustomMap(usersMap);
     
     std::vector<CustomObject*> returnValues = {dynamic_cast<CustomObject*>(usersIpAddress)};
     

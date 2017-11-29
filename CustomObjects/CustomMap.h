@@ -10,7 +10,7 @@ private:
     std::map<std::string, std::string> value;
 
 public:
-    CustomMap(){};
+    CustomMap();
     CustomMap(std::map<std::string, std::string>&);
     std::string& operator[](const std::string);
     std::map<std::string, std::string> getValue();

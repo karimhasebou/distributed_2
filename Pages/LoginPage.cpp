@@ -30,8 +30,8 @@ LoginPage::LoginPage(QWidget *parent) :
             "padding: 5px;}";
 
     ui->signInButton->setStyleSheet(pushButtonStyleSheet);
-//    ui->sign->setStyleSheet(pushButtonStyleSheet);
-    
+    ui->signUpButton->setStyleSheet(pushButtonStyleSheet);
+
     ui->label->setStyleSheet("QLabel {color: #ffffff;}");
     ui->label_2->setStyleSheet("QLabel {color: #ffffff;}");
     ui->label_3->setStyleSheet("QLabel {color: #ffffff;}");

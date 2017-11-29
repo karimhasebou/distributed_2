@@ -33,9 +33,13 @@ HomePage::HomePage(QWidget *parent) :
     connect(ui->myImagesButton, &QPushButton::clicked, this, &HomePage::getMyImages);
     connect(ui->editImageButton, &QPushButton::clicked, this, &HomePage::editImageSettings);
     connect(ui->requestImageButton, &QPushButton::clicked, this, &HomePage::requestImage);
+<<<<<<< HEAD
     connect(ui->updatePictureButton, &QPushButton::clicked, this, &HomePage::updateViews);
     connect(ui->addUserButton, &QPushButton::clicked, this, &HomePage::addUser);
     connect(ui->uploadImage, &QPushButton::clicked, this, &HomePage::uploadImage);
+=======
+    // connect(ui->updateEditsButton, &QPushButton::clicked, this, &HomePage::updateViews);
+>>>>>>> 6c9afc071188f09ea8365cbb3590444e79ce8e50
 
     connect(ui->myImagesList,
             &QListWidget::itemClicked, this,
@@ -69,7 +73,7 @@ HomePage::HomePage(QWidget *parent) :
     ui->myImagesButton->setStyleSheet(pushButtonStyleSheet);
     ui->editImageButton->setStyleSheet(pushButtonStyleSheet);
     ui->requestImageButton->setStyleSheet(pushButtonStyleSheet);
-    ui->updateEditsButton->setStyleSheet(pushButtonStyleSheet);
+    //ui->updateEditsButton->setStyleSheet(pushButtonStyleSheet);
 
     ui->addUsernameLabel->setStyleSheet("QLabel {color: #ffffff;}");
     ui->viewCountLabel->setStyleSheet("QLabel {color: #ffffff;}");
@@ -336,7 +340,7 @@ std::vector<std::string> homepage::listFilesInDir(const std::string& folderName)
 void HomePage::setEditEntriesVisible(const bool & visible) {
 
     ui->usernameEdit->setVisible(visible);
-    ui->updateEditsButton->setVisible(visible);
+    // ui->updateEditsButton->setVisible(visible);
     ui->viewCountEdit->setVisible(visible);
     ui->viewCountLabel->setVisible(visible);
     ui->addUsernameLabel->setVisible(visible);
