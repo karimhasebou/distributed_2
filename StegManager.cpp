@@ -113,21 +113,23 @@ void stego_utils::updateCountInFile(map<string, int> list, std::string path)
     stego_utils::imgProtect.unlock();
 }
 
-void stego::updateUserCount(const std::string& img, const std::string& user, const int& count)
-{
-    std::map<std::string, int> allCount = stego::getAuthorizedUsersCount(img);
+// void stego::updateUserCount(const std::string& img, const std::string& user, const int& count)
+// {
+//     std::map<std::string, int> allCount = stego::getAuthorizedUsersCount(img);
 
-    if (allCount.count(user) > 0) {
-        allCount[user] = count;
-        stego_utils::updateCountInFile(allCount, img + ".txt");
-        stego::stegPicture(img, img + ".txt");
-        stego::stegPicture(DEFAULT + img, img);
-    }
-}
+//     if (allCount.count(user) > 0) {
+//         allCount[user] = count;
+//         stego_utils::updateCountInFile(allCount, img + ".txt");
+//         stego::stegPicture(img, img + ".txt");
+//         stego::stegPicture(DEFAULT + img, img);
+//     }
+// }
 
+/** @param takes path to image to modify
+ */
 void stego::updateCountInMap(map<std::string, int> list, std::string path)
 {
-    ofstream imageListFile(path, ios::out);
+    ofstream imageListFile(path + ".txt", ios::out);
     
     if(imageListFile.is_open()){
         
@@ -135,7 +137,25 @@ void stego::updateCountInMap(map<std::string, int> list, std::string path)
             
             imageListFile<<entry.first<<" "<<entry.second<<endl;
         }
-	imageListFile.close();
+	    imageListFile.close();
+
+        int pathLen = path.find_last_of("/"); // find were path ends
+        string folderName;
+        if(pathLen != -1){
+            folderName = path.substr(0, pathLen + 1); // pathLen + 1 to include forward slash
+        }else{
+            folderName = " ";
+        }
+
+        std::string cmd = "./update_count.sh "+DEFAULT+"  " 
+            + path + " " + folderName + " " + path + ".txt";
+        std::string rmCountFile ="rm -rf" + path + ".txt";
+
+        system(cmd.c_str()); // update count
+        system(rmCountFile.c_str()); // remove count  file
+        puts("updated image count");
+    }else{
+        puts("failed to update count");
     }
 }
 

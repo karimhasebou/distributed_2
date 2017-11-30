@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 # these are all arguments to be passed to base
 defaultImg=$1 #cover image path
 imageToHide=$2 #image to embed

@@ -375,6 +375,9 @@ int HomePage::getSelectedIndex(QListWidget* list) {
 
 }
 
+/** @param directory folder containing image
+ *  @param filename img name
+ */
 struct STEGO_IMAGE HomePage::getImgAndCreds(const std::string& directory, 
 		const std::string& filename)
 {
@@ -383,12 +386,10 @@ struct STEGO_IMAGE HomePage::getImgAndCreds(const std::string& directory,
     string unstegCMD = "./unsteg.sh "+directory + filename;
     system(unstegCMD.c_str());
 
-    printf("getImgandCreds %s\n", unstegCMD.c_str());
 
     result.users =  stego::getAuthorizedUsersCount(
         TEMP_FOLDER + filename+".txt");
-    
-    printf("loading image from %s\n",(TEMP_FOLDER + filename).c_str());
+
 
     result.img.load(QString::fromStdString(TEMP_FOLDER + filename));
     
