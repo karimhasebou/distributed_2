@@ -252,16 +252,12 @@ void HomePage::updateViews() {
 
 void HomePage::viewImage(const std::string& dir, const std::string& filename){
 
-    string unstegCMD = "./unsteg.sh "+dir + filename;
-    system(unstegCMD.c_str());
-
-    QPixmap image;
-    image.load(QString::fromStdString("Temp/"+filename));
+    struct STEGO_IMAGE imageNCount =  getImgAndCreds(dir, filename);
     
-    ui->imagePreview->setPixmap(image);
+    ui->imagePreview->setPixmap(imageNCount.img);
     ui->imagePreview->setScaledContents(true);
 
-    system("./clean.sh"); // clears all temp files created during steg/ unsteg
+    // system("./clean.sh");
 }
 
 void HomePage::setUsername(std::string username) {
@@ -387,10 +383,15 @@ struct STEGO_IMAGE HomePage::getImgAndCreds(const std::string& directory,
     string unstegCMD = "./unsteg.sh "+directory + filename;
     system(unstegCMD.c_str());
 
-    result.users =  stego::getAuthorizedUsersCount(
-        tempFolder + filename+".txt");
-    result.img.load(QString::fromStdString(tempFolder + filename));
+    printf("getImgandCreds %s\n", unstegCMD.c_str());
 
+    result.users =  stego::getAuthorizedUsersCount(
+        TEMP_FOLDER + filename+".txt");
+    
+    printf("loading image from %s\n",(TEMP_FOLDER + filename).c_str());
+
+    result.img.load(QString::fromStdString(TEMP_FOLDER + filename));
+    
     system("./clean.sh");
 
     return result;

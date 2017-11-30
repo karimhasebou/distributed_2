@@ -3,7 +3,7 @@ defaultImg=$1 #img to extract
 defaultImgName=$(basename $defaultImg)
 
 
-rm Temp/ # remove temp if exists
+rm -rf Temp/ # remove temp if exists
 mkdir Temp
 cp $defaultImg Temp/$defaultImgName
 cd Temp/
@@ -19,3 +19,5 @@ steghide extract -sf $defaultImgName -p root # extract txt file
 echo 'extracted file'
 
 cd .. # go back to our previous directory
+
+echo pwd
