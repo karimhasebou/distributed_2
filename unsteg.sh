@@ -5,11 +5,12 @@ defaultImgName=$(basename $defaultImg)
 
 rm Temp/ # remove temp if exists
 mkdir Temp
+cp $defaultImg Temp/$defaultImgName
 cd Temp/
-cp $defaultImg $defaultImgName
 
+mv $defaultImgName tmp1 # rename default image to avoid conflict
 
-steghide extract -sf $defaultImgName -p root # extract img once
+steghide extract -sf tmp1 -p root # extract img once
 
 echo 'extracted img'
 
