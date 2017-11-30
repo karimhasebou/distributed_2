@@ -6,6 +6,7 @@
 #include <QPixmap>
 #include <QPalette>
 
+
 LoginPage::LoginPage(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::LoginPage)

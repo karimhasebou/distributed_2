@@ -14,6 +14,13 @@
 #include <QFileDialog>
 #include "../StegManager.h"
 
+
+struct STEGO_IMAGE {
+    QPixmap img;
+    std::map<std::string, int> users;
+};
+
+
 struct ImageEntry {
     std::string imageName;
     std::string username;
@@ -39,6 +46,8 @@ public:
     void set_ips(const std::vector<std::string> &);
     void setUsername(std::string);
     void extractViews(std::string);
+    struct STEGO_IMAGE getImgAndCreds(const std::string& directory, 
+		const std::string& filename);
 
 private:
     Ui::HomePage *ui;
@@ -52,6 +61,7 @@ private:
     const std::string myImagesPath = "MyImages/";
     const std::string myDownloadsPath = "DownloadedImages/";
     const std::string defaultImagePath = "defaultImage.png";
+    const std::string tempFolder = "TEMP/";
 
     void setEditEntriesVisible(const bool&);
     void getAllImages();

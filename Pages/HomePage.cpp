@@ -377,3 +377,20 @@ int HomePage::getSelectedIndex(QListWidget* list) {
     return index;
 
 }
+
+struct STEGO_IMAGE HomePage::getImgAndCreds(const std::string& directory, 
+		const std::string& filename)
+{
+    struct STEGO_IMAGE result;
+
+    string unstegCMD = "./unsteg.sh "+directory + filename;
+    system(unstegCMD.c_str());
+
+    result.users =  stego::getAuthorizedUsersCount(
+        tempFolder + filename+".txt");
+    result.img.load(QString::fromStdString(tempFolder + filename));
+
+    system("./clean.sh");
+
+    return result;
+}

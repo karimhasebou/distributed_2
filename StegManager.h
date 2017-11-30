@@ -11,11 +11,6 @@
 #include <mutex>
 
 
-struct STEGO_IMAGE{
-	QPixmap img;
-	std::map<std::string, int> users;		
-};
-
 namespace stego 
 {
 	void unstegPicture(const std::string&);
@@ -27,9 +22,6 @@ namespace stego
 	std::map<std::string, int> infraSteg(const std::string& img);
 	void ultraSteg(std::map<std::string, int>, const std::string&);
 	void clean(std::string);
-
-	struct STEGO_IMAGE getImgAndCreds(const std::string& directory, 
-		const std::string& filename);
 };
 
 #endif //DISTRIBUTED_2_STEGMANAGER_H
