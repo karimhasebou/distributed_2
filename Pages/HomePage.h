@@ -13,6 +13,7 @@
 #include <QListWidgetItem>
 #include <QFileDialog>
 #include "../StegManager.h"
+#include "../Paths.h"
 
 
 struct STEGO_IMAGE {

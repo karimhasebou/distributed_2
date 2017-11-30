@@ -37,6 +37,11 @@ LoginPage::LoginPage(QWidget *parent) :
     ui->label_2->setStyleSheet("QLabel {color: #ffffff;}");
     ui->label_3->setStyleSheet("QLabel {color: #ffffff;}");
 
+    #ifdef _DEBUGGING_ACTIVE
+        home = new HomePage(this);
+        home->setUsername("karimhasebo");
+        home->show();
+    #endif
 
 }
 

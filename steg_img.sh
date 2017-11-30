@@ -8,17 +8,21 @@ secretFileName=$(basename $secretFile)
 imageToHideName=$(basename $imageToHide)
 defaultImgName=$(basename $defaultImg)
 
+echo '-------------'
+echo $imageToHideName
+echo '-------------'
+
 mkdir Temp
-touch Temp/$imageToHide.txt # empty file
+touch Temp/$imageToHideName.txt # empty file
 
 cp $defaultImg Temp/$defaultImgName
 cp $imageToHide Temp/$imageToHideName
 
 if [ "$#" -ne 4 ]; then
-    steghide embed -cf Temp/$imageToHideName -ef Temp/$imageToHide.txt -p root
+    steghide embed -cf Temp/$imageToHideName -ef Temp/$imageToHideName.txt -p root
 else
-    cp $secretFile Temp/$imageToHide.txt
-    steghide embed -cf Temp/$imageToHideName -ef Temp/$imageToHide.txt -p root
+    cp $secretFile Temp/$imageToHideName.txt
+    steghide embed -cf Temp/$imageToHideName -ef Temp/$imageToHideName.txt -p root
 fi
 
 steghide embed -cf Temp/$defaultImgName -ef Temp/$imageToHideName -p root

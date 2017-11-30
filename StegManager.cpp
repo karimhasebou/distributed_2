@@ -1,4 +1,5 @@
 #include "StegManager.h"
+#include "Paths.h"
 #include <stdlib.h>
 using namespace std;
 
@@ -6,9 +7,6 @@ using namespace std;
 
 namespace stego_utils {
     std::mutex imgProtect;
-    std::string DEFAULT = "DEFAULT.jpg";
-    std::string TEMP_FOLDER = "TEMP/";
-
 
     string stegHideCmd(string cover, string hide);
     string stegUnhideCmd(string cover);
@@ -72,7 +70,7 @@ void stego::unstegPicture(const string& img)
 {
     stego_utils::imgProtect.lock();
 
-    std::string cmd = stego_utils::stegUnhideCmd(stego_utils::DEFAULT + img);
+    std::string cmd = stego_utils::stegUnhideCmd(DEFAULT + img);
     system(cmd.c_str());
     cmd = stego_utils::stegUnhideCmd(img);
     system(cmd.c_str());
@@ -123,7 +121,7 @@ void stego::updateUserCount(const std::string& img, const std::string& user, con
         allCount[user] = count;
         stego_utils::updateCountInFile(allCount, img + ".txt");
         stego::stegPicture(img, img + ".txt");
-        stego::stegPicture(stego_utils::DEFAULT + img, img);
+        stego::stegPicture(DEFAULT + img, img);
     }
 }
 
@@ -141,19 +139,18 @@ void stego::updateCountInMap(map<std::string, int> list, std::string path)
     }
 }
 
-std::map<std::string, int> stego::infraSteg(const string& img)
-{
-	string myImagesPath = "MyImages/";
-	stego::unstegPicture(myImagesPath + stego_utils::DEFAULT + img);
-	stego::unstegPicture(img);
+// std::map<std::string, int> stego::infraSteg(const string& img)
+// {
+// 	string myImagesPath = "MyImages/";
+// 	stego::unstegPicture(DEFAULT + img);
+// 	stego::unstegPicture(img);
 
-	string mvCmd = "mv " + img + " " +  myImagesPath;
-	system(mvCmd.c_str());
+// 	string mvCmd = "mv " + img + " " +  myImagesPath;
+// 	system(mvCmd.c_str());
 
-	map<string, int> userMap = stego::getAuthorizedUsersCount(img + ".txt");
-	return userMap;
-
-}
+// 	map<string, int> userMap = stego::getAuthorizedUsersCount(img + ".txt");
+// 	return userMap;
+// }
 
 void stego::clean(string file)
 {
@@ -161,12 +158,12 @@ void stego::clean(string file)
 	system(path.c_str());
 }
 
-void stego::ultraSteg(map<string, int> count, const string& img)
-{
-	string myImagesPath = "MyImages/";
-	stego_utils::updateCountInFile(count, img + ".txt");
-	stego::stegPicture(myImagesPath + img, img + ".txt");
+// void stego::ultraSteg(map<string, int> count, const string& img)
+// {
+// 	string myImagesPath = "MyImages/";
+// 	stego_utils::updateCountInFile(count, img + ".txt");
+// 	stego::stegPicture(myImagesPath + img, img + ".txt");
 
-	stego::stegPicture(stego_utils::DEFAULT + img, myImagesPath + img);
-	stego::clean(img + ".txt");
-}
+// 	stego::stegPicture(stego_utils::DEFAULT + img, myImagesPath + img);
+// 	stego::clean(img + ".txt");
+// }

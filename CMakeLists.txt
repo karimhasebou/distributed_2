@@ -65,11 +65,13 @@ CustomObjects/CustomString.h
 CustomObjects/CustomVector.h
 CustomObjects/CustomMap.h)
 
+#add_definitions(-D_DEBUGGING_ACTIVE) #inserted to allow home page to show up without having to login
+
 set(DB_HDR Database/DatabaseHandler.h)
 
-set(ALL_SRC ${MAR_SRC} ${UDP_SRC} ${CUST_SRC})
+set(ALL_SRC ${MAR_SRC} ${UDP_SRC} ${CUST_SRC} Paths.h)
 
-set(ALL_HDR ${MAR_HDR} ${UDP_HDR} ${RPC_HDR} ${CUST_HDR})
+set(ALL_HDR ${MAR_HDR} ${UDP_HDR} ${RPC_HDR} ${CUST_HDR} Paths.cpp)
 
 qt5_wrap_ui(UI_HEADRES Pages/HomePage.ui Pages/LoginPage.ui)
 

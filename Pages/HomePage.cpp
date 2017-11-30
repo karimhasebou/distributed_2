@@ -4,6 +4,7 @@
 #include "../RPC/RpcCalls.h"
 #include "../RequestHandler.h"
 #include "../StegManager.h"
+#include "../Paths.h"
 
 namespace homepage {
     std::vector<std::string> splitString(std::string);
@@ -185,7 +186,7 @@ void HomePage::uploadImage() {
                                                    "",
                                                    tr("Image Files (*.png *.jpg *.bmp)")).toStdString();
 
-    std::string stegNCopy = "./steg_img.sh " + defaultImagePath +
+    std::string stegNCopy = "./steg_img.sh " + DEFAULT +
          " " + filePath + " " + myImagesPath;
     system(stegNCopy.c_str());
 }
