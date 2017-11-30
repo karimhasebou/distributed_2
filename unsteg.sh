@@ -20,4 +20,3 @@ echo 'extracted file'
 
 cd .. # go back to our previous directory
 
-echo pwd
