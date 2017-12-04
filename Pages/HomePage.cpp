@@ -3,8 +3,8 @@
 #include "../ui_HomePage.h"
 #include "../RPC/RpcCalls.h"
 #include "../RequestHandler.h"
-#include "../StegManager.h"
-#include "../Paths.h"
+#include "../Stegnography/StegManager.h"
+#include "../Stegnography/Paths.h"
 
 namespace homepage {
     std::vector<std::string> splitString(std::string);
@@ -37,6 +37,9 @@ HomePage::HomePage(QWidget *parent) :
     connect(ui->updatePictureButton, &QPushButton::clicked, this, &HomePage::updateViews);
     connect(ui->addUserButton, &QPushButton::clicked, this, &HomePage::addUser);
     connect(ui->uploadImage, &QPushButton::clicked, this, &HomePage::uploadImage);
+    
+    ui->usersTableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("Username"));
+    ui->usersTableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("Count"));
 
     connect(ui->myImagesList,
             &QListWidget::itemClicked, this,
@@ -176,7 +179,7 @@ void HomePage::requestImage() {
 void HomePage::editImageSettings() {
     
     setEditEntriesVisible(true);
-    
+
 }
 
 void HomePage::uploadImage() {
@@ -192,6 +195,16 @@ void HomePage::uploadImage() {
 }
 
 void HomePage::addUser() {
+    
+    QString usernameToUpdate = ui->usernameEdit->text();
+    QString viewsToUpdate = ui->viewCountEdit->text();
+    
+    int rows = ui->usersTableWidget->rowCount();
+    
+    ui->usersTableWidget->insertRow(rows);
+    
+    ui->usersTableWidget->setItem(rows, 0, new QTableWidgetItem(usernameToUpdate));
+    ui->usersTableWidget->setItem(rows, 1, new QTableWidgetItem(viewsToUpdate));
 
 }
 
@@ -233,21 +246,19 @@ void HomePage::handleAvailableImagesClick(QListWidgetItem * listItem) {
 
 void HomePage::updateViews() {
     
-    QString usernameToUpdate = ui->usernameEdit->text();
-    QString viewsToUpdate = ui->viewCountEdit->text();
+    std::map<std::string, int> usersInfo;
+    std::string username;
+    int count;
     
-    int imageSelected = getSelectedIndex(ui->myImagesList);
-    
-    std::string imageName = allMyImages[imageSelected].imageName;
-    
-    std::string viewsString = viewsToUpdate.toUtf8().constData();
-    std::string usernameString = usernameToUpdate.toUtf8().constData();
-    
-    int views = atoi(viewsString.c_str());
-    
-    //bool updated = client::updateCount(imageName, usernameString, views);
-    
+    for (int i = 0; i < ui->usersTableWidget->rowCount(); i++) {
+        
+        username = ui->usersTableWidget->item(i, 0)->text().toStdString();
+        count = ui->usersTableWidget->item(i, 0)->text().toInt();
 
+        usersInfo[username] = count;
+        
+    }
+    
 }
 
 void HomePage::viewImage(const std::string& dir, const std::string& filename){
@@ -349,7 +360,7 @@ void HomePage::setEditEntriesVisible(const bool & visible) {
     ui->usernameEdit->setVisible(visible);
     ui->updatePictureButton->setVisible(visible);
     ui->addUserButton->setVisible(visible);
-    ui->tableWidget->setVisible(visible);
+    ui->usersTableWidget->setVisible(visible);
     ui->label->setVisible(visible);
     ui->viewCountEdit->setVisible(visible);
     ui->viewCountLabel->setVisible(visible);
@@ -358,12 +369,38 @@ void HomePage::setEditEntriesVisible(const bool & visible) {
 }
 
 void HomePage::showImagesInList(QListWidget * listWidget, const std::vector<ImageEntry> & images) {
+    
+    listWidget->clear();
+    QListWidgetItem *newItem = new QListWidgetItem();
 
     for (size_t i = 0; i < images.size(); i++) {
         
-        QListWidgetItem *newItem = new QListWidgetItem();
         newItem->setText(QString::fromStdString(images[i].imageName));
         listWidget->insertItem(i, newItem);
+    }
+}
+
+void HomePage::showMapInTable(QTableWidget* table, std::map<std::string, int> & usersMap) {
+    
+    table->clear();
+    
+    std::map<std::string, int>::iterator it;
+    QTableWidgetItem * newItem = new QTableWidgetItem();
+    
+    int row = 0;
+
+    for (it = usersMap.begin(); it != usersMap.end(); it++) {
+        
+        table->insertRow(row);
+        
+        newItem->setText(QString::fromStdString(it->first));
+        table->setItem(row, 0, newItem);
+        
+        newItem->setText(QString::number(it->second));
+        table->setItem(row, 1, newItem);
+        
+        row++;
+        
     }
 }
 

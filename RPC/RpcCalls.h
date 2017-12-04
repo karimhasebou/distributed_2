@@ -26,7 +26,7 @@
 #include "../Marshalling/MarshalledMessage.h"
 #include "../Marshalling/MarshallingManager.h"
 #include "../UDPLayer/Message.h"
-#include "../StegManager.h"
+#include "../Stegnography/StegManager.h"
 
 enum LoginStatus {
     loginSucess = 1,

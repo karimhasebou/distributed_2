@@ -41,6 +41,10 @@ CustomObjects/CustomMap.cpp)
 
 set(DB_SRC Database/DatabaseHandler.cpp)
 
+set(STEG_SRC
+Stegnography/StegManager.cpp
+Stegnography/Paths.cpp)
+
 set(MAR_HDR 
 Marshalling/MarshallingManager.h 
 Marshalling/MarshalledMessage.h)
@@ -65,30 +69,33 @@ CustomObjects/CustomString.h
 CustomObjects/CustomVector.h
 CustomObjects/CustomMap.h)
 
+set(STEG_HDR
+Stegnography/StegManager.h
+Stegnography/Paths.h)
+
 #add_definitions(-D_DEBUGGING_ACTIVE) #inserted to allow home page to show up without having to login
 
 set(DB_HDR Database/DatabaseHandler.h)
 
-set(ALL_SRC ${MAR_SRC} ${UDP_SRC} ${CUST_SRC} Paths.h)
+set(ALL_SRC ${MAR_SRC} ${UDP_SRC} ${CUST_SRC})
 
-set(ALL_HDR ${MAR_HDR} ${UDP_HDR} ${RPC_HDR} ${CUST_HDR} Paths.cpp)
+set(ALL_HDR ${MAR_HDR} ${UDP_HDR} ${RPC_HDR} ${CUST_HDR})
 
 qt5_wrap_ui(UI_HEADRES Pages/HomePage.ui Pages/LoginPage.ui)
 
 add_executable(application 
 ApplicationStart.cpp
 RequestHandler.cpp
-StegManager.cpp
 ${ALL_SRC}
-${PAG_SRC} 
-RPC/RpcStubServer.cpp
+${PAG_SRC}
+${STEG_SRC}
+${DB_SRC}
 ${RPC_SRV_SRC}
 RequestHandler.h
-StegManager.h
-${ALL_HDR} 
-${PAG_HDR} 
+${ALL_HDR}
+${PAG_HDR}
+${STEG_HDR}
 ${DB_HDR}
-${DB_SRC}
 ${UI_HEAADERS})
 
 target_link_libraries(application Qt5::Core Qt5::Gui Qt5::Widgets)
@@ -109,4 +116,6 @@ source_group(RPC FILES ${RPC_AUTH_SRC} ${RPC_SRV_SRC} ${RPC_HDR})
 source_group(Pages FILES ${PAG_SRC} ${PAG_HDR})
 source_group(CustomObjects FILES ${CUST_SRC} ${CUST_HDR})
 source_group(Database FILES ${DB_SRC} ${DB_HDR})
+source_group(Stegnography FILES ${STEG_SRC} ${STEG_HDR})
+
 

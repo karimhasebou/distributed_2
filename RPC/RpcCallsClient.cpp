@@ -11,7 +11,7 @@
 #include <errno.h>
 #include <unistd.h>
 
-std::string authServerIP = "10.40.37.203";
+std::string authServerIP = "10.40.54.60";
 const unsigned short authServerPort = 63000;
 const unsigned short serverPort = 64000;
 
@@ -243,39 +243,3 @@ bool client::updateCount(std::string imgName, std::string username, int count)
     // return returnVector->getValue();
 }
 
-
-// std::vector<std::string> splitString(std::string sentence)
-// {
-//   std::stringstream ss;
-//   ss<<sentence;
-  
-//   std::string to;
-//   std::vector<std::string> files;
-
-//     while(std::getline(ss,to,'\n')){
-//         files.push_back(to);
-//     }
-    
-//     return files;
-// }
-
-// std::vector<std::string> listFilesInDir()
-// {
-//     using namespace std;
-//     FILE  *file = popen("ls MyImages", "r");
-    
-//     int ch;
-//     string result;
-    
-//     do{
-//         ch = fgetc(file);
-        
-//         if(ch == EOF) break;
-        
-//         result += ch;
-//     }while(1);
-
-//     pclose(file);
-
-//     return splitString(result);
-// }

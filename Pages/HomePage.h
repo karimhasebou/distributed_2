@@ -11,9 +11,11 @@
 #include <stdio.h>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QTableWidget>
+#include <QTableWidgetItem>
 #include <QFileDialog>
-#include "../StegManager.h"
-#include "../Paths.h"
+#include "../Stegnography/StegManager.h"
+#include "../Stegnography/Paths.h"
 
 
 struct STEGO_IMAGE {
@@ -44,7 +46,6 @@ public:
     explicit HomePage(QWidget *parent = 0);
     ~HomePage();
     
-    void set_ips(const std::vector<std::string> &);
     void setUsername(std::string);
     void extractViews(std::string);
     struct STEGO_IMAGE getImgAndCreds(const std::string& directory, 
@@ -80,6 +81,7 @@ private:
     int getMyImageCount(const std::string&);
     void viewImage(const std::string& dir, const std::string& filename);
     int getSelectedIndex(QListWidget*);
+    void showMapInTable(QTableWidget*, std::map<std::string, int>&);
 
 };
 

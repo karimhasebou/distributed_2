@@ -43,6 +43,10 @@ public:
     QPushButton *editImageButton;
     QPushButton *requestImageButton;
     QSpacerItem *verticalSpacer;
+    QSpacerItem *verticalSpacer_buttons12;
+    QSpacerItem *verticalSpacer_buttons23;
+    QSpacerItem *verticalSpacer_buttons34;
+    QSpacerItem *verticalSpacer_buttons45;
     QHBoxLayout *horizontalLayout_2;
     QSpacerItem *horizontalSpacer_3;
     QVBoxLayout *verticalLayout_3;
@@ -60,7 +64,7 @@ public:
     QLabel *addUsernameLabel;
     QLineEdit *viewCountEdit;
     QPushButton *updatePictureButton;
-    QTableWidget *tableWidget;
+    QTableWidget *usersTableWidget;
     QPushButton *addUserButton;
     QLabel *label;
     QMenuBar *menubar;
@@ -79,8 +83,10 @@ public:
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
+        
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        
         allImagesButton = new QPushButton(verticalLayoutWidget);
         allImagesButton->setObjectName(QStringLiteral("allImagesButton"));
         QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -90,6 +96,8 @@ public:
         allImagesButton->setSizePolicy(sizePolicy);
 
         horizontalLayout->addWidget(allImagesButton);
+        verticalSpacer_buttons12 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        horizontalLayout->addItem(verticalSpacer_buttons12);
 
         myImagesButton = new QPushButton(verticalLayoutWidget);
         myImagesButton->setObjectName(QStringLiteral("myImagesButton"));
@@ -97,11 +105,17 @@ public:
         myImagesButton->setSizePolicy(sizePolicy);
 
         horizontalLayout->addWidget(myImagesButton);
+        verticalSpacer_buttons23 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        horizontalLayout->addItem(verticalSpacer_buttons23);
 
         uploadImage = new QPushButton(verticalLayoutWidget);
         uploadImage->setObjectName(QStringLiteral("uploadImage"));
+        sizePolicy.setHeightForWidth(myImagesButton->sizePolicy().hasHeightForWidth());
+        uploadImage->setSizePolicy(sizePolicy);
 
         horizontalLayout->addWidget(uploadImage);
+        verticalSpacer_buttons34 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        horizontalLayout->addItem(verticalSpacer_buttons34);
 
         editImageButton = new QPushButton(verticalLayoutWidget);
         editImageButton->setObjectName(QStringLiteral("editImageButton"));
@@ -109,9 +123,13 @@ public:
         editImageButton->setSizePolicy(sizePolicy);
 
         horizontalLayout->addWidget(editImageButton);
+        verticalSpacer_buttons45 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        horizontalLayout->addItem(verticalSpacer_buttons45);
 
         requestImageButton = new QPushButton(verticalLayoutWidget);
         requestImageButton->setObjectName(QStringLiteral("requestImageButton"));
+        sizePolicy.setHeightForWidth(myImagesButton->sizePolicy().hasHeightForWidth());
+        requestImageButton->setSizePolicy(sizePolicy);
 
         horizontalLayout->addWidget(requestImageButton);
 
@@ -149,7 +167,6 @@ public:
         countRemaining->setSizePolicy(sizePolicy2);
 
         verticalLayout_3->addWidget(countRemaining);
-
 
         horizontalLayout_2->addLayout(verticalLayout_3);
 
@@ -224,10 +241,10 @@ public:
 
         editImageEntries->addWidget(updatePictureButton, 7, 0, 1, 2);
 
-        tableWidget = new QTableWidget(verticalLayoutWidget);
-        tableWidget->setObjectName(QStringLiteral("tableWidget"));
+        usersTableWidget = new QTableWidget(verticalLayoutWidget);
+        usersTableWidget->setObjectName(QStringLiteral("usersTableWidget"));
 
-        editImageEntries->addWidget(tableWidget, 1, 0, 1, 2);
+        editImageEntries->addWidget(usersTableWidget, 1, 0, 1, 2);
 
         addUserButton = new QPushButton(verticalLayoutWidget);
         addUserButton->setObjectName(QStringLiteral("addUserButton"));

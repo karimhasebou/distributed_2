@@ -7,7 +7,7 @@
 //
 
 #include "RpcCalls.h"
-#include "../StegManager.h"
+#include "../Stegnography/StegManager.h"
 
 using namespace std;
 
