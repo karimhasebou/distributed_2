@@ -189,8 +189,9 @@ void HomePage::uploadImage() {
                                                    "",
                                                    tr("Image Files (*.png *.jpg *.bmp)")).toStdString();
 
-    std::string stegNCopy = "./steg_img.sh " + DEFAULT +
+    std::string stegNCopy = "../Stegnography/steg_img.sh " + DEFAULT +
          " " + filePath + " " + myImagesPath;
+
     system(stegNCopy.c_str());
 }
 
@@ -220,11 +221,16 @@ void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
     int index = getSelectedIndex(ui->myImagesList);
     bool isMine = allMyImages[index].myImage;
     std::string selectedImgPath = (isMine) ? myImagesPath : myDownloadsPath;
-    
+
     int count = 1e9;
 
     if (isMine) {
+
         ui->editImageButton->setEnabled(true);
+        StegImage image = stego::getImgAndCreds(myImagesPath, allMyImages[index].imageName);
+        ui->imagePreview->setPixmap(image.image);
+        showMapInTable(ui->usersTableWidget, image.users);
+
     } else {
         ui->editImageButton->setEnabled(false);
         count = getMyImageCount(selectedImgPath);
@@ -263,12 +269,6 @@ void HomePage::updateViews() {
 
 void HomePage::viewImage(const std::string& dir, const std::string& filename){
 
-    struct STEGO_IMAGE imageNCount =  getImgAndCreds(dir, filename);
-    
-    ui->imagePreview->setPixmap(imageNCount.img);
-    ui->imagePreview->setScaledContents(true);
-
-    // system("./clean.sh");
 }
 
 void HomePage::setUsername(std::string username) {
@@ -371,10 +371,10 @@ void HomePage::setEditEntriesVisible(const bool & visible) {
 void HomePage::showImagesInList(QListWidget * listWidget, const std::vector<ImageEntry> & images) {
     
     listWidget->clear();
-    QListWidgetItem *newItem = new QListWidgetItem();
 
     for (size_t i = 0; i < images.size(); i++) {
-        
+
+        QListWidgetItem *newItem = new QListWidgetItem();
         newItem->setText(QString::fromStdString(images[i].imageName));
         listWidget->insertItem(i, newItem);
     }
@@ -385,12 +385,12 @@ void HomePage::showMapInTable(QTableWidget* table, std::map<std::string, int> & 
     table->clear();
     
     std::map<std::string, int>::iterator it;
-    QTableWidgetItem * newItem = new QTableWidgetItem();
-    
+
     int row = 0;
 
     for (it = usersMap.begin(); it != usersMap.end(); it++) {
-        
+
+        QTableWidgetItem * newItem = new QTableWidgetItem()
         table->insertRow(row);
         
         newItem->setText(QString::fromStdString(it->first));
@@ -410,27 +410,4 @@ int HomePage::getSelectedIndex(QListWidget* list) {
     int index = list->row(selection[0]);
     return index;
 
-}
-
-/** @param directory folder containing image
- *  @param filename img name
- */
-struct STEGO_IMAGE HomePage::getImgAndCreds(const std::string& directory, 
-		const std::string& filename)
-{
-    struct STEGO_IMAGE result;
-
-    string unstegCMD = "./unsteg.sh "+directory + filename;
-    system(unstegCMD.c_str());
-
-
-    result.users =  stego::getAuthorizedUsersCount(
-        TEMP_FOLDER + filename+".txt");
-
-
-    result.img.load(QString::fromStdString(TEMP_FOLDER + filename));
-    
-    system("./clean.sh");
-
-    return result;
 }

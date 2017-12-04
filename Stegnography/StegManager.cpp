@@ -1,6 +1,8 @@
 #include "StegManager.h"
 #include "Paths.h"
 #include <stdlib.h>
+#include <QPixmap>
+
 using namespace std;
 
 
@@ -157,6 +159,28 @@ void stego::updateCountInMap(map<std::string, int> list, std::string path)
     }else{
         puts("failed to update count");
     }
+}
+
+/** @param directory folder containing image
+ *  @param filename img name
+ */
+StegImage stego::getImgAndCreds(const std::string& directory,
+                                const std::string& filename)  {
+
+    StegImage result;
+
+    string unstegCMD = "../Stegnography/unsteg.sh "+directory + filename;
+    system(unstegCMD.c_str());
+
+
+    result.users =  stego::getAuthorizedUsersCount(
+            TEMP_FOLDER + filename+".txt");
+
+
+    result.image.load(QString::fromStdString(TEMP_FOLDER + filename));
+    system("../Stegnography/clean.sh");
+
+    return result;
 }
 
 // std::map<std::string, int> stego::infraSteg(const string& img)

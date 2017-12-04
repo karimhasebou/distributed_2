@@ -18,11 +18,6 @@
 #include "../Stegnography/Paths.h"
 
 
-struct STEGO_IMAGE {
-    QPixmap img;
-    std::map<std::string, int> users;
-};
-
 
 struct ImageEntry {
     std::string imageName;
@@ -48,8 +43,6 @@ public:
     
     void setUsername(std::string);
     void extractViews(std::string);
-    struct STEGO_IMAGE getImgAndCreds(const std::string& directory, 
-		const std::string& filename);
 
 private:
     Ui::HomePage *ui;
@@ -60,8 +53,8 @@ private:
     std::vector<ImageEntry> availableImages;
     std::vector<ImageEntry> downloadedImages;
     std::vector<ImageEntry> allMyImages;
-    const std::string myImagesPath = "MyImages/";
-    const std::string myDownloadsPath = "DownloadedImages/";
+    const std::string myImagesPath = "../MyImages/";
+    const std::string myDownloadsPath = "../DownloadedImages/";
     const std::string defaultImagePath = "defaultImage.png";
     const std::string tempFolder = "TEMP/";
 

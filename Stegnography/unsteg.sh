@@ -1,4 +1,3 @@
-#!/usr/bin/bash
 defaultImg=$1 #img to extract
 
 defaultImgName=$(basename $defaultImg)

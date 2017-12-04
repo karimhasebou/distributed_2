@@ -1,4 +1,3 @@
-#!/usr/bin/bash
 defaultImg=$1 #cover image path
 imageToHide=$2 #image to embed
 destFolder=$3 # destination folder
