@@ -150,10 +150,7 @@ void stego::updateCountInMap(map<std::string, int> list, std::string path)
             folderName = " ";
         }
 
-	puts("FOLDER NAME");
-	puts(folderName.c_str());
-	puts(path.c_str());
-        std::string cmd = "Stegnography/update_count.sh "+DEFAULT+" "
+        std::string cmd = "Stegnography/update_count.sh "+DEFAULT+"  "
             + path + " " + folderName + " " + path + ".txt";
 	std::string rmCmd = "rm "  + path + ".txt";
 
