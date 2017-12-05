@@ -186,6 +186,9 @@ void HomePage::getMyImages() {
     
 }
 
+/*
+ * TO BE CHANGED TO MATCH NEW STEGNOGRAPHY SCHEME
+ */
 void HomePage::requestImage() {
     
     int index = ui->availableImagesList->currentIndex().row();
@@ -267,6 +270,9 @@ void HomePage::updateImgCount(std::string img, int count)
     
 }
 
+/*
+ * TO BE CHANGED TO MATCH NEW STEGNOGRAPHY SCHEME
+ */
 void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
     
     ui->requestImageButton->setEnabled(false);

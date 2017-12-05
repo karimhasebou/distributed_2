@@ -81,7 +81,6 @@ vector<string> listImages()
 }
 
 
-
 set<string> getAuthorizedUsers(const string& filePath)
 {
     set<string> usersList;
@@ -133,7 +132,9 @@ bool server::canUpdateCount(string imgName, string username)
     return true; // ;p
 }
 
-
+/*
+ * TO BE CHANGED TO MATCH NEW STEGNOGRAPHY SCHEME
+ */
 bool server::updateCount(string imgName, string username, int count)
 {
     std::string txtPath = imgName + ".txt";
