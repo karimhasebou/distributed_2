@@ -54,7 +54,7 @@ string stego_utils::stegHideCmd(string cover, string hide)
 
 string stego_utils::stegUnhideCmd(string cover)
 {
-    string cmd = "steghide extract -sf " + cover + " -p roof -f";
+    string cmd = "steghide extract -sf " + cover + " -p root -f";
     return cmd;
 }
 
