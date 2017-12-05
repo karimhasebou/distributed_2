@@ -87,8 +87,8 @@ add_executable(application
 ApplicationStart.cpp
 RequestHandler.cpp
 ${ALL_SRC}
-${PAG_SRC}
 ${STEG_SRC}
+${PAG_SRC}
 ${DB_SRC}
 ${RPC_SRV_SRC}
 RequestHandler.h
@@ -109,6 +109,8 @@ ${ALL_SRC}
 ${DB_HDR}
 RequestHandler.h
 ${ALL_HDR})
+
+target_link_libraries(centralserver Qt5::Core Qt5::Gui Qt5::Widgets)
 
 source_group(Marshalling FILES ${MAR_SRC} ${MAR_HDR})
 source_group(UDPLayer FILES ${UDP_SRC} ${UDP_HDR})
