@@ -237,11 +237,17 @@ void HomePage::uploadImage() {
     std::string stegNCopy = "../Stegnography/steg_img.sh " + DEFAULT +
          " " + filePath + " " + myImagesPath;
 
-    system(stegNCopy.c_str());
-
-    infoMessageBox->setText("Done");
-    infoMessageBox->setInformativeText("Image Uploaded");
-    infoMessageBox->exec();
+    if (filePath != "") {
+        system(stegNCopy.c_str());
+        infoMessageBox->setText("Done");
+        infoMessageBox->setInformativeText("Image Uploaded");
+        infoMessageBox->exec();
+    }
+    else {
+        infoMessageBox->setText("404");
+        infoMessageBox->setInformativeText("No image selected");
+        infoMessageBox->exec();
+    }
 
 }
 
