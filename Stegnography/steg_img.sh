@@ -29,6 +29,5 @@ steghide embed -cf Temp/$defaultImgName -ef Temp/$imageToHideName -p root
 mv Temp/$defaultImgName $destFolder/$imageToHideName
 
 pwd
-echo "noob here"
 rm -rf Temp # empty all left overs
 
