@@ -72,7 +72,8 @@ void stego::unstegPicture(const string& img)
 {
     stego_utils::imgProtect.lock();
 
-    std::string cmd = stego_utils::stegUnhideCmd(DEFAULT + img);
+    std::string cmd = stego_utils::stegUnhideCmd(img);
+    //std::string cmd = stego_utils::stegUnhideCmd(DEFAULT + img);
     system(cmd.c_str());
     cmd = stego_utils::stegUnhideCmd(img);
     system(cmd.c_str());

@@ -88,8 +88,7 @@ set<string> getAuthorizedUsers(const string& filePath)
     
     // unstegUserList(currentDir + filePath);
     stego::unstegPicture(currentDir + filePath);
-
-    ifstream usernamesFile(string(filePath + ".txt").c_str()
+    ifstream usernamesFile(string(currentDir + filePath + ".txt").c_str()
         , ios::in);
 
     while(usernamesFile.is_open()){
@@ -99,13 +98,15 @@ set<string> getAuthorizedUsers(const string& filePath)
         usernamesFile>>userViewCount;   // skip user image count
         if(!usernamesFile.eof()) {
             usersList.insert(username);
-           
             
         }
         else {
             usernamesFile.close();
         }
     }
+    
+    string clean = "rm " + currentDir + filePath + ".txt";
+    system(clean.c_str());
     return usersList;
 }
 
