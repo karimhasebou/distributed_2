@@ -315,7 +315,8 @@ void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
         ui->editImageButton->setEnabled(false);
 	StegImage image = stego::getImgAndCreds(myDownloadsPath, allMyImages[index].imageName);
 	int count = image.users[myUsername];
-	if (count) {
+	
+    if (count) {
 		printf("count %d\n", count);
 		ui->imagePreview->setPixmap(image.image);
 		image.users[myUsername]--;
@@ -365,7 +366,8 @@ void HomePage::updateViews() {
 
     int index = getSelectedIndex(ui->myImagesList);
 
-    stego::updateCountInMap(usersInfo, myImagesPath + allMyImages[index].imageName);
+   // stego::updateCountInMap(usersInfo, myImagesPath + allMyImages[index].imageName);
+    stego::updateCountInMapLocal(usersInfo, myImagesPath + allMyImages[index].imageName);
 
     QMessageBox::information(this, tr("Done"), tr("Image Updated !"));
 }

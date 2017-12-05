@@ -163,6 +163,31 @@ void stego::updateCountInMap(map<std::string, int> list, std::string path)
     }
 }
 
+void stego::updateCountInMapLocal(std::map<std::string, int> list, std::string path)
+{
+    ofstream imageListFile(path + ".txt", ios::out);
+    
+    if(imageListFile.is_open()){
+        
+        for(auto& entry : list){
+            
+            imageListFile<<entry.first<<" "<<entry.second<<endl;
+        }
+	    imageListFile.close();
+
+        int pathLen = path.find_last_of("/"); // find were path ends
+        string imageName = pathLen == -1 ? path : path.substr(pathLen+1);
+
+        
+
+        imageName = "Stegnography/update_local_count.sh " + imageName;
+        printf("Image name %s\n", imageName.c_str());
+        system(imageName.c_str());
+    }else{
+        puts("failed to update count");
+    }
+}
+
 /** @param directory folder containing image
  *  @param filename img name
  */
