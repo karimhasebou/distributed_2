@@ -138,17 +138,19 @@ bool server::canUpdateCount(string imgName, string username)
  */
 bool server::updateCount(string imgName, string username, int count)
 {
-    std::string txtPath = imgName + ".txt";
+    //std::string txtPath = imgName + ".txt";
     // unstegUserList(downDir + imgName);
-    stego::unstegPicture(downDir + imgName);
+  //  stego::unstegPicture(downDir + imgName);
 
 
-    map<string, int> countList = stego::getAuthorizedUsersCount(txtPath);
-    countList[username] = count;
+    //map<string, int> countList = stego::getAuthorizedUsersCount(txtPath);
+    //countList[username] = count;
+    StegImage imgNCredentials = stego::getImgAndCreds(downDir, imageName);
+    imgNCredentials.users[username] = count;
 
-    stego::updateCountInMap(countList, txtPath);
+    stego::updateCountInMap(imgNCredentials.users, downDir + imageName);
     // stegUserList(downDir + imgName, txtPath);
-    stego::stegPicture(downDir + imgName, txtPath);
+    //stego::stegPicture(downDir + imgName, txtPath);
     return true;
 }
 

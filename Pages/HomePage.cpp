@@ -367,6 +367,10 @@ void HomePage::updateViews() {
     int index = getSelectedIndex(ui->myImagesList);
 
    // stego::updateCountInMap(usersInfo, myImagesPath + allMyImages[index].imageName);
+    std::map<std::string, int>::iterator it = usersInfo.begin();
+    for(; it != usersInfo.end(); ++it) {
+        client::updateCount(allMyImages[index].imageName, it->first, count);
+    }
     stego::updateCountInMapLocal(usersInfo, myImagesPath + allMyImages[index].imageName);
 
     QMessageBox::information(this, tr("Done"), tr("Image Updated !"));
