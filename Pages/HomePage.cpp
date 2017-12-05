@@ -127,6 +127,7 @@ HomePage::HomePage(QWidget *parent) :
     ui->viewCountEdit->setStyleSheet(lineEditStyleSheet);
 
     infoMessageBox = new QMessageBox(this);
+    infoMessageBox->setStyleSheet("QWidget {color: #ffffff;}");
 }
 
 HomePage::~HomePage() {
@@ -233,11 +234,21 @@ void HomePage::editImageSettings() {
 
 void HomePage::uploadImage() {
 
+    // QFileDialog fileDialog(this);
+    // fileDialog.setStyleSheet("QWidget {background-color: #ffffff;}")
+    // fileDialog.setNameFilter(tr("Image Files (*.png *.jpg *.bmp)"));
+    // fileDialog.setTitle(tr("Choose Image"));
+
+    // fileDialog.exec();
+    // QStringList list =fileDialog.filesSelected();
+
+    // std::string filePath = list.at(0).toStdString();
+    //std::string imgCopy = "cp " + filePath + " " + myImagesPath;
+
     std::string filePath = QFileDialog::getOpenFileName(this,
                                                    tr("Choose Image"),
                                                    "",
                                                    tr("Image Files (*.png *.jpg *.bmp)")).toStdString();
-    //std::string imgCopy = "cp " + filePath + " " + myImagesPath;
    std::string stegNCopy = "Stegnography/steg_one.sh " + filePath + " " + myImagesPath;
 
     if (filePath != "") {
