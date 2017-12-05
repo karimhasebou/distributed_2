@@ -29,7 +29,9 @@ namespace stego
 	void clean(std::string);
 
 	void updateCountInMap(std::map<std::string, int> list, std::string path);
+
 	StegImage getImgAndCreds(const std::string&, const std::string&);
+	StegImage getMyImgAndCreds(const std::string&, const std::string&);
 };
 
 #endif //DISTRIBUTED_2_STEGMANAGER_H

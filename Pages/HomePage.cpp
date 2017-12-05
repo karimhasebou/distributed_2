@@ -237,9 +237,8 @@ void HomePage::uploadImage() {
                                                    tr("Choose Image"),
                                                    "",
                                                    tr("Image Files (*.png *.jpg *.bmp)")).toStdString();
-
-    std::string stegNCopy = "../Stegnography/steg_img.sh " + DEFAULT +
-         " " + filePath + " " + myImagesPath;
+    //std::string imgCopy = "cp " + filePath + " " + myImagesPath;
+   std::string stegNCopy = "Stegnography/steg_one.sh " + filePath + " " + myImagesPath;
 
     if (filePath != "") {
         system(stegNCopy.c_str());
@@ -291,27 +290,27 @@ void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
     bool isMine = allMyImages[index].myImage;
     std::string selectedImgPath = (isMine) ? myImagesPath : myDownloadsPath;
 
-    int count = 1e9;
+    //int count = 1e9;
 
     if (isMine) {
 
         ui->editImageButton->setEnabled(true);
-        StegImage image = stego::getImgAndCreds(myImagesPath, allMyImages[index].imageName);
+        StegImage image = stego::getMyImgAndCreds(myImagesPath, allMyImages[index].imageName);
         ui->imagePreview->setPixmap(image.image);
         showMapInTable(ui->usersTableWidget, image.users);
 
     } else {
         ui->editImageButton->setEnabled(false);
-        count = getMyImageCount(selectedImgPath);
+        //count = getMyImageCount(selectedImgPath);
     }
     
-    std::string imageName = allMyImages[index].imageName;
-    if (count)
-    {
-        viewImage(selectedImgPath, imageName);
-    }
-    if (isMine)
-        updateImgCount(selectedImgPath, count - 1);
+//    std::string imageName = allMyImages[index].imageName;
+//    if (count)
+//    {
+//        viewImage(selectedImgPath, imageName);
+//    }
+//    if (isMine)
+//        updateImgCount(selectedImgPath, count - 1);
 }
 
 void HomePage::handleAvailableImagesClick(QListWidgetItem * listItem) {
@@ -340,7 +339,6 @@ void HomePage::updateViews() {
     }
 
     int index = getSelectedIndex(ui->myImagesList);
-
 
     stego::updateCountInMap(usersInfo, myImagesPath + allMyImages[index].imageName);
 
