@@ -18,6 +18,9 @@ HomePage::HomePage(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->centralwidget->setStyleSheet("QMainWindow {background-color: #000000;"
+                                             "border-color: #000000;}");
+
     imagePreview.load("../defaultImage.jpg");
     ui->imagePreview->setPixmap(imagePreview);
     ui->imagePreview->setScaledContents(true);
@@ -37,9 +40,35 @@ HomePage::HomePage(QWidget *parent) :
     connect(ui->updatePictureButton, &QPushButton::clicked, this, &HomePage::updateViews);
     connect(ui->addUserButton, &QPushButton::clicked, this, &HomePage::addUser);
     connect(ui->uploadImage, &QPushButton::clicked, this, &HomePage::uploadImage);
-    
-    ui->usersTableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("Username"));
-    ui->usersTableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("Count"));
+
+    ui->usersTableWidget->setColumnCount(2);
+
+    ui->usersTableWidget->setColumnWidth(0, double(ui->usersTableWidget->width())/0.8);
+    ui->usersTableWidget->setColumnWidth(1, double(ui->usersTableWidget->width())/0.8);
+
+    QString headerStyleSheet = "QHeaderView::section {"
+            "background-color: #595959;"
+            "color: #ffffff;"
+            "font-family: Tahoma;"
+            "font-size: 12px;"
+            "text-align: center;}";
+
+    ui->usersTableWidget->horizontalHeader()->setStyleSheet(headerStyleSheet);
+    ui->usersTableWidget->verticalHeader()->setStyleSheet(headerStyleSheet);
+    ui->usersTableWidget->verticalHeader()->setVisible(false);
+
+    QString tableStyleSheet = "QTableWidget {"
+            "background-color: #000000;"
+            "color: #ffffff;}"
+            "QTableWidget::item {"
+            "border: 1px solid #ffffff; }"
+            "QTableWidget::item:focus{ "
+            "color: #ffffff; }"
+            "QTableWidget::item:selection{ n"
+            "color: #ffffff; "
+            "background-color: #595959;}";
+
+    ui->usersTableWidget->setStyleSheet(tableStyleSheet);
 
     connect(ui->myImagesList,
             &QListWidget::itemClicked, this,
@@ -52,18 +81,21 @@ HomePage::HomePage(QWidget *parent) :
     QString listStyleSheet = "QListWidget {background-color:#000000;"
                                 "color: #ffffff;"
                                 "font-size: 14px;"
-                                "padding: 5px;"
+                                "padding: 10px;"
                                 "border-style: outset;"
                                 "border-radius: 10px;"
                                 "border-color: #ffffff;"
-                                "border-width: 1px;}";
+                                "border-width: 1px;}"
+                                "QListWidget::item::focus {"
+                                "background-color: #595959;"
+                                "color: #ffffff;}";
 
     ui->myImagesList->setStyleSheet(listStyleSheet);
     ui->availableImagesList->setStyleSheet(listStyleSheet);
 
     QString pushButtonStyleSheet = "QPushButton {color: #ffffff; "
-            "background-color:#000000;"
-            "border-color: #e65c00;"
+            "background-color:#1a1a1a;"
+            "border-color: #595959;"
             "border-radius: 10px;"
             "border-width: 1px;"
             "border-style: outset;"
@@ -80,11 +112,19 @@ HomePage::HomePage(QWidget *parent) :
     ui->addUsernameLabel->setStyleSheet("QLabel {color: #ffffff;}");
     ui->viewCountLabel->setStyleSheet("QLabel {color: #ffffff;}");
 
-    ui->imagePreview->setStyleSheet("QLabel {border-color: #ffffff;"
-                                            "border-radius: 10px;"
+    ui->imagePreview->setStyleSheet("QLabel {border-radius: 10px;"
                                             "border-width: 1px;"
                                             "border-style:outset;}");
 
+    QString lineEditStyleSheet = "QLineEdit {color: #ffffff; "
+            "background-color: #000000;"
+            "border-color: #595959;"
+            "border-radius: 10px;"
+            "border-width: 1px;"
+            "border-style: outset;}";
+
+    ui->usernameEdit->setStyleSheet(lineEditStyleSheet);
+    ui->viewCountEdit->setStyleSheet(lineEditStyleSheet);
 }
 
 HomePage::~HomePage() {
@@ -193,19 +233,32 @@ void HomePage::uploadImage() {
          " " + filePath + " " + myImagesPath;
 
     system(stegNCopy.c_str());
+
+    QMessageBox::information(this, tr("Done"), tr("Image Uploaded !"));
 }
 
 void HomePage::addUser() {
     
     QString usernameToUpdate = ui->usernameEdit->text();
     QString viewsToUpdate = ui->viewCountEdit->text();
+
+    printf("%s\n", usernameToUpdate.toStdString().c_str());
     
     int rows = ui->usersTableWidget->rowCount();
     
     ui->usersTableWidget->insertRow(rows);
+
+    QTableWidgetItem * newItemOne = new QTableWidgetItem(usernameToUpdate);
+    QTableWidgetItem * newItemTwo = new QTableWidgetItem(viewsToUpdate);
+
+    newItemOne->setTextAlignment(Qt::AlignCenter);
+    newItemTwo->setTextAlignment(Qt::AlignCenter);
     
-    ui->usersTableWidget->setItem(rows, 0, new QTableWidgetItem(usernameToUpdate));
-    ui->usersTableWidget->setItem(rows, 1, new QTableWidgetItem(viewsToUpdate));
+    ui->usersTableWidget->setItem(rows, 0, newItemOne);
+    ui->usersTableWidget->setItem(rows, 1, newItemTwo);
+
+    ui->usernameEdit->clear();
+    ui->viewCountEdit->clear();
 
 }
 
@@ -259,12 +312,23 @@ void HomePage::updateViews() {
     for (int i = 0; i < ui->usersTableWidget->rowCount(); i++) {
         
         username = ui->usersTableWidget->item(i, 0)->text().toStdString();
-        count = ui->usersTableWidget->item(i, 0)->text().toInt();
+        count = ui->usersTableWidget->item(i, 1)->text().toInt();
+
+        if (username == "") {
+
+            continue;
+        }
 
         usersInfo[username] = count;
         
     }
-    
+
+    int index = getSelectedIndex(ui->myImagesList);
+
+
+    stego::updateCountInMap(usersInfo, myImagesPath + allMyImages[index].imageName);
+
+    QMessageBox::information(this, tr("Done"), tr("Image Updated !"));
 }
 
 void HomePage::viewImage(const std::string& dir, const std::string& filename){
@@ -383,21 +447,26 @@ void HomePage::showImagesInList(QListWidget * listWidget, const std::vector<Imag
 void HomePage::showMapInTable(QTableWidget* table, std::map<std::string, int> & usersMap) {
     
     table->clear();
-    
+    table->setRowCount(0);
+    ui->usersTableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("Username"));
+    ui->usersTableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("Count"));
+
     std::map<std::string, int>::iterator it;
 
     int row = 0;
 
     for (it = usersMap.begin(); it != usersMap.end(); it++) {
 
-        QTableWidgetItem * newItem = new QTableWidgetItem()
+        QTableWidgetItem * newItemOne = new QTableWidgetItem(QString::fromStdString(it->first));
+        QTableWidgetItem * newItemTwo = new QTableWidgetItem(QString::number(it->second));
+
+        newItemOne->setTextAlignment(Qt::AlignCenter);
+        newItemTwo->setTextAlignment(Qt::AlignCenter);
+
         table->insertRow(row);
         
-        newItem->setText(QString::fromStdString(it->first));
-        table->setItem(row, 0, newItem);
-        
-        newItem->setText(QString::number(it->second));
-        table->setItem(row, 1, newItem);
+        table->setItem(row, 0, newItemOne);
+        table->setItem(row, 1, newItemTwo);
         
         row++;
         

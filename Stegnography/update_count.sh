@@ -8,20 +8,23 @@ imageToHideName=$(basename $imageToHide)
 
 #bash clean.sh
 rm -rf Temp
-bash unsteg.sh $imageToHide
+../Stegnography/unsteg.sh $imageToHide
 
 #find Temp/ ! -name $imageToHideName -type f -exec rm -f {} +
 
 # clear directory
 mkdir Temp2
 mv Temp/$imageToHideName Temp2/$imageToHideName #back up original photo
-$bash clean.sh
+../Stegnography/clean.sh
+
 rm -rf Temp
 
-bash steg_img.sh $defaultImg Temp2/$imageToHideName $destFolder $secretFile
+echo "noob here4"
+../Stegnography/steg_img.sh $defaultImg Temp2/$imageToHideName $destFolder $secretFile
 
-rm -Rf Temp2
-
+echo "noob here2"
+rm -rf Temp2
+echo "noob here3"
 
 
 

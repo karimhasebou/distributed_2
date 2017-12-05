@@ -14,6 +14,7 @@
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QFileDialog>
+#include <QMessageBox>
 #include "../Stegnography/StegManager.h"
 #include "../Stegnography/Paths.h"
 

@@ -23,8 +23,8 @@ LoginPage::LoginPage(QWidget *parent) :
     this->setStyleSheet("QMainWindow {background-color: #000000;}");
 
     QString pushButtonStyleSheet = "QPushButton {color: #ffffff; "
-            "background-color:#000000;"
-            "border-color: #e65c00;"
+            "background-color:#1a1a1a;"
+            "border-color: #595959;"
             "border-radius: 10px;"
             "border-width: 1px;"
             "border-style: outset;"
@@ -32,6 +32,13 @@ LoginPage::LoginPage(QWidget *parent) :
 
     ui->signInButton->setStyleSheet(pushButtonStyleSheet);
     ui->pushButton->setStyleSheet(pushButtonStyleSheet);
+
+    QString lineEditStyleSheet = "QLineEdit:focus { "
+            "border: 2px solid #595959; "
+            "}";
+
+    ui->usernameInputEdit->setStyleSheet(lineEditStyleSheet);
+    ui->passwordInputEdit->setStyleSheet(lineEditStyleSheet);
 
     ui->label->setStyleSheet("QLabel {color: #ffffff;}");
     ui->label_2->setStyleSheet("QLabel {color: #ffffff;}");

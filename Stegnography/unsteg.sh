@@ -13,7 +13,6 @@ mv $defaultImgName tmp1 # rename default image to avoid conflict
 steghide extract -sf tmp1 -p root # extract img once
 
 echo 'extracted img'
-
 steghide extract -sf $defaultImgName -p root # extract txt file
 
 echo 'extracted file'
