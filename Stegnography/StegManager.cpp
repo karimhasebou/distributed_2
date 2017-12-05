@@ -151,10 +151,8 @@ void stego::updateCountInMap(map<std::string, int> list, std::string path)
 
         std::string cmd = "../Stegnography/update_count.sh "+DEFAULT+"  "
             + path + " " + folderName + " " + path + ".txt";
-        std::string rmCountFile ="rm -rf " + path + ".txt";
-
+        
         system(cmd.c_str()); // update count
-        system(rmCountFile.c_str()); // remove count  file
         puts("updated image count");
     }else{
         puts("failed to update count");

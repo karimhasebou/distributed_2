@@ -204,6 +204,10 @@ void HomePage::requestImage() {
     outfile.write(requestedImage.content, requestedImage.length);
     outfile.close();
     
+    string stegCMD = "../Stegnography/steg_one.sh " + 
+        DEFAULT + " " + imageFilePath + " " + myDownloadsPath;
+    system(stegCMD.c_str());
+
     bool alreadyDownloaded = false;
     
     for (size_t i = 0; i < downloadedImages.size() && !alreadyDownloaded; i++) {
