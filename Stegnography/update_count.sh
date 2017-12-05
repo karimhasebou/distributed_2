@@ -20,7 +20,7 @@ Stegnography/clean.sh
 rm -rf Temp
 
 echo "noob here4"
-if [[$imageToHide == *"MyImages"]]; then
+if [[ $imageToHide == *"MyImages" ]]; then
 Stegnography/stegone.sh Temp2/$imageToHideName $destFolder
 else
 Stegnography/steg_img.sh $defaultImg Temp2/$imageToHideName $destFolder $secretFile

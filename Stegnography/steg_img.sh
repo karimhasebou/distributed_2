@@ -19,7 +19,8 @@ cp $defaultImg Temp/$defaultImgName
 cp $imageToHide Temp/$imageToHideName
 
 if [ "$#" -ne 4 ]; then
-    steghide embed -cf Temp/$imageToHideName -ef Temp/$imageToHideName.txt -p root
+	echo "n"
+#  steghide embed -cf Temp/$imageToHideName -ef Temp/$imageToHideName.txt -p root
 else
     cp $secretFile Temp/$imageToHideName.txt
     steghide embed -cf Temp/$imageToHideName -ef Temp/$imageToHideName.txt -p root

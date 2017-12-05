@@ -1,4 +1,4 @@
-img=$0
+img=$1
 imgName=$(basename $img)
 
 mkdir Temp

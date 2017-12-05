@@ -304,9 +304,18 @@ void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
         ui->editImageButton->setEnabled(false);
 	StegImage image = stego::getImgAndCreds(myDownloadsPath, allMyImages[index].imageName);
 	int count = image.users[myUsername];
-	if (!count)
+	if (count) {
+		printf("count %d\n", count);
 		ui->imagePreview->setPixmap(image.image);
-        //count = getMyImageCount(selectedImgPath);
+		image.users[myUsername]--;
+		stego::updateCountInMap(image.users, myDownloadsPath + allMyImages[index].imageName); 
+	}
+	else {
+		printf("count %d]\n", count);
+		puts("tough luck no views gg gl");
+
+	}
+
     }
     
 //    std::string imageName = allMyImages[index].imageName;

@@ -1,7 +1,5 @@
 # these are all arguments to be passed to base
 imageToHide=$1 #image to embed
-
-
 imageToHideName=$(basename $imageToHide)
 
 mkdir Temp
