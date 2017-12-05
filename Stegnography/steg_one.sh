@@ -11,7 +11,7 @@ cp $imageToHide Temp/$imageToHideName
 
 steghide embed -cf Temp/$imageToHideName -ef Temp/$imageToHideName.txt -p root
 
-mv Temp/$imageToHideName $target
+cp Temp/$imageToHideName $target
 
 rm -rf Temp # empty all left overs
 

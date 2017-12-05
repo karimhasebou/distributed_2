@@ -193,7 +193,7 @@ StegImage stego::getMyImgAndCreds(const std::string& directory,
 	system(unstegCMD.c_str());
 
 	result.users = stego::getAuthorizedUsersCount(TEMP_FOLDER + filename + ".txt");
-	result.image.load(QString::fromStdString(filename));
+	result.image.load(QString::fromStdString(directory + filename));
 	
 	system("Stegnography/clean.sh");
 	return result;

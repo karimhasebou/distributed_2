@@ -294,6 +294,7 @@ void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
         StegImage image = stego::getMyImgAndCreds(myImagesPath, allMyImages[index].imageName);
         ui->imagePreview->setPixmap(image.image);
         showMapInTable(ui->usersTableWidget, image.users);
+	puts("isMine");
 
     } else {
         ui->editImageButton->setEnabled(false);
