@@ -204,7 +204,7 @@ void HomePage::requestImage() {
     outfile.write(requestedImage.content, requestedImage.length);
     outfile.close();
     
-    string stegCMD = "../Stegnography/steg_one.sh " + 
+    string stegCMD = "Stegnography/steg_img.sh " + 
         DEFAULT + " " + imageFilePath + " " + myDownloadsPath;
     system(stegCMD.c_str());
 
@@ -302,6 +302,10 @@ void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
 
     } else {
         ui->editImageButton->setEnabled(false);
+	StegImage image = stego::getImgAndCreds(myDownloadsPath, allMyImages[index].imageName);
+	int count = image.users[myUsername];
+	if (!count)
+		ui->imagePreview->setPixmap(image.image);
         //count = getMyImageCount(selectedImgPath);
     }
     
