@@ -145,10 +145,10 @@ bool server::updateCount(string imgName, string username, int count)
 
     //map<string, int> countList = stego::getAuthorizedUsersCount(txtPath);
     //countList[username] = count;
-    StegImage imgNCredentials = stego::getImgAndCreds(downDir, imageName);
+    StegImage imgNCredentials = stego::getImgAndCreds(downDir, imgName);
     imgNCredentials.users[username] = count;
 
-    stego::updateCountInMap(imgNCredentials.users, downDir + imageName);
+    stego::updateCountInMap(imgNCredentials.users, downDir + imgName);
     // stegUserList(downDir + imgName, txtPath);
     //stego::stegPicture(downDir + imgName, txtPath);
     return true;
