@@ -16,10 +16,10 @@ HomePage::HomePage(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::HomePage)
 {
-    ui->setupUi(this);
 
-    ui->centralwidget->setStyleSheet("QMainWindow {background-color: #000000;"
-                                             "border-color: #000000;}");
+    this->setStyleSheet("background-color: #000000;");
+
+    ui->setupUi(this);
 
     imagePreview.load("../defaultImage.jpg");
     ui->imagePreview->setPixmap(imagePreview);
@@ -43,7 +43,7 @@ HomePage::HomePage(QWidget *parent) :
 
     ui->usersTableWidget->setColumnCount(2);
 
-    ui->usersTableWidget->setColumnWidth(0, double(ui->usersTableWidget->width())/0.8);
+    ui->usersTableWidget->setColumnWidth(0, double(ui->usersTableWidget->width())/0.85);
     ui->usersTableWidget->setColumnWidth(1, double(ui->usersTableWidget->width())/0.8);
 
     QString headerStyleSheet = "QHeaderView::section {"
@@ -62,11 +62,11 @@ HomePage::HomePage(QWidget *parent) :
             "color: #ffffff;}"
             "QTableWidget::item {"
             "border: 1px solid #ffffff; }"
-            "QTableWidget::item:focus{ "
-            "color: #ffffff; }"
-            "QTableWidget::item:selection{ n"
-            "color: #ffffff; "
-            "background-color: #595959;}";
+            "QTableWidget::item::focus {"
+            "background-color: #595959;"
+            "color: #ffffff;}"
+            "QTableWidget::item::checked {"
+            "color: #ffffff;}";
 
     ui->usersTableWidget->setStyleSheet(tableStyleSheet);
 
@@ -125,6 +125,8 @@ HomePage::HomePage(QWidget *parent) :
 
     ui->usernameEdit->setStyleSheet(lineEditStyleSheet);
     ui->viewCountEdit->setStyleSheet(lineEditStyleSheet);
+
+    infoMessageBox = new QMessageBox(this);
 }
 
 HomePage::~HomePage() {
@@ -237,7 +239,10 @@ void HomePage::uploadImage() {
 
     system(stegNCopy.c_str());
 
-    QMessageBox::information(this, tr("Done"), tr("Image Uploaded !"));
+    infoMessageBox->setText("Done");
+    infoMessageBox->setInformativeText("Image Uploaded");
+    infoMessageBox->exec();
+
 }
 
 void HomePage::addUser() {
@@ -263,11 +268,6 @@ void HomePage::addUser() {
     ui->usernameEdit->clear();
     ui->viewCountEdit->clear();
 
-}
-
-void HomePage::updateImgCount(std::string img, int count)
-{
-    
 }
 
 /*
@@ -310,13 +310,13 @@ void HomePage::handleAvailableImagesClick(QListWidgetItem * listItem) {
 }
 
 void HomePage::updateViews() {
-    
+
     std::map<std::string, int> usersInfo;
     std::string username;
     int count;
     
     for (int i = 0; i < ui->usersTableWidget->rowCount(); i++) {
-        
+
         username = ui->usersTableWidget->item(i, 0)->text().toStdString();
         count = ui->usersTableWidget->item(i, 1)->text().toInt();
 
@@ -338,6 +338,11 @@ void HomePage::updateViews() {
 }
 
 void HomePage::viewImage(const std::string& dir, const std::string& filename){
+
+}
+
+void HomePage::updateImgCount(std::string, int) {
+
 
 }
 

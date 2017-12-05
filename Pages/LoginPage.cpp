@@ -11,6 +11,7 @@ LoginPage::LoginPage(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::LoginPage)
 {
+    this->setStyleSheet("background-color: #000000;");
     ui->setupUi(this);
     //    connect(ui->signInButton, &QPushButton::clicked, this, &LoginPage::on_signInButton_clicked);
     
@@ -20,7 +21,6 @@ LoginPage::LoginPage(QWidget *parent) :
 //    palette.setBrush(QPalette::Background, backgroundImage);
 //    this->setPalette(palette);
 
-    this->setStyleSheet("QMainWindow {background-color: #000000;}");
 
     QString pushButtonStyleSheet = "QPushButton {color: #ffffff; "
             "background-color:#1a1a1a;"
@@ -33,9 +33,14 @@ LoginPage::LoginPage(QWidget *parent) :
     ui->signInButton->setStyleSheet(pushButtonStyleSheet);
     ui->pushButton->setStyleSheet(pushButtonStyleSheet);
 
+    ui->pushButton->setVisible(false);
+
     QString lineEditStyleSheet = "QLineEdit:focus { "
             "border: 2px solid #595959; "
-            "}";
+            "color: #ffffff;"
+            "} "
+            "QLineEdit {"
+            "color: #ffffff; }";
 
     ui->usernameInputEdit->setStyleSheet(lineEditStyleSheet);
     ui->passwordInputEdit->setStyleSheet(lineEditStyleSheet);

@@ -133,7 +133,6 @@ public:
 
         horizontalLayout->addWidget(requestImageButton);
 
-
         verticalLayout->addLayout(horizontalLayout);
 
         verticalSpacer = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);

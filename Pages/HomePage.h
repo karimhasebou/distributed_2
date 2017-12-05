@@ -49,6 +49,7 @@ private:
     Ui::HomePage *ui;
     std::string myUsername;
     QPixmap imagePreview;
+    QMessageBox* infoMessageBox;
 
     std::map<std::string, std::string> usersIpAddress;
     std::vector<ImageEntry> availableImages;
@@ -57,6 +58,7 @@ private:
     const std::string myImagesPath = "../MyImages/";
     const std::string myDownloadsPath = "../DownloadedImages/";
     const std::string defaultImagePath = "defaultImage.png";
+    const std::string loaderPath = "../loader.gif";
     const std::string tempFolder = "TEMP/";
 
     void setEditEntriesVisible(const bool&);

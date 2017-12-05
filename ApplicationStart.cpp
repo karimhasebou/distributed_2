@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
 
     QApplication application(argc, argv);
     LoginPage loginPage;
-    
     loginPage.show();
     return application.exec();
 }
