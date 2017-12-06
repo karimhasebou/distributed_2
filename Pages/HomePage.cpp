@@ -17,7 +17,7 @@ HomePage::HomePage(QWidget *parent) :
         ui(new Ui::HomePage)
 {
 
-    this->setStyleSheet("background-color: #000000;");
+    // this->setStyleSheet("background-color: #000000; QFileDialog {color: #ffffff;}");
 
     ui->setupUi(this);
 
@@ -111,6 +111,7 @@ HomePage::HomePage(QWidget *parent) :
 
     ui->addUsernameLabel->setStyleSheet("QLabel {color: #ffffff;}");
     ui->viewCountLabel->setStyleSheet("QLabel {color: #ffffff;}");
+    ui->countRemaining->setStyleSheet("QLabel {color: #ffffff;}");
 
     ui->imagePreview->setStyleSheet("QLabel {border-radius: 10px;"
                                             "border-width: 1px;"
@@ -128,6 +129,8 @@ HomePage::HomePage(QWidget *parent) :
 
     infoMessageBox = new QMessageBox(this);
     infoMessageBox->setStyleSheet("QWidget {color: #ffffff;}");
+
+    ui->countRemaining->setVisible(false);
 }
 
 HomePage::~HomePage() {
@@ -306,28 +309,32 @@ void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
     if (isMine) {
 
         ui->editImageButton->setEnabled(true);
+        ui->countRemaining->setVisible(false);
         StegImage image = stego::getMyImgAndCreds(myImagesPath, allMyImages[index].imageName);
         ui->imagePreview->setPixmap(image.image);
         showMapInTable(ui->usersTableWidget, image.users);
-	puts("isMine");
+	    puts("isMine");
 
     } else {
+        
         ui->editImageButton->setEnabled(false);
-	StegImage image = stego::getImgAndCreds(myDownloadsPath, allMyImages[index].imageName);
-	int count = image.users[myUsername];
+	    StegImage image = stego::getImgAndCreds(myDownloadsPath, allMyImages[index].imageName);
+	    int count = image.users[myUsername];
+
 	
-    if (count) {
-		printf("count %d\n", count);
-		ui->imagePreview->setPixmap(image.image);
-		image.users[myUsername]--;
-		stego::updateCountInMap(image.users, myDownloadsPath + allMyImages[index].imageName); 
-	}
-	else {
-		printf("count %d]\n", count);
-		puts("tough luck no views gg gl");
-
-	}
-
+        if (count) {
+            printf("count %d\n", count);
+            ui->imagePreview->setPixmap(image.image);
+            image.users[myUsername]--;
+            stego::updateCountInMap(image.users, myDownloadsPath + allMyImages[index].imageName); 
+            ui->countRemaining->setText("Count Remaining = " + QString::number(count));
+            ui->countRemaining->setVisible(true);
+        }
+        else {
+            infoMessageBox->setText("Error");
+            infoMessageBox->setInformativeText("No more Views");
+            infoMessageBox->exec();
+        }
     }
     
 //    std::string imageName = allMyImages[index].imageName;

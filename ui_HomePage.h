@@ -69,6 +69,8 @@ public:
     QLabel *label;
     QMenuBar *menubar;
     QStatusBar *statusbar;
+    QVBoxLayout *verticalLayoutImage;
+    QLabel * countLabel;
 
     void setupUi(QMainWindow *HomePage)
     {
@@ -159,7 +161,7 @@ public:
 
         countRemaining = new QLabel(verticalLayoutWidget);
         countRemaining->setObjectName(QStringLiteral("countRemaining"));
-        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Minimum);
+        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Minimum);
         sizePolicy2.setHorizontalStretch(0);
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(countRemaining->sizePolicy().hasHeightForWidth());
@@ -284,7 +286,7 @@ public:
         editImageButton->setText(QApplication::translate("HomePage", "Edit Image", Q_NULLPTR));
         requestImageButton->setText(QApplication::translate("HomePage", "Request Image", Q_NULLPTR));
         imagePreview->setText(QApplication::translate("HomePage", "TextLabel", Q_NULLPTR));
-        countRemaining->setText(QString());
+        countRemaining->setText(QApplication::translate("HomePage", "", Q_NULLPTR));
         refreshButton->setText(QApplication::translate("HomePage", "Refresh", Q_NULLPTR));
         viewCountLabel->setText(QApplication::translate("HomePage", "Views Count", Q_NULLPTR));
         addUsernameLabel->setText(QApplication::translate("HomePage", "Add username", Q_NULLPTR));
