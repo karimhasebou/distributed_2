@@ -42,7 +42,8 @@ ui(new Ui::LoginPage)
     ui->label_3->setStyleSheet("QLabel {color: #ffffff;}");
     
     infoMessageBox = new QMessageBox(this);
-    infoMessageBox->setStyleSheet("QWidget {color: #ffffff; background-color: #000000;}");
+    infoMessageBox->setStyleSheet("QWidget {color: #ffffff; background-color: #000000; font-size: 10px;}");
+    infoMessageBox->resize(250, 60);
     
 }
 

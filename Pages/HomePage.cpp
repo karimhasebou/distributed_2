@@ -129,7 +129,8 @@ ui(new Ui::HomePage)
     ui->viewCountEdit->setStyleSheet(lineEditStyleSheet);
     
     infoMessageBox = new QMessageBox(this);
-    infoMessageBox->setStyleSheet("QWidget {color: #ffffff; background-color: #000000;}");
+    infoMessageBox->setStyleSheet("QWidget {color: #ffffff; background-color: #000000; font-size: 10px;}");
+    infoMessageBox->resize(250, 50);
     
     ui->countRemaining->setVisible(false);
 }
@@ -169,10 +170,7 @@ void HomePage::getAllImages() {
         
     } catch (ErrorResponseException &e) {
         
-        infoMessageBox->setText("Error");
-        infoMessageBox->setInformativeText("Server Not Responding");
-        infoMessageBox->setIcon(QMessageBox::Critical);
-        infoMessageBox->exec();
+        showMessageBox(QMessageBox::Critical, "Error", "Server Not Responding");
         
     }
 }
@@ -268,16 +266,14 @@ void HomePage::uploadImage() {
     
     if (filePath != "") {
         system(stegNCopy.c_str());
-        infoMessageBox->setText("Done");
-        infoMessageBox->setIcon(QMessageBox::Information);
-        infoMessageBox->setInformativeText("Image Uploaded");
-        infoMessageBox->exec();
+        
+        showMessageBox(QMessageBox::Information, "Done", "Image Uploaded");
+
     }
     else {
-        infoMessageBox->setText("404");
-        infoMessageBox->setIcon(QMessageBox::Critical);
-        infoMessageBox->setInformativeText("No image selected");
-        infoMessageBox->exec();
+        
+        showMessageBox(QMessageBox::Critical, "404", "No Image Selected");
+
     }
     
 }
@@ -345,9 +341,9 @@ void HomePage::handleMyImagesClick(QListWidgetItem * listItem) {
             ui->countRemaining->setVisible(true);
         }
         else {
-            infoMessageBox->setText("Error");
-            infoMessageBox->setInformativeText("No more Views");
-            infoMessageBox->exec();
+            
+            showMessageBox(QMessageBox::Critical, "Error", "No more views !");
+
         }
     }
     
@@ -396,25 +392,15 @@ void HomePage::updateViews() {
         }
         stego::updateCountInMapLocal(usersInfo, myImagesPath + allMyImages[index].imageName);
         
-        QMessageBox::information(this, tr("Done"), tr("Image Updated !"));
+        showMessageBox(QMessageBox::Information, "Done", "Image is updated !");
+        
     } catch(ErrorResponseException &e) {
         
-        infoMessageBox->setText("Error");
-        infoMessageBox->setInformativeText("Server Not Responding");
-        infoMessageBox->setIcon(QMessageBox::Critical);
-        infoMessageBox->exec();
+        showMessageBox(QMessageBox::Critical, "Error", "Server Not Responding");
         
     }
 }
 
-void HomePage::viewImage(const std::string& dir, const std::string& filename){
-    
-}
-
-void HomePage::updateImgCount(std::string, int) {
-    
-    
-}
 
 void HomePage::setUsername(std::string username) {
     
@@ -524,6 +510,18 @@ void HomePage::showImagesInList(QListWidget * listWidget, const std::vector<Imag
         listWidget->insertItem(i, newItem);
     }
 }
+
+void HomePage::showMessageBox(QMessageBox::Icon icon,
+                              const std::string& title,
+                              const std::string& messageContent) {
+    
+    infoMessageBox->setText(QString::fromStdString(title));
+    infoMessageBox->setInformativeText(QString::fromStdString(messageContent));
+    infoMessageBox->setIcon(icon);
+    infoMessageBox->exec();
+    
+}
+
 
 void HomePage::showMapInTable(QTableWidget* table, std::map<std::string, int> & usersMap) {
     

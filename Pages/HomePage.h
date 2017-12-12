@@ -78,6 +78,8 @@ private:
     void viewImage(const std::string& dir, const std::string& filename);
     int getSelectedIndex(QListWidget*);
     void showMapInTable(QTableWidget*, std::map<std::string, int>&);
+    
+    void showMessageBox(QMessageBox::Icon, const std::string&, const std::string&);
 
 };
 
