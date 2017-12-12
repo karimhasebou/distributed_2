@@ -114,6 +114,11 @@ bool Message::isAcknowledgement() const {
 
 }
 
+bool Message::isErrorMessage() const {
+    
+    return this->type == Error;
+}
+
 void Message::setDestIPAddress(const std::string ipAddress) {
 
     sAddress.sin_addr.s_addr = inet_addr(ipAddress.c_str());

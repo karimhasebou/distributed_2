@@ -9,7 +9,7 @@
 #define MAX_RESEND_PACK 3  // adjust
 #define MAX_WAIT_PACK 3
 #define MAC_PACK_FAIL 20    // adjust
-#define MAX_REQUESTS 30     // adjust
+#define MAX_REQUESTS 5     // adjust
 #define MAX_RECEIVE 12      // adjust
 #define TIMEOUT 11          // adjust
 

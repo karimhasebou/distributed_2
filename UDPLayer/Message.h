@@ -13,7 +13,8 @@ enum MessageType {
     Acknowledgement,
     Last,
     Request,
-    Reply
+    Reply,
+    Error
 };
 
 #include "../Marshalling/MarshalledMessage.h"
@@ -47,6 +48,7 @@ public:
     void getMessageWithHeaders(char *) const;
     
     bool isAcknowledgement() const;
+    bool isErrorMessage() const;
     
     void setDestIPAddress(const std::string);
     void setDestPortNumber(const unsigned short& portNumber);

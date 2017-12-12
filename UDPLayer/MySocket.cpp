@@ -36,10 +36,17 @@ Message MySocket::callRPC(const Message & sentMessage) {
         rpcSocket.sendPacket(sentMessage);
         
         receiveStatus = receive(rpcSocket, receivedMessage);
-        printf("ya allah\n");
     }
+    
     expectingPacketID = 1;
     messages.clear();
+    
+    if (receiveStatus == Failure) {
+
+        receivedMessage.setMessageType(Error);
+        
+    }
+    
     return receivedMessage;
 }
 

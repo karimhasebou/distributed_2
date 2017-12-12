@@ -10,6 +10,7 @@
 #include "../UDPLayer/MySocket.h"
 #include <errno.h>
 #include <unistd.h>
+#include "ErrorResponseException.h"
 
 std::string authServerIP = "10.40.54.60"; //10.40.54.60
 const unsigned short authServerPort = 63000;
@@ -39,6 +40,12 @@ LoginStatus client::login(std::string username, std::string password) {
     
     Message rpcReplyMessage =  rpcSocket.callRPC(rpcCallMessage);
     
+    if (rpcReplyMessage.isErrorMessage()) {
+        
+        throw ErrorResponseException("Server isn't responding");
+        
+    }
+    
     std::vector<CustomObject *> returnValues = {new CustomInt()};
     
     unmarshal(rpcReplyMessage, returnValues);
@@ -62,6 +69,12 @@ std::map<std::string, std::string> client::getUsersIpAddress()
     MySocket rpcSocket;
     
     Message rpcReplyMessage = rpcSocket.callRPC(rpcCallMessage);
+    
+    if (rpcReplyMessage.isErrorMessage()) {
+        
+        throw ErrorResponseException("Server isn't responding");
+        
+    }
     
     std::vector<CustomObject* > returnValues = {new CustomMap()};
     
@@ -93,6 +106,12 @@ std::string client::getUsername(std::string IPAddr)
     
     Message rpcReplyMessage =  rpcSocket.callRPC(rpcCallMessage);
     
+    if (rpcReplyMessage.isErrorMessage()) {
+        
+        throw ErrorResponseException("Server isn't responding");
+        
+    }
+    
     std::vector<CustomObject *> returnValues = {new CustomString()};
     
     unmarshal(rpcReplyMessage, returnValues);
@@ -122,6 +141,12 @@ std::vector<std::string> client::getAccessibleImages(std::string username, std::
     rpcCallMessage.setRpcOperation(1);
         
     Message rpcReplyMessage = rpcSocket.callRPC(rpcCallMessage);
+    
+    if (rpcReplyMessage.isErrorMessage()) {
+        
+        throw ErrorResponseException("Server isn't responding");
+        
+    }
 
     std::vector<CustomObject *> returnValues = {new CustomVector()};
         
@@ -153,6 +178,12 @@ Image client::getImage(std::string imageName, std::string ipAddress)
         
         
     Message rpcReplyMessage = rpcSocket.callRPC(rpcCallMessage);
+    
+    if (rpcReplyMessage.isErrorMessage()) {
+        
+        throw ErrorResponseException("Server isn't responding");
+        
+    }
 
 
     std::vector<CustomObject *> returnValues = {new CustomString()};
@@ -210,7 +241,6 @@ bool client::updateCount(std::string imgName, std::string username, int count)
     std::string ipAdd = returnString->getValue();
 
 
-
     MySocket rpcSocket;
     
 
@@ -229,6 +259,12 @@ bool client::updateCount(std::string imgName, std::string username, int count)
     
         
     Message rpcReplyMessage =  rpcSocket.callRPC(rpcCallMessage);
+    
+    if (rpcReplyMessage.isErrorMessage()) {
+        
+        throw ErrorResponseException("Server isn't responding");
+        
+    }
 
     bool success = true;
     // success = if rpcReplyMessage is successful update at the server

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <fstream>
 #include "HomePage.h"
+#include <QMessageBox>
 
 namespace Ui {
 class LoginPage;
@@ -24,6 +25,8 @@ private slots:
 private:
     HomePage* home;
     Ui::LoginPage *ui;
+    QMessageBox* infoMessageBox;
+
 };
 
 #endif // LOGINPAGE_H
