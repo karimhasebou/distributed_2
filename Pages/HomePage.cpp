@@ -207,36 +207,44 @@ void HomePage::getMyImages() {
  */
 void HomePage::requestImage() {
     
-    int index = ui->availableImagesList->currentIndex().row();
-    std::string imageName = availableImages[index].imageName;
-    
-    Image requestedImage = client::getImage(imageName, usersIpAddress[availableImages[index].username]);
-    
-    std::string imageFilePath = myDownloadsPath + imageName;
-    
-    std::ofstream outfile(imageFilePath , std::ios::out | std::ios::binary);
-    outfile.write(requestedImage.content, requestedImage.length);
-    outfile.close();
-    
-    string stegCMD = "Stegnography/steg_img.sh " +
-    DEFAULT + " " + imageFilePath + " " + myDownloadsPath;
-    system(stegCMD.c_str());
-    
-    bool alreadyDownloaded = false;
-    
-    for (size_t i = 0; i < downloadedImages.size() && !alreadyDownloaded; i++) {
+    try
+    {
+        int index = ui->availableImagesList->currentIndex().row();
+        std::string imageName = availableImages[index].imageName;
         
-        if(downloadedImages[i] == availableImages[index]) {
-            alreadyDownloaded = true;
+        Image requestedImage = client::getImage(imageName, usersIpAddress[availableImages[index].username]);
+        
+        std::string imageFilePath = myDownloadsPath + imageName;
+        
+        std::ofstream outfile(imageFilePath , std::ios::out | std::ios::binary);
+        outfile.write(requestedImage.content, requestedImage.length);
+        outfile.close();
+        
+        string stegCMD = "Stegnography/steg_img.sh " +
+        DEFAULT + " " + imageFilePath + " " + myDownloadsPath;
+        system(stegCMD.c_str());
+        
+        bool alreadyDownloaded = false;
+        
+        for (size_t i = 0; i < downloadedImages.size() && !alreadyDownloaded; i++) {
+            
+            if(downloadedImages[i] == availableImages[index]) {
+                alreadyDownloaded = true;
+            }
         }
-    }
-    
-    if (!alreadyDownloaded) {
         
-        downloadedImages.push_back(availableImages[index]);
+        if (!alreadyDownloaded) {
+            
+            downloadedImages.push_back(availableImages[index]);
+        }
+        
+        getMyImages();
     }
-    
-    getMyImages();
+    catch (ErrorResponseException &e) {
+        
+        showMessageBox(QMessageBox::Critical, "Error", "Server Not Responding");
+        
+    }
 }
 
 void HomePage::editImageSettings() {

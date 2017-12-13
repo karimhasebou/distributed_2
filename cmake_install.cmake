@@ -1,4 +1,4 @@
-# Install script for directory: /home/nawawy/CLionProjects/Final?/distributed_2
+# Install script for directory: /home/nawawy/Nawawy/DistributedFinal/distributed_2
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/nawawy/CLionProjects/Final?/distributed_2/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/nawawy/Nawawy/DistributedFinal/distributed_2/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

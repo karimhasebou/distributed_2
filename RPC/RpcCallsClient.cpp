@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include "ErrorResponseException.h"
 
-std::string authServerIP = "10.40.54.60"; //10.40.54.60
+std::string authServerIP = "10.40.61.83"; //10.40.54.60
 const unsigned short authServerPort = 63000;
 const unsigned short serverPort = 64000;
 
